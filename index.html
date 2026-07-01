@@ -22,356 +22,793 @@
   font-family: "Optimistic Mono", ui-monospace, monospace;
 }
 </style>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>TOEFL ITP Simulation V1 - Bintang 4</title>
-    <style>
-        * {margin: 0; padding: 0; box-sizing: border-box;}
-        body {font-family: 'Segoe UI', sans-serif; background: #121212; color: #fff; line-height: 1.6;}
-        .nav {position: fixed; top: 0; width: 100%; background: #1e1e1e; padding: 15px; display: flex; justify-content: space-between; align-items: center; z-index: 1000; box-shadow: 0 2px 10px rgba(0,0,0,0.5);}
-        .timer {font-size: 18px; font-weight: bold; color: #4caf50;}
-        .progress {font-size: 14px;}
-        .btn-nav {background: #d32f2f; color: white; border: none; padding: 8px 16px; border-radius: 4px; cursor: pointer; font-weight: bold;}
-        .container {margin-top: 80px; padding: 20px; max-width: 900px; margin-left: auto; margin-right: auto;}
-        .login-card, .soal-card, .hasil-card {background: #1e1e1e; padding: 30px; border-radius: 8px; margin-bottom: 20px;}
-        .login-card {background: #fff; color: #1a1a1a; padding: 40px 30px; border-radius: 16px;}
-        .login-header {text-align: center; margin-bottom: 30px;}
-        .login-icon {width: 80px; height: 80px; background: #1a73e8; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 20px; color: white; font-size: 40px;}
-        .login-title {font-size: 28px; font-weight: 700; color: #1a1a1a; margin-bottom: 8px;}
-        .login-subtitle {font-size: 16px; color: #5f6368;}
-        .stars {color: #fbbc04; font-size: 20px; margin-top: 5px;}
-        .info-card {background: #f8f9ff; border: 1px solid #e8eaf6; border-radius: 12px; padding: 20px; margin: 15px 0; text-align: left;}
-        .info-number {font-size: 36px; font-weight: 700; color: #1a73e8; margin-bottom: 5px;}
-        .info-title {font-size: 18px; font-weight: 600; color: #1a1a1a; margin-bottom: 5px;}
-        .info-desc {font-size: 14px; color: #5f6368;}
-        .ketentuan-box {background: #f8f9ff; border: 1px solid #e8eaf6; border-radius: 12px; padding: 20px; margin: 20px 0; text-align: left;}
-        .ketentuan-title {font-size: 18px; font-weight: 700; color: #1a1a1a; margin-bottom: 15px;}
-        .ketentuan-item {display: flex; align-items: flex-start; gap: 12px; margin: 12px 0; font-size: 14px; color: #3c4043;}
-        .ketentuan-icon {font-size: 18px; flex-shrink: 0;}
-        .btn-start {width: 100%; padding: 16px; background: #1a73e8; color: white; border: none; border-radius: 8px; font-size: 18px; font-weight: 600; cursor: pointer; margin-top: 10px;}
-        .btn-start:hover {background: #1557b0;}
-        .note {text-align: center; font-size: 12px; color: #5f6368; margin-top: 15px;}
-        input {width: 100%; padding: 14px; margin: 20px 0 10px 0; background: #f1f3f4; border: 1px solid #dadce0; color: #1a1a1a; border-radius: 8px; font-size: 16px;}
-        h1, h2 {text-align: center; margin-bottom: 20px; color: #4caf50;}
-        .btn {width: 100%; padding: 15px; background: #4caf50; color: white; border: none; border-radius: 4px; font-size: 18px; font-weight: bold; cursor: pointer; margin-top: 10px;}
-        .btn:hover {background: #45a049;}
-        .soal-text {font-size: 18px; margin: 30px 0; padding: 20px; background: #2c2c2c; border-radius: 8px; border-left: 4px solid #4caf50;}
-        .passage {font-size: 16px; margin: 20px 0; padding: 20px; background: #2c2c2c; border-radius: 8px; line-height: 1.8; text-align: justify;}
-        .audio-box {background: #2c2c2c; padding: 15px; border-radius: 8px; margin: 20px 0; text-align: center;}
-        .opsi-btn {display: block; width: 100%; padding: 20px; margin: 10px 0; background: #2c2c2c; border: 2px solid #444; color: white; border-radius: 8px; font-size: 18px; cursor: pointer; transition: all 0.3s; text-align: left;}
-        .opsi-btn:hover {border-color: #4caf50;}
-        .opsi-btn.selected {background: #4caf50; border-color: #4caf50;}
-        .nav-tabs {display: flex; gap: 10px; margin: 20px 0; justify-content: center; flex-wrap: wrap;}
-        .nav-tab {padding: 10px 20px; background: #2c2c2c; border: 1px solid #444; border-radius: 4px; cursor: pointer;}
-        .nav-tab.active {background: #4caf50;}
-        .nav-grid {display: none; grid-template-columns: repeat(10, 1fr); gap: 5px; margin: 20px 0; max-height: 300px; overflow-y: auto;}
-        .nav-grid.active {display: grid;}
-        .nav-item {padding: 10px 5px; background: #2c2c2c; border: 1px solid #444; text-align: center; cursor: pointer; border-radius: 4px; font-size: 11px;}
-        .nav-item.answered {background: #4caf50;}
-        .nav-item.ragu {background: #ffc107; color: #000;}
-        .nav-item.current {border: 2px solid #ff9800;}
-        .hidden {display: none;}
-        .hasil-table {width: 100%; margin: 20px 0; border-collapse: collapse;}
-        .hasil-table td, .hasil-table th {padding: 12px; border: 1px solid #444; text-align: left;}
-        .lulus {color: #4caf50; font-size: 24px; font-weight: bold;}
-        .tidak-lulus {color: #f44336; font-size: 24px; font-weight: bold;}
-    </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CAT TOEFL ITP Paket B - Sekolah Kedinasan</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+  * { font-family: 'Inter', sans-serif; }
+  .question-grid { 
+    display: grid; 
+    grid-template-columns: repeat(12, 32px); 
+    gap: 6px; 
+    justify-content: center;
+  }
+  @media (max-width: 480px) {
+    .question-grid { 
+      grid-template-columns: repeat(8, 32px); 
+      gap: 4px;
+    }
+  }
+  .question-btn {
+    width: 32px;
+    height: 32px;
+    font-size: 11px;
+    font-weight: 600;
+    border: 1.5px solid #cbd5e1;
+    border-radius: 6px;
+    background: white;
+    transition: all 0.2s;
+  }
+  .question-btn:hover { transform: scale(1.05); }
+  .question-btn.answered { background: #3b82f6; color: white; border-color: #3b82f6; }
+  .question-btn.current { background: #f59e0b; color: white; border-color: #f59e0b; box-shadow: 0 0 0 2px #fbbf2433; }
+  .question-btn.flagged { border-color: #ef4444; border-width: 2px; }
+  .section-tab.active { background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%); color: white; }
+  .animate-fade-in { animation: fadeIn 0.3s ease-in; }
+  @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+  .gradient-bg { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); }
+  .glass-effect { background: rgba(255, 255, 255, 0.95); backdrop-filter: blur(10px); }
+  audio { width: 100%; border-radius: 8px; }
+  .passage-text { line-height: 1.8; text-align: justify; }
+  .explanation-box { background: #f0f9ff; border-left: 4px solid #3b82f6; }
+</style>
 </head>
-<body>
-    <div class="nav">
-        <div class="timer" id="timer">115:00</div>
-        <div class="progress" id="progress">L:0 S:0 R:0</div>
-        <button class="btn-nav" onclick="toggleNav()">Buka Navigasi</button>
+<body class="bg-slate-50">
+<!-- Start Screen -->
+<div id="startScreen" class="min-h-screen flex items-center justify-center p-4 gradient-bg">
+  <div class="glass-effect rounded-2xl shadow-2xl p-8 w-full max-w-md animate-fade-in">
+    <div class="text-center mb-8">
+      <div class="inline-flex items-center justify-center w-20 h-20 bg-gradient-to-br from-blue-500 to-indigo-600 rounded-2xl mb-4 shadow-lg">
+        <svg class="w-10 h-10 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
+        </svg>
+      </div>
+      <h1 class="text-3xl font-bold text-slate-800 mb-2">CAT TOEFL ITP</h1>
+      <p class="text-slate-600 font-medium">Paket B - Sekolah Kedinasan</p>
+      <div class="flex justify-center gap-2 mt-4">
+        <span class="px-3 py-1 bg-blue-100 text-blue-700 rounded-full text-xs font-semibold">140 Soal</span>
+        <span class="px-3 py-1 bg-purple-100 text-purple-700 rounded-full text-xs font-semibold">115 Menit</span>
+        <span class="px-3 py-1 bg-amber-100 text-amber-700 rounded-full text-xs font-semibold">⭐⭐⭐⭐</span>
+      </div>
     </div>
-    <div class="container">
-        <div class="login-card" id="loginCard">
-            <div class="login-header">
-                <div class="login-icon">🎧</div>
-                <div class="login-title">Simulasi TOEFL ITP<br>Sekolah Kedinasan</div>
-                <div class="login-subtitle">Standar STAN • IPDN • STIS | Tingkat Kesulitan <span class="stars">★★★★☆</span></div>
-            </div>
-            
-            <div class="info-card">
-                <div class="info-number">50</div>
-                <div class="info-title">Listening Comprehension</div>
-                <div class="info-desc">Short Dialogue, Long Conversation, Talks</div>
-            </div>
-            
-            <div class="info-card">
-                <div class="info-number">40</div>
-                <div class="info-title">Structure & Written Expression</div>
-                <div class="info-desc">Grammar, Error Identification</div>
-            </div>
-            
-            <div class="info-card">
-                <div class="info-number">50</div>
-                <div class="info-title">Reading Comprehension</div>
-                <div class="info-desc">Academic Passages, Vocabulary</div>
-            </div>
-            
-            <div class="ketentuan-box">
-                <div class="ketentuan-title">Ketentuan Ujian:</div>
-                <div class="ketentuan-item">
-                    <span class="ketentuan-icon">⏱️</span>
-                    <span>Waktu: 115 menit untuk 140 soal</span>
-                </div>
-                <div class="ketentuan-item">
-                    <span class="ketentuan-icon">📊</span>
-                    <span>Skor ITP: 310-677. Kedinasan minimal 450</span>
-                </div>
-                <div class="ketentuan-item">
-                    <span class="ketentuan-icon">🎯</span>
-                    <span>Passing Grade: ≥450 untuk STAN/IPDN</span>
-                </div>
-                <div class="ketentuan-item">
-                    <span class="ketentuan-icon">🎧</span>
-                    <span>Listening: Audio diputar 1x saja</span>
-                </div>
-                <div class="ketentuan-item">
-                    <span class="ketentuan-icon">📨</span>
-                    <span>Hasil otomatis terkirim ke Telegram</span>
-                </div>
-            </div>
-            
-            <input type="text" id="namaPeserta" placeholder="Nama Lengkap" required>
-            <button class="btn-start" onclick="mulaiTes()">Mulai Simulasi Sekarang</button>
-            <div class="note">Pastikan koneksi internet stabil. Gunakan headset untuk Listening.</div>
-        </div>
-        <div class="soal-card hidden" id="soalCard">
-            <div class="nav-tabs" id="navTabs"></div>
-            <div class="nav-grid" id="navGrid"></div>
-            <h2 id="nomorSoal">Soal 1</h2>
-            <div id="passageContainer"></div>
-            <div id="audioContainer"></div>
-            <div class="soal-text" id="teksSoal"></div>
-            <div id="opsiContainer"></div>
-            <button class="btn" onclick="tandaiRagu()" style="background:#ffc107;color:#000;">Ragu-ragu</button>
-            <button class="btn" onclick="soalBerikut()" style="margin-top:10px;">Soal Berikutnya →</button>
-            <button class="btn" onclick="selesaiUjian()" style="background:#d32f2f;">Selesai Ujian</button>
-        </div>
-        <div class="hasil-card hidden" id="hasilCard">
-            <h1>🎧 HASIL TOEFL ITP</h1>
-            <div id="hasilContent"></div>
-            <button class="btn" onclick="location.reload()">Tes Lagi</button>
-        </div>
+    <div class="space-y-4">
+      <div>
+        <label class="block text-sm font-semibold text-slate-700 mb-2">Nama Lengkap</label>
+        <input type="text" id="userName" placeholder="Masukkan nama lengkap Anda" 
+          class="w-full px-4 py-3 border-2 border-slate-200 rounded-xl focus:border-blue-500 focus:outline-none transition">
+      </div>
+      <div class="bg-blue-50 border border-blue-200 rounded-xl p-4">
+        <h3 class="font-semibold text-slate-800 mb-2 text-sm">Petunjuk Ujian:</h3>
+        <ul class="text-xs text-slate-600 space-y-1">
+          <li>• Listening: 50 soal - 35 menit</li>
+          <li>• Structure: 40 soal - 25 menit</li>
+          <li>• Reading: 50 soal - 55 menit</li>
+          <li>• Total waktu: 115 menit</li>
+          <li>• Passing Grade: 475</li>
+        </ul>
+      </div>
+      <button onclick="startTest()" 
+        class="w-full bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white font-semibold py-4 rounded-xl shadow-lg hover:shadow-xl transition transform hover:scale-105">
+        Mulai Ujian
+      </button>
     </div>
-    <script>
-        const TOKEN = '8644146007:AAHwi9kBAm-OIYA4NOiqvREBWV2xDoZyNTU';
-        const CHAT_ID = '5748276018';
-        const soalData = [];
-        
-        // LISTENING 1-50 - Bintang 4
-        for(let i=1;i<=30;i++){
-            soalData.push({
-                id:i,
-                kategori:"Listening",
-                type:"Short Dialogue",
-                audio_text:`Woman: I can't believe the professor postponed the exam again. Man: He said the material wasn't covered thoroughly in the lectures.`,
-                soal:`What does the man imply about the professor?`,
-                opsi:{A:"The professor is unprepared",B:"The exam was too difficult",C:"The postponement was justified",D:"The students complained too much"},
-                kunci:"C",
-                pembahasan:"Man justifies postponement: material not covered thoroughly"
-            });
-        }
-        for(let i=31;i<=50;i++){
-            soalData.push({
-                id:i,
-                kategori:"Listening",
-                type:"Long Conversation",
-                audio_text:`[Conversation about course registration problems]`,
-                soal:`What is the main problem discussed?`,
-                opsi:{A:"Class is full",B:"Prerequisite not met",C:"Schedule conflict",D:"Tuition not paid"},
-                kunci:"B",
-                pembahasan:"Main issue = prerequisite requirement"
-            });
-        }
-        
-        // STRUCTURE 51-90 - Bintang 4
-        for(let i=51;i<=90;i++){
-            soalData.push({
-                id:i,
-                kategori:"Structure",
-                type:"Written Expression",
-                soal:`The committee *has met* and *it have* reached a decision on the proposal *submitted* last week.`,
-                opsi:{A:"has met",B:"it have",C:"reached",D:"submitted"},
-                kunci:"B",
-                pembahasan:"'Committee' = singular → 'it has', not 'have'"
-            });
-        }
-        
-        // READING 91-140 - Bintang 4
-        const passage1 = `The Industrial Revolution, which began in Britain in the late 18th century, marked a major turning point in history. Almost every aspect of daily life was influenced in some way. In particular, average income and population began to exhibit unprecedented sustained growth. The standard of living for the general population began to increase consistently for the first time in history.`;
-        for(let i=91;i<=140;i++){
-            soalData.push({
-                id:i,
-                kategori:"Reading",
-                type:"Reading Comprehension",
-                passage:passage1,
-                soal:`The passage primarily discusses...`,
-                opsi:{A:"The causes of the Industrial Revolution",B:"The effects of industrialization on society",C:"The technological innovations of the 18th century",D:"The spread of industrialization"},
-                kunci:"B",
-                pembahasan:"Main idea = effects on daily life, income, population, standard of living"
-            });
-        }
-        
-        let currentSoal = 0, jawabanUser = {}, raguUser = {}, namaPeserta = '', timerInterval = null, waktuSisa = 6900;
-        const tabs = [{nama:"Listening",start:0,end:49},{nama:"Structure",start:50,end:89},{nama:"Reading",start:90,end:139}];
-        let currentTab = 0;
-        
-        function mulaiTes() {
-            namaPeserta = document.getElementById('namaPeserta').value.trim();
-            if (!namaPeserta) {alert('Nama wajib diisi!'); return;}
-            document.getElementById('loginCard').classList.add('hidden');
-            document.getElementById('soalCard').classList.remove('hidden');
-            renderTabs(); mulaiTimer(); renderNavGrid(); tampilkanSoal();
-        }
-        
-        function renderTabs() {
-            const tabContainer = document.getElementById('navTabs');
-            tabContainer.innerHTML = '';
-            tabs.forEach((tab, idx) => {
-                const btn = document.createElement('div');
-                btn.className = 'nav-tab' + (idx === currentTab ? ' active' : '');
-                btn.textContent = tab.nama;
-                btn.onclick = () => {currentTab = idx; currentSoal = tab.start; renderTabs(); renderNavGrid(); tampilkanSoal();};
-                tabContainer.appendChild(btn);
-            });
-        }
-        
-        function mulaiTimer() {
-            timerInterval = setInterval(() => {
-                waktuSisa--;
-                const menit = Math.floor(waktuSisa / 60);
-                const detik = waktuSisa % 60;
-                document.getElementById('timer').textContent = `${menit}:${detik.toString().padStart(2, '0')}`;
-                if (waktuSisa <= 0) {clearInterval(timerInterval); alert('Waktu habis!'); selesaiUjian();}
-            }, 1000);
-        }
-        
-        function renderNavGrid() {
-            const grid = document.getElementById('navGrid');
-            grid.innerHTML = '';
-            const tab = tabs[currentTab];
-            for (let i = tab.start; i <= tab.end; i++) {
-                const item = document.createElement('div');
-                item.className = 'nav-item';
-                item.textContent = i + 1;
-                if (jawabanUser[i] !== undefined) item.classList.add('answered');
-                if (raguUser[i]) item.classList.add('ragu');
-                if (i === currentSoal) item.classList.add('current');
-                item.onclick = () => lompatSoal(i);
-                grid.appendChild(item);
-            }
-            updateProgress();
-        }
-        
-        function toggleNav() {document.getElementById('navGrid').classList.toggle('active');}
-        
-        function tampilkanSoal() {
-            const soal = soalData[currentSoal];
-            document.getElementById('nomorSoal').textContent = `Soal ${soal.id} - ${soal.kategori} ⭐⭐⭐⭐`;
-            
-            const passageContainer = document.getElementById('passageContainer');
-            const audioContainer = document.getElementById('audioContainer');
-            passageContainer.innerHTML = '';
-            audioContainer.innerHTML = '';
-            
-            if(soal.passage){
-                passageContainer.innerHTML = `<div class="passage">${soal.passage}</div>`;
-            }
-            
-            if(soal.audio_text){
-                audioContainer.innerHTML = `<div class="audio-box">🎧 <strong>Audio Script:</strong><br>${soal.audio_text}</div>`;
-            }
-            
-            document.getElementById('teksSoal').textContent = soal.soal;
-            const opsiContainer = document.getElementById('opsiContainer');
-            opsiContainer.innerHTML = '';
-            Object.entries(soal.opsi).forEach(([key, val]) => {
-                const btn = document.createElement('button');
-                btn.className = 'opsi-btn';
-                btn.textContent = `${key}. ${val}`;
-                if (jawabanUser[currentSoal] === key) btn.classList.add('selected');
-                btn.onclick = () => jawab(key);
-                opsiContainer.appendChild(btn);
-            });
-            renderNavGrid();
-        }
-        
-        function jawab(jawaban) {
-            jawabanUser[currentSoal] = jawaban;
-            delete raguUser[currentSoal];
-            localStorage.setItem('toefl_' + namaPeserta, JSON.stringify({jawabanUser, raguUser}));
-            tampilkanSoal();
-        }
-        
-        function tandaiRagu() {raguUser[currentSoal] = true; renderNavGrid();}
-        
-        function soalBerikut() {
-            if (currentSoal < 139) {
-                currentSoal++;
-                const newTab = tabs.findIndex(t => currentSoal >= t.start && currentSoal <= t.end);
-                if (newTab !== currentTab) {currentTab = newTab; renderTabs();}
-                tampilkanSoal();
-            }
-        }
-        
-        function lompatSoal(index) {currentSoal = index; tampilkanSoal(); toggleNav();}
-        
-        function updateProgress() {
-            const counts = [0,0,0];
-            tabs.forEach((tab, idx) => {
-                for(let i=tab.start;i<=tab.end;i++){if(jawabanUser[i]) counts[idx]++;}
-            });
-            document.getElementById('progress').textContent = `L:${counts[0]} S:${counts[1]} R:${counts[2]}`;
-        }
-        
-        function convertToITPScore(listen, structure, reading) {
-            const l = Math.round(31 + (listen/50)*37);
-            const s = Math.round(31 + (structure/40)*37);
-            const r = Math.round(31 + (reading/50)*36);
-            const total = Math.round((l + s + r) * 10 / 3);
-            return {l, s, r, total};
-        }
-        
-        function selesaiUjian() {
-            if (!confirm('Yakin mau selesaikan ujian?')) return;
-            clearInterval(timerInterval);
-            let benar = [0,0,0];
-            tabs.forEach((tab, idx) => {
-                for(let i=tab.start;i<=tab.end;i++){
-                    if(jawabanUser[i] === soalData[i].kunci){benar[idx]++;}
-                }
-            });
-            const skor = convertToITPScore(benar[0], benar[1], benar[2]);
-            const status = skor.total >= 450 ? '✅ LULUS PG' : '❌ TIDAK LULUS PG';
-            const statusClass = skor.total >= 450 ? 'lulus' : 'tidak-lulus';
-            const tanggal = new Date().toLocaleDateString('id-ID');
-            const pesan = `🎧 HASIL TOEFL ITP V1 - BINTANG 4\n\n👤 Peserta: ${namaPeserta}\n📅 Tanggal: ${tanggal}\n\n📊 SKOR ITP:\nListening: ${skor.l} (${benar[0]}/50 soal)\nStructure: ${skor.s} (${benar[1]}/40 soal)\nReading: ${skor.r} (${benar[2]}/50 soal)\n\n🏆 TOTAL: ${skor.total}/677\n📈 STATUS: ${status}\n\n📋 PG Kedinasan: ≥450\n\nDari: @Laporan_hasil_bot`;
-            new Image().src = `https://api.telegram.org/bot${TOKEN}/sendMessage?chat_id=${CHAT_ID}&text=${encodeURIComponent(pesan)}`;
-            document.getElementById('soalCard').classList.add('hidden');
-            document.getElementById('hasilCard').classList.remove('hidden');
-            document.getElementById('hasilContent').innerHTML = `
-                <table class="hasil-table">
-                    <tr><th>Section</th><th>Benar</th><th>Skor ITP</th></tr>
-                    <tr><td>Listening</td><td>${benar[0]}/50</td><td>${skor.l}</td></tr>
-                    <tr><td>Structure</td><td>${benar[1]}/40</td><td>${skor.s}</td></tr>
-                    <tr><td>Reading</td><td>${benar[2]}/50</td><td>${skor.r}</td></tr>
-                    <tr style="font-weight:bold;"><td>TOTAL</td><td>${benar[0]+benar[1]+benar[2]}/140</td><td>${skor.total}/677</td></tr>
-                </table>
-                <p class="${statusClass}" style="text-align:center; margin:20px 0;">${status}</p>
-                <p style="text-align:center; color:#888;">Passing Grade Kedinasan: 450</p>
-            `;
-        }
-        
-        window.onload = () => {
-            const saved = localStorage.getItem('toefl_' + namaPeserta);
-            if (saved) {
-                const data = JSON.parse(saved);
-                jawabanUser = data.jawabanUser || {};
-                raguUser = data.raguUser || {};
-            }
-        };
-    </script>
+  </div>
+</div>
+
+<!-- Test Screen -->
+<div id="testScreen" class="hidden min-h-screen pb-24">
+  <!-- Header -->
+  <header class="bg-white shadow-md sticky top-0 z-50 border-b border-slate-200">
+    <div class="max-w-7xl mx-auto px-4 py-3">
+      <div class="flex items-center justify-between flex-wrap gap-3">
+        <div class="flex items-center gap-3">
+          <div class="w-10 h-10 bg-gradient-to-br from-blue-500 to-indigo-600 rounded-lg flex items-center justify-center">
+            <span class="text-white font-bold text-sm">TB</span>
+          </div>
+          <div>
+            <h2 class="font-bold text-slate-800 text-sm">TOEFL ITP Paket B</h2>
+            <p id="userNameDisplay" class="text-xs text-slate-500"></p>
+          </div>
+        </div>
+        <div class="flex items-center gap-3">
+          <div class="text-right">
+            <p class="text-xs text-slate-500">Sisa Waktu</p>
+            <p id="timer" class="text-lg font-bold text-red-600">115:00</p>
+          </div>
+          <button onclick="confirmSubmit()" 
+            class="bg-gradient-to-r from-red-500 to-red-600 hover:from-red-600 hover:to-red-700 text-white px-4 py-2.5 rounded-lg font-semibold text-sm shadow-md hover:shadow-lg transition">
+            Selesaikan Ujian
+          </button>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <div class="max-w-7xl mx-auto px-4 py-4">
+    <div class="grid lg:grid-cols-4 gap-4">
+      <!-- Main Content -->
+      <div class="lg:col-span-3">
+        <!-- Section Tabs -->
+        <div class="bg-white rounded-xl shadow-md p-2 mb-4 flex gap-2">
+          <button onclick="switchSection(1)" id="tab1" class="section-tab flex-1 py-2.5 px-3 rounded-lg text-sm font-semibold transition active">
+            Listening 1-50
+          </button>
+          <button onclick="switchSection(2)" id="tab2" class="section-tab flex-1 py-2.5 px-3 rounded-lg text-sm font-semibold transition bg-slate-100 text-slate-600">
+            Structure 51-90
+          </button>
+          <button onclick="switchSection(3)" id="tab3" class="section-tab flex-1 py-2.5 px-3 rounded-lg text-sm font-semibold transition bg-slate-100 text-slate-600">
+            Reading 91-140
+          </button>
+        </div>
+
+        <!-- Question Card -->
+        <div class="bg-white rounded-xl shadow-md p-5 md:p-6 animate-fade-in">
+          <div class="flex items-center justify-between mb-4 pb-4 border-b border-slate-200">
+            <div class="flex items-center gap-3">
+              <span class="bg-blue-100 text-blue-700 px-3 py-1 rounded-lg text-sm font-bold">Soal <span id="currentQ">1</span>/140</span>
+              <button onclick="toggleFlag()" id="flagBtn" class="p-2 hover:bg-slate-100 rounded-lg transition">
+                <svg class="w-5 h-5 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 21v-4m0 0V5a2 2 0 012-2h6.5l1 1H21l-3 6 3 6h-8.5l-1-1H5a2 2 0 00-2 2zm9-13.5V9"></path>
+                </svg>
+              </button>
+            </div>
+            <span id="sectionLabel" class="text-xs font-semibold text-slate-500 bg-slate-100 px-3 py-1 rounded-lg">LISTENING</span>
+          </div>
+
+          <div id="questionContent" class="space-y-4">
+            <!-- Question content will be loaded here -->
+          </div>
+
+          <!-- Navigation -->
+          <div class="flex justify-between items-center mt-6 pt-4 border-t border-slate-200">
+            <button onclick="prevQuestion()" id="prevBtn" 
+              class="px-5 py-2.5 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-lg font-semibold text-sm transition disabled:opacity-50 disabled:cursor-not-allowed">
+              ← Sebelumnya
+            </button>
+            <button onclick="nextQuestion()" id="nextBtn" 
+              class="px-5 py-2.5 bg-blue-600 hover:bg-blue-700 text-white rounded-lg font-semibold text-sm transition">
+              Selanjutnya →
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Sidebar Navigation -->
+      <div class="lg:col-span-1">
+        <div class="bg-white rounded-xl shadow-md p-4 sticky top-20">
+          <h3 class="font-bold text-slate-800 mb-3 text-sm">Navigasi Soal</h3>
+          <div id="questionNav" class="question-grid mb-4 max-h-96 overflow-y-auto">
+            <!-- Question buttons will be generated here -->
+          </div>
+          <div class="space-y-2 text-xs">
+            <div class="flex items-center gap-2">
+              <div class="w-4 h-4 bg-blue-600 rounded"></div>
+              <span class="text-slate-600">Sudah dijawab</span>
+            </div>
+            <div class="flex items-center gap-2">
+              <div class="w-4 h-4 bg-amber-500 rounded"></div>
+              <span class="text-slate-600">Sedang dikerjakan</span>
+            </div>
+            <div class="flex items-center gap-2">
+              <div class="w-4 h-4 border-2 border-red-500 rounded"></div>
+              <span class="text-slate-600">Ditandai</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Result Screen -->
+<div id="resultScreen" class="hidden min-h-screen bg-slate-50 p-4">
+  <div class="max-w-5xl mx-auto">
+    <div class="bg-white rounded-2xl shadow-xl p-6 md:p-8 animate-fade-in">
+      <div class="text-center mb-8">
+        <div class="inline-flex items-center justify-center w-20 h-20 bg-gradient-to-br from-green-500 to-emerald-600 rounded-2xl mb-4 shadow-lg">
+          <svg class="w-10 h-10 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+          </svg>
+        </div>
+        <h1 class="text-3xl font-bold text-slate-800 mb-2">Hasil Ujian</h1>
+        <p id="resultName" class="text-slate-600"></p>
+        <div id="notificationStatus" class="mt-3 inline-block px-4 py-2 bg-green-100 text-green-700 rounded-lg text-sm font-semibold">
+          ✓ Jawaban Anda sudah direkam
+        </div>
+      </div>
+
+      <div class="grid md:grid-cols-3 gap-4 mb-6">
+        <div class="bg-gradient-to-br from-blue-50 to-blue-100 rounded-xl p-5 text-center">
+          <p class="text-sm text-slate-600 mb-1">Skor Total</p>
+          <p id="totalScore" class="text-4xl font-bold text-blue-600">0</p>
+          <p class="text-xs text-slate-500 mt-1">Range: 310-677</p>
+        </div>
+        <div class="bg-gradient-to-br from-purple-50 to-purple-100 rounded-xl p-5 text-center">
+          <p class="text-sm text-slate-600 mb-1">Benar</p>
+          <p id="correctCount" class="text-4xl font-bold text-purple-600">0/140</p>
+        </div>
+        <div id="statusCard" class="bg-gradient-to-br from-green-50 to-green-100 rounded-xl p-5 text-center">
+          <p class="text-sm text-slate-600 mb-1">Status</p>
+          <p id="passStatus" class="text-2xl font-bold text-green-600">LULUS</p>
+          <p class="text-xs text-slate-500 mt-1">PG: 475</p>
+        </div>
+      </div>
+
+      <div class="bg-slate-50 rounded-xl p-5 mb-6">
+        <h3 class="font-bold text-slate-800 mb-4">Rincian Per Section</h3>
+        <div class="space-y-3">
+          <div>
+            <div class="flex justify-between text-sm mb-1">
+              <span class="font-semibold text-slate-700">Listening (1-50)</span>
+              <span id="listeningDetail" class="text-slate-600">0/50</span>
+            </div>
+            <div class="w-full bg-slate-200 rounded-full h-2">
+              <div id="listeningBar" class="bg-blue-600 h-2 rounded-full transition-all" style="width: 0%"></div>
+            </div>
+          </div>
+          <div>
+            <div class="flex justify-between text-sm mb-1">
+              <span class="font-semibold text-slate-700">Structure (51-90)</span>
+              <span id="structureDetail" class="text-slate-600">0/40</span>
+            </div>
+            <div class="w-full bg-slate-200 rounded-full h-2">
+              <div id="structureBar" class="bg-purple-600 h-2 rounded-full transition-all" style="width: 0%"></div>
+            </div>
+          <div>
+            <div class="flex justify-between text-sm mb-1">
+              <span class="font-semibold text-slate-700">Reading (91-140)</span>
+              <span id="readingDetail" class="text-slate-600">0/50</span>
+            </div>
+            <div class="w-full bg-slate-200 rounded-full h-2">
+              <div id="readingBar" class="bg-amber-600 h-2 rounded-full transition-all" style="width: 0%"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="flex gap-3 mb-6">
+        <button onclick="showDiscussion()" 
+          class="flex-1 bg-blue-600 hover:bg-blue-700 text-white py-3 rounded-xl font-semibold transition">
+          Lihat Pembahasan
+        </button>
+        <button onclick="location.reload()" 
+          class="flex-1 bg-slate-200 hover:bg-slate-300 text-slate-700 py-3 rounded-xl font-semibold transition">
+          Ujian Lagi
+        </button>
+      </div>
+
+      <div id="discussionArea" class="hidden">
+        <h3 class="font-bold text-slate-800 mb-4 text-xl">Pembahasan Soal</h3>
+        <div class="space-y-3 max-h-[600px] overflow-y-auto pr-2">
+          <div id="discussionContent"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+const TELEGRAM_BOT = '8644146007:AAHwi9kBAm-OIYA4NOiqvREBWV2xDoZyNTU';
+const TELEGRAM_CHAT_ID = '5748276018';
+const TOTAL_TIME = 115 * 60;
+let timeRemaining = TOTAL_TIME;
+let timerInterval;
+let currentQuestionIndex = 0;
+let userName = '';
+let answers = {};
+let flagged = new Set();
+let questions = [];
+
+// Generate 140 soal Paket B - Fixed all options & keys
+function generateQuestions() {
+  const q = [];
+  
+  // LISTENING 1-50 - Fixed with real options
+  const listeningData = [
+    { script: "Excuse me, could you tell me where the nearest post office is?", response: "Go straight two blocks and turn left. You can't miss it.", q: "What does the woman mean?", o: ["The post office is very far", "The post office is easy to find", "The man should turn right", "The post office is closed"], a: 1, e: "Frasa 'You can't miss it' artinya tempatnya mudah ditemukan." },
+    { script: "Did you finish the physics report last night?", response: "I was up until 2 AM working on it.", q: "What does the man mean?", o: ["He finished it early", "He worked late to finish it", "He didn't do the report", "He slept at 2 AM"], a: 1, e: "Up until 2 AM = begadang sampai jam 2 pagi untuk mengerjakannya." },
+    { script: "The weather forecast said it's going to rain tomorrow.", response: "I guess we should postpone the outdoor concert then.", q: "What will the speakers probably do?", o: ["Continue the concert", "Cancel the concert permanently", "Postpone the concert", "Hold it indoors"], a: 2, e: "Postpone = menunda, sesuai 'should postpone'." },
+    { script: "How long have you been studying Indonesian law?", response: "About three years, since I entered the academy.", q: "How long has the man studied law?", o: ["One year", "Two years", "Three years", "Four years"], a: 2, e: "Jawaban jelas: About three years." },
+    { script: "I think we should review the evacuation procedures again.", response: "That's a good idea. Safety is our priority.", q: "What does the woman mean?", o: ["She disagrees with the plan", "She agrees it's important", "She wants to cancel it", "She thinks it's unsafe"], a: 1, e: "That's a good idea = setuju, Safety is our priority = menegaskan pentingnya." },
+    { script: "Professor, can I submit my assignment next Monday?", response: "I'm afraid the deadline is fixed for this Friday.", q: "What can be inferred?", o: ["The professor agreed", "The deadline cannot be extended", "The assignment is cancelled", "Monday is the new deadline"], a: 1, e: "Deadline is fixed = tidak bisa diubah." },
+    { script: "The new cadets will arrive at the dormitory this afternoon.", response: "We need to make sure their rooms are ready.", q: "What should they do?", o: ["Cancel their arrival", "Prepare the rooms", "Close the dormitory", "Leave the rooms empty"], a: 1, e: "Make sure their rooms are ready = siapkan kamar." },
+    { script: "I haven't received the confirmation email yet.", response: "You might want to check your spam folder first.", q: "What does the man suggest?", o: ["Send another email", "Delete the email", "Check the spam folder", "Call the office"], a: 2, e: "Saran eksplisit: check your spam folder first." },
+    { script: "Would you like some coffee or tea?", response: "Tea would be great, thank you.", q: "What will the woman have?", o: ["Coffee", "Tea", "Water", "Nothing"], a: 1, e: "Tea would be great = memilih teh." },
+    { script: "The library closes at 9 PM on weekdays.", response: "What about weekends? Is it open on Saturday?", q: "What does the man want to know?", o: ["The weekday hours", "The weekend schedule", "The location", "The fee"], a: 1, e: "What about weekends? = tanya jadwal akhir pekan." },
+    { script: "I'm having trouble with this mathematics problem.", response: "Let me see if I can help you solve it.", q: "What does the man offer?", o: ["To ignore the problem", "To lend his book", "To help solve it", "To copy the answer"], a: 2, e: "Let me see if I can help = menawarkan bantuan." },
+    { script: "The annual sports competition is next month.", response: "Which events are you planning to join?", q: "What does the woman ask about?", o: ["The date of competition", "The events the man will join", "The location", "The prizes"], a: 1, e: "Which events are you planning to join = tanya cabang yang diikuti." },
+    { script: "Have you visited the Maritime Museum?", response: "Yes, it has an impressive collection of naval artifacts.", q: "What does the man think about the museum?", o: ["It's boring", "It's impressive", "It's closed", "It's small"], a: 1, e: "Impressive collection = koleksinya mengesankan." },
+    { script: "The bus usually arrives at 7:30 AM.", response: "But today it's 7:45 and there's no sign of it.", q: "What can be inferred?", o: ["The bus is on time", "The bus is late", "The bus is cancelled", "The bus came early"], a: 1, e: "No sign of it padahal sudah 7:45 = terlambat." },
+    { script: "I need to renew my student identification card.", response: "You can do that at the administration office on the second floor.", q: "Where should the woman go?", o: ["Library", "Administration office", "Cafeteria", "Gymnasium"], a: 1, e: "Administration office on the second floor." },
+    { script: "The professor canceled today's lecture.", response: "So we have a free period this morning.", q: "What does the man mean?", o: ["They have class", "They have no class", "The lecture is moved", "They have a test"], a: 1, e: "We have a free period = tidak ada kelas." },
+    { script: "This textbook is quite expensive.", response: "You can borrow one from the library instead.", q: "What does the woman suggest?", o: ["Buy the textbook", "Borrow from library", "Share the cost", "Skip the class"], a: 1, e: "Borrow one from the library = pinjam dari perpus." },
+    { script: "The training will start at 6 AM sharp.", response: "We should all be in uniform by 5:45 then.", q: "What time should they be in uniform?", o: ["6:00 AM", "5:45 AM", "5:30 AM", "6:15 AM"], a: 1, e: "By 5:45 = jam 5:45." },
+    { script: "Did you hear about the new regulation?", response: "The one about mandatory English proficiency?", q: "What is the regulation about?", o: ["Uniform rules", "English proficiency", "Training schedule", "Meal times"], a: 1, e: "Mandatory English proficiency." },
+    { script: "I'm looking for a quiet place to study.", response: "The reading room on the third floor is usually empty.", q: "What does the man suggest?", o: ["Study in dorm", "Use the reading room", "Go to cafeteria", "Study outside"], a: 1, e: "Reading room...usually empty = cocok untuk belajar." },
+    { script: "The examination will consist of multiple-choice questions.", response: "Will there be an essay section too?", q: "What does the man want to know?", o: ["Exam duration", "If there's an essay", "Where the exam is", "The passing grade"], a: 1, e: "Will there be an essay section too = tanya ada esai atau tidak." },
+    { script: "We need to submit the budget proposal by tomorrow.", response: "I already have the draft. Just need your approval.", q: "What does the woman mean?", o: ["She hasn't started", "The draft is ready for approval", "She needs help", "It's already submitted"], a: 1, e: "Already have the draft, need approval." },
+    { script: "The ceremony will be held in the main auditorium.", response: "All students are required to attend.", q: "What can be concluded?", o: ["Attendance is optional", "Attendance is mandatory", "Only cadets attend", "It's cancelled"], a: 1, e: "All students are required = wajib hadir." },
+    { script: "I couldn't understand the previous lecture.", response: "Maybe you should meet the professor during office hours.", q: "What does the man suggest?", o: ["Skip the next lecture", "Meet the professor", "Drop the course", "Copy notes"], a: 1, e: "Meet the professor during office hours." },
+    { script: "The restaurant downtown has authentic regional cuisine.", response: "I've heard their rendang is excellent.", q: "What is the woman implying?", o: ["She dislikes rendang", "Their rendang is good", "The restaurant is bad", "She never eats there"], a: 1, e: "Their rendang is excellent = enak." },
+    { script: "Our team lost the basketball tournament.", response: "We played well but the opponents were better prepared.", q: "Why did they lose?", o: ["They played badly", "Opponents were more prepared", "The referee was unfair", "They were late"], a: 1, e: "Opponents were better prepared." },
+    { script: "The internet connection in the dormitory is very slow.", response: "They're upgrading the system next week.", q: "What will happen to the internet?", o: ["It will be shut down", "It will be upgraded", "It costs more", "It's cancelled"], a: 1, e: "Upgrading the system = akan diperbarui." },
+    { script: "I have to attend a family wedding this weekend.", response: "Make sure you submit a leave request form.", q: "What must the woman do?", o: ["Cancel the wedding", "Submit leave request", "Ask for money", "Bring food"], a: 1, e: "Submit a leave request form." },
+    { script: "The swimming pool is closed for maintenance.", response: "It will reopen after the cleaning is completed.", q: "When will the pool reopen?", o: ["Today", "After cleaning", "Never", "Next month"], a: 1, e: "After cleaning is completed." },
+    { script: "Can you help me carry these boxes?", response: "Sure, where do you want to put them?", q: "What will the man probably do?", o: ["Refuse to help", "Help carry boxes", "Buy new boxes", "Call someone"], a: 1, e: "Sure = setuju membantu." },
+    { script: "The history test was more difficult than I expected.", response: "I agree. The questions were quite detailed.", q: "What do they think about the test?", o: ["It was easy", "It was difficult", "It was cancelled", "It was fun"], a: 1, e: "More difficult, quite detailed = sulit." },
+    { script: "We should start preparing for the final project.", response: "Let's meet tomorrow afternoon to discuss it.", q: "What do they decide to do?", o: ["Start today", "Meet tomorrow", "Cancel the project", "Do it alone"], a: 1, e: "Let's meet tomorrow afternoon." },
+    { script: "The museum exhibition features artifacts from colonial times.", response: "I'd love to see that. When does it end?", q: "What does the man want to know?", o: ["Ticket price", "Closing date", "Location", "Opening hours"], a: 1, e: "When does it end = kapan berakhir." },
+    { script: "I forgot to bring my textbook today.", response: "You can share with me if you want.", q: "What does the woman offer?", o: ["To lend a pen", "To share her textbook", "To go home", "To report it"], a: 1, e: "You can share with me = menawarkan berbagi." },
+    { script: "The guest speaker is an expert in criminal justice.", response: "Her lecture on forensic science was fascinating.", q: "What did the woman think of the lecture?", o: ["It was boring", "It was fascinating", "It was short", "It was cancelled"], a: 1, e: "Fascinating = menarik." },
+    { script: "Please submit your medical certificate to the nurse.", response: "Is it required for all new cadets?", q: "What does the man ask about?", o: ["The nurse's name", "If it's mandatory", "The doctor's schedule", "The cost"], a: 1, e: "Is it required = apakah wajib." },
+    { script: "The computer lab will be closed this Friday.", response: "They're installing new software on all machines.", q: "Why is the lab closed?", o: ["Holiday", "Software installation", "Broken computers", "No electricity"], a: 1, e: "Installing new software." },
+    { script: "I won the scholarship for academic excellence.", response: "Congratulations! You really deserved it.", q: "What does the woman mean?", o: ["She doubts it", "She congratulates him", "She wants it", "She is jealous"], a: 1, e: "Congratulations = memberi selamat." },
+    { script: "The train station is about fifteen minutes from here.", response: "We should leave now to catch the 8 o'clock train.", q: "What do they need to do?", o: ["Wait here", "Leave now", "Cancel trip", "Call a taxi"], a: 1, e: "Leave now to catch train." },
+    { script: "Your presentation skills have improved significantly.", response: "Thank you. I've been practicing a lot.", q: "Why did his skills improve?", o: ["Natural talent", "He practiced", "Lucky", "New equipment"], a: 1, e: "I've been practicing a lot." },
+    { script: "The cafeteria serves breakfast from 6 to 8 AM.", response: "And dinner is from 5 to 7 PM, right?", q: "What is the man confirming?", o: ["Breakfast time", "Dinner time", "Lunch time", "Closing time"], a: 1, e: "Dinner is from 5 to 7 PM." },
+    { script: "I need to extend my book loan for another week.", response: "You can renew it online through the library system.", q: "How can she extend the loan?", o: ["Visit the library", "Renew online", "Buy the book", "Return it"], a: 1, e: "Renew it online." },
+    { script: "The drill instructor was strict but fair.", response: "His training methods prepared us well for the field.", q: "What does the woman think of the instructor?", o: ["He was unfair", "He was effective", "He was lazy", "He was absent"], a: 1, e: "Prepared us well = efektif." },
+    { script: "We have a meeting with the dean tomorrow morning.", response: "What time should we gather at his office?", q: "What does the woman ask?", o: ["Meeting location", "Meeting time", "Who attends", "Meeting topic"], a: 1, e: "What time = tanya waktu." },
+    { script: "The weather is perfect for outdoor physical training.", response: "Yes, not too hot and not too cold.", q: "What does the man mean?", o: ["Weather is bad", "Weather is ideal", "It's raining", "It's too cold"], a: 1, e: "Not too hot/cold = ideal." },
+    { script: "I didn't know we had a quiz today.", response: "The professor announced it last week.", q: "What can be inferred?", o: ["There's no quiz", "He missed the announcement", "Quiz is cancelled", "Quiz is tomorrow"], a: 1, e: "Didn't know = tidak tahu pengumuman." },
+    { script: "The graduation ceremony will be broadcast live.", response: "Parents who can't attend can watch it online.", q: "Who can watch online?", o: ["Only students", "Parents who can't attend", "Everyone", "Only professors"], a: 1, e: "Parents who can't attend." },
+    { script: "You should proofread your essay before submitting.", response: "Thanks for the advice. I almost forgot.", q: "What did the man almost forget?", o: ["To write essay", "To proofread", "To submit", "The topic"], a: 1, e: "Almost forgot = hampir lupa proofread." },
+    { script: "The new policy starts next semester.", response: "We need to inform all students soon.", q: "What should they do?", o: ["Ignore policy", "Inform students", "Cancel policy", "Wait"], a: 1, e: "Inform all students soon." },
+    { script: "I heard the transportation allowance will increase.", response: "That's good news for all cadets.", q: "How does the woman feel?", o: ["Sad", "Happy", "Angry", "Confused"], a: 1, e: "Good news = senang." }
+  ];
+
+  listeningData.forEach((item, i) => {
+    q.push({
+      id: i + 1,
+      section: 'listening',
+      type: 'listening',
+      script: `A: ${item.script}<br>B: ${item.response}`,
+      question: item.q,
+      options: item.o,
+      answer: item.a,
+      explanation: item.e
+    });
+  });
+
+  // STRUCTURE 51-90 - Fixed with real questions
+  const structureQs = [
+    { q: "Neither the cadets nor their instructor ___ present at the morning roll call.", o: ["was", "were", "is", "has been"], a: 1, e: "Neither...nor... mengikuti subjek terdekat 'instructor' yang jamak dalam konteks, maka 'were'." },
+    { q: "The museum ___ we visited yesterday displays maritime artifacts.", o: ["which", "what", "whom", "whose"], a: 0, e: "Relative pronoun 'which' untuk benda 'museum'." },
+    { q: "If I ___ you, I would accept the scholarship offer immediately.", o: ["am", "was", "were", "be"], a: 2, e: "Conditional type 2 menggunakan 'were' untuk semua subjek." },
+    { q: "The report must ___ before Friday.", o: ["submit", "be submitted", "submitting", "submitted"], a: 1, e: "Modal 'must' + be + V3 untuk passive voice: be submitted." },
+    { q: "Scarcely ___ when the alarm went off.", o: ["he had slept", "had he slept", "he slept", "did he sleep"], a: 1, e: "Inversi setelah 'Scarcely': had + S + V3." },
+    { q: "The training is more demanding than ___ expected.", o: ["we", "us", "our", "ours"], a: 0, e: "Subjek 'we' diperlukan untuk klausa 'we expected'." },
+    { q: "By the time we arrived, the ceremony ___.", o: ["has begun", "had begun", "began", "begins"], a: 1, e: "Past perfect 'had begun' untuk kejadian sebelum 'arrived'." },
+    { q: "The professor suggested that the student ___ more references.", o: ["finds", "find", "found", "finding"], a: 1, e: "Subjunctive setelah 'suggest' menggunakan base verb 'find'." },
+    { q: "Not only ___ intelligent but also disciplined.", o: ["she is", "is she", "she", "was she"], a: 1, e: "Inversi setelah 'Not only': is she." },
+    { q: "The equipment, along with the uniforms, ___ checked daily.", o: ["is", "are", "were", "have been"], a: 0, e: "Subjek utama 'equipment' singular, maka 'is'." },
+    { q: "She would rather ___ at home than go to the party.", o: ["stay", "stays", "stayed", "staying"], a: 0, e: "Would rather + V1: stay." },
+    { q: "The number of applicants ___ increasing every year.", o: ["is", "are", "were", "have been"], a: 0, e: "The number of = singular, maka 'is'." },
+    { q: "Had I known about the test, I ___ harder.", o: ["would study", "would have studied", "studied", "study"], a: 1, e: "Inversi past perfect conditional: would have studied." },
+    { q: "It is important that he ___ on time for the ceremony.", o: ["arrives", "arrive", "arrived", "arriving"], a: 1, e: "Subjunctive 'It is important that' + V1: arrive." },
+    { q: "The book ___ you borrowed is overdue.", o: ["which", "what", "who", "whom"], a: 0, e: "Relative pronoun 'which' untuk benda 'book'." },
+    { q: "She speaks English ___ than her classmates.", o: ["fluent", "more fluent", "more fluently", "most fluently"], a: 2, e: "Comparative adverb: more fluently." },
+    { q: "No sooner ___ the bell rang than the students left.", o: ["did", "had", "has", "have"], a: 1, e: "No sooner had...than...'." },
+    { q: "The commander ordered that every cadet ___ in uniform.", o: ["is", "be", "was", "are"], a: 1, e: "Subjunctive setelah 'ordered that': be." },
+    { q: "Each of the students ___ responsible for their own equipment.", o: ["is", "are", "were", "have been"], a: 0, e: "Each of = singular, maka 'is'." },
+    { q: "The doctor advised me ___ smoking immediately.", o: ["stop", "to stop", "stopping", "stopped"], a: 1, e: "Advise + to infinitive: to stop." },
+    { q: "Rarely ___ such a dedicated officer.", o: ["I have seen", "have I seen", "I saw", "I see"], a: 1, e: "Inversi setelah 'Rarely': have I seen." },
+    { q: "The government is considering ___ taxes to fund new projects.", o: ["raise", "raising", "to raise", "raised"], a: 1, e: "Consider + V-ing: raising." },
+    { q: "He acts as if he ___ everything.", o: ["knows", "knew", "known", "know"], a: 1, e: "As if + past untuk unreal: knew." },
+    { q: "Neither of the answers ___ correct.", o: ["is", "are", "were", "have been"], a: 0, e: "Neither of = singular: is." },
+    { q: "The committee ___ divided in their opinions.", o: ["is", "are", "was", "has been"], a: 1, e: "Committee = anggota individu, maka 'are'." },
+    { q: "I look forward to ___ from you soon.", o: ["hear", "hearing", "hear", "heard"], a: 1, e: "Look forward to + V-ing: hearing." },
+    { q: "Such ___ the noise that we couldn't concentrate.", o: ["is", "was", "are", "were"], a: 1, e: "Such + be + noun: was the noise." },
+    { q: "The man ___ car was stolen reported to the police.", o: ["who", "whose", "which", "whom"], a: 1, e: "Possessive relative: whose." },
+    { q: "I'd rather you ___ tell anyone about this.", o: ["don't", "didn't", "won't", "wouldn't"], a: 1, e: "Would rather + subject + V2: didn't." },
+    { q: "The lecture was ___ boring that half the students fell asleep.", o: ["so", "such", "too", "very"], a: 0, e: "So + adjective + that: so boring." },
+    { q: "He is said ___ the best cadet in the academy.", o: ["to be", "being", "been", "is"], a: 0, e: "Passive infinitive: to be." },
+    { q: "Hardly ___ entered the room when the meeting started.", o: ["we had", "had we", "we have", "have we"], a: 1, e: "Hardly had...when...'." },
+    { q: "The more he studied, ___ he understood.", o: ["the more", "the most", "more", "most"], a: 0, e: "The comparative..., the comparative...: the more." },
+    { q: "She insisted that I ___ with her.", o: ["go", "goes", "went", "going"], a: 0, e: "Subjunctive setelah 'insisted': go." },
+    { q: "The proposal will be discussed at ___ next meeting.", o: ["a", "an", "the", "no article"], a: 2, e: "The next meeting = spesifik." },
+    { q: "Not until yesterday ___ the truth about the incident.", o: ["we knew", "did we know", "we know", "do we know"], a: 1, e: "Inversi Not until: did we know." },
+    { q: "Having ___ the exam, he felt relieved.", o: ["finish", "finished", "finishing", "finishes"], a: 1, e: "Having + V3: finished." },
+    { q: "The officer demanded that the report ___ immediately.", o: ["submit", "be submitted", "submitting", "submitted"], a: 1, e: "Subjunctive passive: be submitted." },
+    { q: "Little ___ about the new regulations.", o: ["we knew", "did we know", "we know", "do we know"], a: 1, e: "Inversi Little: did we know." },
+    { q: "It is high time the government ___ action.", o: ["takes", "took", "take", "taking"], a: 1, e: "It is high time + V2: took." }
+  ];
+
+  structureQs.forEach((item, i) => {
+    q.push({
+      id: 51 + i,
+      section: 'structure',
+      type: 'structure',
+      question: item.q,
+      options: item.o,
+      answer: item.a,
+      explanation: item.e
+    });
+  });
+
+  // READING 91-140 - 5 passages with real questions
+  const passages = [
+    {
+      title: "Civil Service Ethics",
+      text: "Civil servants in Indonesia are expected to adhere to a strict code of ethics that emphasizes integrity, professionalism, and dedication to public service. The core principles include avoiding conflicts of interest, maintaining political neutrality, and treating all citizens equally regardless of their background. Civil servants must also protect confidential information and use public resources responsibly. These ethical standards are enforced through regular training, performance evaluations, and disciplinary measures for violations. The goal is to build public trust in government institutions and ensure efficient delivery of public services. Recent reforms have introduced digital reporting systems to increase transparency and accountability in civil service administration.",
+      questions: [
+        { q: "What is the main topic of the passage?", o: ["Civil service salaries", "Code of ethics for civil servants", "Government budgets", "Public transportation"], a: 1, e: "Paragraf membahas code of ethics/ kode etik PNS." },
+        { q: "The word 'adhere' in line 1 is closest in meaning to:", o: ["follow", "create", "avoid", "question"], a: 0, e: "Adhere to = follow/memegang teguh." },
+        { q: "Which is NOT mentioned as a core principle?", o: ["Political neutrality", "Equal treatment", "High salary demands", "Protecting confidential information"], a: 2, e: "High salary demands tidak disebutkan." },
+        { q: "How are ethical standards enforced?", o: ["Through training and evaluations", "By increasing salaries", "By reducing work hours", "Through public voting"], a: 0, e: "Enforced through regular training, performance evaluations." },
+        { q: "What is the goal of the ethical code?", o: ["To build public trust", "To reduce staff numbers", "To increase taxes", "To privatize services"], a: 0, e: "Goal is to build public trust." },
+        { q: "What do recent reforms introduce?", o: ["Digital reporting systems", "New uniforms", "Longer working hours", "More holidays"], a: 0, e: "Recent reforms introduced digital reporting systems." },
+        { q: "The passage suggests that conflicts of interest should be:", o: ["encouraged", "avoided", "ignored", "rewarded"], a: 1, e: "Avoiding conflicts of interest adalah prinsip inti." },
+        { q: "Who must civil servants treat equally?", o: ["Only their colleagues", "All citizens", "Only government officials", "Only their families"], a: 1, e: "Treating all citizens equally." },
+        { q: "What must civil servants protect?", o: ["Public resources only", "Confidential information", "Their personal belongings", "Political parties"], a: 1, e: "Protect confidential information." },
+        { q: "The tone of the passage is:", o: ["Informative", "Humorous", "Sarcastic", "Angry"], a: 0, e: "Tone informatif, menjelaskan fakta dan regulasi." }
+      ]
+    },
+    {
+      title: "Indonesian Archipelago",
+      text: "Indonesia is the world's largest archipelagic state, consisting of over 17,000 islands spread across the equator between the Indian and Pacific Oceans. The five major islands are Sumatra, Java, Kalimantan, Sulawesi, and Papua. The country is located on the Pacific Ring of Fire, making it prone to volcanic activity and earthquakes. Despite these natural challenges, Indonesia possesses rich biodiversity and abundant natural resources including oil, gas, timber, and minerals. The tropical climate supports extensive agriculture, with rice being the staple food crop. Indonesia's strategic location along major sea lanes has made it an important center for international trade since ancient times. The nation declared independence in 1945 and has since developed into a democratic republic with a diverse population of over 270 million people.",
+      questions: [
+        { q: "Indonesia has approximately how many islands?", o: ["5,000", "10,000", "Over 17,000", "50,000"], a: 2, e: "Over 17,000 islands disebutkan di awal." },
+        { q: "Which is NOT one of the five major islands mentioned?", o: ["Sumatra", "Bali", "Kalimantan", "Papua"], a: 1, e: "Bali tidak disebut, yang disebut Sumatra, Java, Kalimantan, Sulawesi, Papua." },
+        { q: "Why is Indonesia prone to earthquakes?", o: ["Located on Pacific Ring of Fire", "Heavy rainfall", "Dense population", "Deforestation"], a: 0, e: "Located on the Pacific Ring of Fire." },
+        { q: "What is Indonesia's staple food crop?", o: ["Wheat", "Corn", "Rice", "Potato"], a: 2, e: "Rice being the staple food crop." },
+        { q: "When did Indonesia declare independence?", o: ["1935", "1945", "1955", "1965"], a: 1, e: "Declared independence in 1945." },
+        { q: "Indonesia is located between which two oceans?", o: ["Atlantic and Indian", "Indian and Pacific", "Pacific and Arctic", "Atlantic and Pacific"], a: 1, e: "Between the Indian and Pacific Oceans." },
+        { q: "The word 'abundant' is closest in meaning to:", o: ["scarce", "plentiful", "expensive", "dangerous"], a: 1, e: "Abundant = plentiful/berlimpah." },
+        { q: "What makes Indonesia important for trade?", o: ["Desert climate", "Strategic location", "Small population", "Mountain ranges"], a: 1, e: "Strategic location along major sea lanes." },
+        { q: "Indonesia's population is over:", o: ["100 million", "200 million", "270 million", "500 million"], a: 2, e: "Over 270 million people." },
+        { q: "Which natural resource is NOT mentioned?", o: ["Oil", "Gas", "Timber", "Gold"], a: 3, e: "Gold tidak disebut, yang disebut oil, gas, timber, minerals." }
+      ]
+    },
+    {
+      title: "Maritime Security Training",
+      text: "Maritime security academies provide specialized training for future coast guard and navy personnel. The curriculum includes navigation, search and rescue operations, maritime law enforcement, and environmental protection. Cadets undergo rigorous physical training and simulation exercises to prepare for real-world scenarios such as piracy interdiction, illegal fishing prevention, and disaster response. International cooperation is emphasized, as maritime threats often cross national boundaries. Graduates are expected to demonstrate leadership, quick decision-making, and technical proficiency in operating sophisticated equipment. The training also covers international maritime conventions and diplomatic protocols for dealing with foreign vessels. Continuous professional development is required throughout their careers to adapt to evolving security challenges and technological advances in maritime operations.",
+      questions: [
+        { q: "What is the main purpose of maritime security academies?", o: ["To train coast guard personnel", "To build ships", "To sell equipment", "To write books"], a: 0, e: "Provide specialized training for coast guard and navy personnel." },
+        { q: "Which is NOT part of the curriculum?", o: ["Navigation", "Cooking techniques", "Maritime law", "Search and rescue"], a: 1, e: "Cooking techniques tidak disebutkan." },
+        { q: "Why is international cooperation emphasized?", o: ["Threats cross boundaries", "To reduce costs", "To avoid training", "To increase holidays"], a: 0, e: "As maritime threats often cross national boundaries." },
+        { q: "What quality must graduates demonstrate?", o: ["Leadership", "Laziness", "Hesitation", "Isolation"], a: 0, e: "Graduates expected to demonstrate leadership." },
+        { q: "The training covers protocols for dealing with:", o: ["Foreign vessels", "Desert animals", "Mountain climbers", "Space stations"], a: 0, e: "Diplomatic protocols for dealing with foreign vessels." },
+        { q: "What type of exercises do cadets undergo?", o: ["Simulation exercises", "Dance exercises", "Writing exercises", "Sleeping exercises"], a: 0, e: "Simulation exercises." },
+        { q: "Continuous professional development is required to adapt to:", o: ["Evolving challenges", "Ancient history", "Fictional stories", "Celebrity news"], a: 0, e: "Adapt to evolving security challenges." },
+        { q: "The word 'interdiction' is closest to:", o: ["prevention", "promotion", "celebration", "invitation"], a: 0, e: "Interdiction = pencegahan/penindakan." },
+        { q: "Which scenario is mentioned?", o: ["Piracy interdiction", "Space exploration", "Olympic games", "Fashion shows"], a: 0, e: "Piracy interdiction disebutkan." },
+        { q: "Cadets must operate:", o: ["Sophisticated equipment", "Simple tools only", "No equipment", "Musical instruments"], a: 0, e: "Operating sophisticated equipment." }
+      ]
+    },
+    {
+      title: "Public Administration Reform",
+      text: "Public administration reform in Indonesia aims to create a more efficient, transparent, and accountable bureaucracy. Key initiatives include digitalization of government services, merit-based recruitment, and performance-based budgeting. The implementation of e-government systems has reduced processing times and minimized opportunities for corruption. Civil service reform emphasizes professional development and ethical conduct among government employees. Citizen participation is encouraged through public consultation mechanisms and complaint handling systems. Despite progress, challenges remain including resistance to change, limited infrastructure in remote areas, and the need for continuous capacity building. The government continues to collaborate with international organizations to benchmark best practices and improve service delivery standards across all levels of administration.",
+      questions: [
+        { q: "What is the goal of public administration reform?", o: ["Create efficient bureaucracy", "Increase paperwork", "Reduce public services", "Limit transparency"], a: 0, e: "Create more efficient, transparent, accountable bureaucracy." },
+        { q: "Which initiative is mentioned?", o: ["Digitalization of services", "Banning internet", "Increasing corruption", "Reducing salaries"], a: 0, e: "Digitalization of government services." },
+        { q: "E-government systems have:", o: ["Reduced processing times", "Increased waiting times", "Stopped all services", "Created more paperwork"], a: 0, e: "Reduced processing times." },
+        { q: "What type of recruitment is emphasized?", o: ["Merit-based", "Random selection", "Political appointment", "Family connections"], a: 0, e: "Merit-based recruitment." },
+        { q: "Citizen participation is encouraged through:", o: ["Public consultation", "Voting restrictions", "Information hiding", "Service closure"], a: 0, e: "Public consultation mechanisms." },
+        { q: "Which challenge is mentioned?", o: ["Resistance to change", "Too much funding", "Excess staff", "Over-qualification"], a: 0, e: "Resistance to change disebutkan." },
+        { q: "The government collaborates with:", o: ["International organizations", "Criminal groups", "No one", "Foreign armies"], a: 0, e: "Collaborate with international organizations." },
+        { q: "The word 'benchmark' means:", o: ["compare with standards", "ignore completely", "destroy evidence", "hide information"], a: 0, e: "Benchmark = membandingkan dengan standar terbaik." },
+        { q: "Performance-based budgeting is related to:", o: ["Service quality", "Employee height", "Office decoration", "Parking availability"], a: 0, e: "Terkait kualitas/kinerja layanan." },
+        { q: "Where is infrastructure limited?", o: ["Remote areas", "Capital city", "All cities", "Online platforms"], a: 0, e: "Limited infrastructure in remote areas." }
+      ]
+    },
+    {
+      title: "Disaster Management Protocol",
+      text: "Indonesia's disaster management protocol follows a comprehensive cycle of prevention, preparedness, response, and recovery. The National Disaster Management Agency coordinates with regional governments, military units, and volunteer organizations during emergencies. Early warning systems utilize satellite technology, seismic sensors, and community-based monitoring to detect tsunamis, volcanic eruptions, and floods. Evacuation routes and emergency shelters are established in high-risk areas, with regular drills conducted to familiarize residents with procedures. Post-disaster recovery focuses on rebuilding infrastructure, providing psychosocial support, and implementing measures to reduce future vulnerability. International assistance is welcomed but coordinated through official channels to ensure efficient distribution of aid. Climate change adaptation strategies are increasingly integrated into disaster risk reduction planning to address long-term environmental challenges.",
+      questions: [
+        { q: "How many phases are in the disaster management cycle?", o: ["Two", "Three", "Four", "Five"], a: 2, e: "Prevention, preparedness, response, recovery = 4." },
+        { q: "Who coordinates during emergencies?", o: ["National Disaster Management Agency", "Tourism board", "Sports committee", "Art council"], a: 0, e: "National Disaster Management Agency coordinates." },
+        { q: "Early warning systems use:", o: ["Satellite technology", "Magic crystal", "Weather balloons only", "Ancient texts"], a: 0, e: "Utilize satellite technology." },
+        { q: "What are established in high-risk areas?", o: ["Evacuation routes", "Shopping malls", "Amusement parks", "Golf courses"], a: 0, e: "Evacuation routes and emergency shelters." },
+        { q: "Regular drills are conducted to:", o: ["Familiarize residents", "Entertain tourists", "Test weapons", "Practice dancing"], a: 0, e: "Familiarize residents with procedures." },
+        { q: "Post-disaster recovery includes:", o: ["Rebuilding infrastructure", "Ignoring damage", "Abandoning areas", "Celebration parties"], a: 0, e: "Rebuilding infrastructure." },
+        { q: "International assistance is coordinated through:", o: ["Official channels", "Social media", "Street vendors", "Random people"], a: 0, e: "Coordinated through official channels." },
+        { q: "What is integrated into risk reduction planning?", o: ["Climate change adaptation", "Fashion trends", "Cooking recipes", "Music charts"], a: 0, e: "Climate change adaptation strategies integrated." },
+        { q: "The word 'vulnerability' is closest to:", o: ["susceptibility", "strength", "immunity", "wealth"], a: 0, e: "Vulnerability = susceptibility/kerentanan." },
+        { q: "Which disaster is NOT mentioned?", o: ["Tsunamis", "Volcanic eruptions", "Floods", "Tornadoes"], a: 3, e: "Tornadoes tidak disebut, yang disebut tsunamis, volcanic eruptions, floods." }
+      ]
+    }
+  ];
+
+  let qNum = 91;
+  passages.forEach((passage) => {
+    passage.questions.forEach((pq) => {
+      q.push({
+        id: qNum,
+        section: 'reading',
+        type: 'reading',
+        passage: passage.text,
+        passageTitle: passage.title,
+        question: pq.q,
+        options: pq.o,
+        answer: pq.a,
+        explanation: pq.e
+      });
+      qNum++;
+    });
+  });
+
+  return q;
+}
+
+function initTest() {
+  questions = generateQuestions();
+  renderQuestionNav();
+  loadQuestion(0);
+  startTimer();
+}
+
+function startTest() {
+  const nameInput = document.getElementById('userName').value.trim();
+  if (!nameInput) {
+    alert('Silakan masukkan nama lengkap Anda');
+    return;
+  }
+  userName = nameInput;
+  document.getElementById('userNameDisplay').textContent = userName;
+  document.getElementById('startScreen').classList.add('hidden');
+  document.getElementById('testScreen').classList.remove('hidden');
+  initTest();
+}
+
+function startTimer() {
+  timerInterval = setInterval(() => {
+    timeRemaining--;
+    const minutes = Math.floor(timeRemaining / 60);
+    const seconds = timeRemaining % 60;
+    document.getElementById('timer').textContent = `${minutes}:${seconds.toString().padStart(2, '0')}`;
+    if (timeRemaining <= 0) {
+      clearInterval(timerInterval);
+      submitTest();
+    }
+  }, 1000);
+}
+
+function renderQuestionNav() {
+  const nav = document.getElementById('questionNav');
+  nav.innerHTML = '';
+  questions.forEach((q, idx) => {
+    const btn = document.createElement('button');
+    btn.className = 'question-btn';
+    btn.textContent = idx + 1;
+    btn.onclick = () => loadQuestion(idx);
+    btn.id = `nav-${idx}`;
+    nav.appendChild(btn);
+  });
+  updateNavButtons();
+}
+
+function updateNavButtons() {
+  questions.forEach((q, idx) => {
+    const btn = document.getElementById(`nav-${idx}`);
+    btn.classList.remove('answered', 'current', 'flagged');
+    if (answers[idx] !== undefined) btn.classList.add('answered');
+    if (idx === currentQuestionIndex) btn.classList.add('current');
+    if (flagged.has(idx)) btn.classList.add('flagged');
+  });
+}
+
+function loadQuestion(idx) {
+  currentQuestionIndex = idx;
+  const q = questions[idx];
+  document.getElementById('currentQ').textContent = idx + 1;
+  
+  let sectionLabel = 'LISTENING';
+  if (idx >= 50) sectionLabel = 'STRUCTURE';
+  if (idx >= 90) sectionLabel = 'READING';
+  document.getElementById('sectionLabel').textContent = sectionLabel;
+  
+  let html = '';
+  if (q.type === 'listening') {
+    html += `<div class="bg-blue-50 border border-blue-200 rounded-lg p-4 mb-4">
+      <p class="text-sm font-semibold text-blue-800 mb-2">🎧 Listening Script:</p>
+      <p class="text-sm text-slate-700">${q.script}</p>
+    </div>`;
+  } else if (q.type === 'reading' && q.passage) {
+    html += `<div class="bg-slate-50 border border-slate-200 rounded-lg p-4 mb-4 max-h-48 overflow-y-auto">
+      <p class="text-sm font-semibold text-slate-800 mb-2">${q.passageTitle}</p>
+      <p class="text-sm text-slate-700 passage-text">${q.passage}</p>
+    </div>`;
+  }
+  
+  html += `<p class="text-slate-800 font-medium mb-4">${q.question}</p>`;
+  html += '<div class="space-y-2">';
+  q.options.forEach((opt, optIdx) => {
+    const isSelected = answers[idx] === optIdx;
+    html += `<button onclick="selectAnswer(${optIdx})" 
+      class="w-full text-left p-3 rounded-lg border-2 transition ${isSelected ? 'border-blue-600 bg-blue-50' : 'border-slate-200 hover:border-slate-300 bg-white'}">
+      <span class="font-semibold text-slate-700">${String.fromCharCode(65 + optIdx)}.</span>
+      <span class="text-slate-700 ml-2">${opt}</span>
+    </button>`;
+  });
+  html += '</div>';
+  
+  document.getElementById('questionContent').innerHTML = html;
+  document.getElementById('prevBtn').disabled = idx === 0;
+  document.getElementById('nextBtn').textContent = idx === 139 ? 'Selesai' : 'Selanjutnya →';
+  
+  const flagBtn = document.getElementById('flagBtn');
+  const flagIcon = flagBtn.querySelector('svg');
+  if (flagged.has(idx)) {
+    flagIcon.classList.remove('text-slate-400');
+    flagIcon.classList.add('text-red-500');
+  } else {
+    flagIcon.classList.remove('text-red-500');
+    flagIcon.classList.add('text-slate-400');
+  }
+  
+  updateNavButtons();
+}
+
+function selectAnswer(optIdx) {
+  answers[currentQuestionIndex] = optIdx;
+  loadQuestion(currentQuestionIndex);
+}
+
+function toggleFlag() {
+  if (flagged.has(currentQuestionIndex)) {
+    flagged.delete(currentQuestionIndex);
+  } else {
+    flagged.add(currentQuestionIndex);
+  }
+  loadQuestion(currentQuestionIndex);
+}
+
+function prevQuestion() {
+  if (currentQuestionIndex > 0) {
+    loadQuestion(currentQuestionIndex - 1);
+  }
+}
+
+function nextQuestion() {
+  if (currentQuestionIndex < 139) {
+    loadQuestion(currentQuestionIndex + 1);
+  } else {
+    confirmSubmit();
+  }
+}
+
+function switchSection(section) {
+  document.querySelectorAll('.section-tab').forEach(tab => tab.classList.remove('active'));
+  document.getElementById(`tab${section}`).classList.add('active');
+  
+  let targetIdx = 0;
+  if (section === 2) targetIdx = 50;
+  if (section === 3) targetIdx = 90;
+  loadQuestion(targetIdx);
+}
+
+function confirmSubmit() {
+  const answered = Object.keys(answers).length;
+  if (answered < 140) {
+    if (!confirm(`Anda baru menjawab ${answered}/140 soal. Yakin ingin menyelesaikan ujian?`)) {
+      return;
+    }
+  }
+  submitTest();
+}
+
+function calculateScore() {
+  let listening = 0, structure = 0, reading = 0;
+  questions.forEach((q, idx) => {
+    if (answers[idx] === q.answer) {
+      if (idx < 50) listening++;
+      else if (idx < 90) structure++;
+      else reading++;
+    }
+  });
+  
+  // TOEFL ITP conversion formula approximation
+  const listeningConverted = Math.round(24 + (listening / 50) * 44);
+  const structureConverted = Math.round(20 + (structure / 40) * 48);
+  const readingConverted = Math.round(21 + (reading / 50) * 46);
+  const totalScore = Math.round((listeningConverted + structureConverted + readingConverted) * 10 / 3);
+  
+  return { listening, structure, reading, listeningConverted, structureConverted, readingConverted, totalScore };
+}
+
+function submitTest() {
+  clearInterval(timerInterval);
+  const scores = calculateScore();
+  const correctTotal = scores.listening + scores.structure + scores.reading;
+  const passed = scores.totalScore >= 475;
+  
+  // Send to Telegram
+  sendToTelegram(scores, correctTotal, passed);
+  
+  // Show results
+  document.getElementById('testScreen').classList.add('hidden');
+  document.getElementById('resultScreen').classList.remove('hidden');
+  document.getElementById('resultName').textContent = userName;
+  document.getElementById('totalScore').textContent = scores.totalScore;
+  document.getElementById('correctCount').textContent = `${correctTotal}/140`;
+  
+  document.getElementById('listeningDetail').textContent = `${scores.listening}/50`;
+  document.getElementById('listeningBar').style.width = `${(scores.listening/50)*100}%`;
+  document.getElementById('structureDetail').textContent = `${scores.structure}/40`;
+  document.getElementById('structureBar').style.width = `${(scores.structure/40)*100}%`;
+  document.getElementById('readingDetail').textContent = `${scores.reading}/50`;
+  document.getElementById('readingBar').style.width = `${(scores.reading/50)*100}%`;
+  
+  document.getElementById('passStatus').textContent = passed ? 'LULUS' : 'TIDAK LULUS';
+  if (!passed) {
+    document.getElementById('statusCard').className = 'bg-gradient-to-br from-red-50 to-red-100 rounded-xl p-5 text-center';
+    document.getElementById('passStatus').className = 'text-2xl font-bold text-red-600';
+  }
+  
+  generateDiscussion();
+}
+
+function sendToTelegram(scores, correctTotal, passed) {
+  const message = `🎓 *HASIL CAT TOEFL ITP PAKET B*\n\n` +
+    `👤 Nama: ${userName}\n` +
+    `📊 Skor Total: ${scores.totalScore} / 677\n` +
+    `✅ Benar: ${correctTotal}/140\n` +
+    `🎯 Status: ${passed ? 'LULUS' : 'TIDAK LULUS'} (PG: 475)\n\n` +
+    `📈 *Rincian Section:*\n` +
+    `🎧 Listening: ${scores.listening}/50 (${scores.listeningConverted})\n` +
+    `📝 Structure: ${scores.structure}/40 (${scores.structureConverted})\n` +
+    `📖 Reading: ${scores.reading}/50 (${scores.readingConverted})\n\n` +
+    `⏰ Waktu: ${new Date().toLocaleString('id-ID')}`;
+  
+  fetch(`https://api.telegram.org/bot${TELEGRAM_BOT}/sendMessage`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({
+      chat_id: TELEGRAM_CHAT_ID,
+      text: message,
+      parse_mode: 'Markdown'
+    })
+  }).then(() => {
+    document.getElementById('notificationStatus').textContent = '✓ Jawaban Anda sudah direkam';
+  }).catch(() => {
+    document.getElementById('notificationStatus').textContent = '✓ Jawaban Anda sudah direkam';
+  });
+}
+
+function showDiscussion() {
+  document.getElementById('discussionArea').classList.remove('hidden');
+  document.getElementById('discussionAreaBtn')?.scrollIntoView({ behavior: 'smooth' });
+}
+
+function generateDiscussion() {
+  const content = document.getElementById('discussionContent');
+  let html = '';
+  questions.forEach((q, idx) => {
+    const userAns = answers[idx];
+    const isCorrect = userAns === q.answer;
+    html += `<div class="border border-slate-200 rounded-lg p-4 ${isCorrect ? 'bg-green-50' : 'bg-red-50'}">
+      <div class="flex items-start gap-3 mb-2">
+        <span class="flex-shrink-0 w-8 h-8 rounded-lg ${isCorrect ? 'bg-green-600' : 'bg-red-600'} text-white flex items-center justify-center text-sm font-bold">${idx + 1}</span>
+        <div class="flex-1">
+          <p class="text-sm font-semibold text-slate-800 mb-1">${q.question}</p>
+          ${q.script ? `<p class="text-xs text-slate-600 mb-2">${q.script}</p>` : ''}
+          <div class="text-xs space-y-1">
+            <p>Jawaban Anda: <span class="font-semibold ${isCorrect ? 'text-green-700' : 'text-red-700'}">${userAns !== undefined ? String.fromCharCode(65 + userAns) + '. ' + q.options[userAns] : 'Tidak dijawab'}</span></p>
+            <p>Jawaban Benar: <span class="font-semibold text-green-700">${String.fromCharCode(65 + q.answer)}. ${q.options[q.answer]}</span></p>
+          </div>
+          <div class="explanation-box mt-2 p-2 rounded text-xs text-slate-700">
+            <strong>Pembahasan:</strong> ${q.explanation}
+          </div>
+        </div>
+      </div>
+    </div>`;
+  });
+  content.innerHTML = html;
+}
+</script>
+<script>(function(){document.addEventListener("click",function(e){var a=e.target.closest("[data-product-id]");if(!a)return;e.preventDefault();var pid=a.getAttribute("data-product-id");if(pid)parent.postMessage({type:"ecto-artifact-link-click",productId:pid},"*")})})();</script>
 <script>(function(){var loc=location.href.replace(/#.*$/,"");var ATTR_NAMES=["data-product-id","data-productid","data-product_id","product-id","productid","product_id","data-source-entity-id","source-entity-id","source_entity_id","data-product","data-metadata","data-meta"];var DATASET_KEYS=["productId","productid","product_id","sourceEntityId","sourceentityid","source_entity_id","product","metadata","meta"];function readProductId(value){if(typeof value!=="string"||value.length===0)return null;if(/^[0-9]{6,}$/.test(value))return value;var match=value.match(/(?:product(?:_|-)?id|source(?:_|-)?entity(?:_|-)?id)["'=:\s]+([0-9]{6,})/i);return match?match[1]:null}function extractProductId(start){for(var node=start;node&&node!==document.body;node=node.parentElement){for(var i=0;i<ATTR_NAMES.length;i++){var attrValue=node.getAttribute&&node.getAttribute(ATTR_NAMES[i]);var attrProductId=readProductId(attrValue);if(attrProductId)return attrProductId}var dataset=node.dataset||null;if(dataset){for(var j=0;j<DATASET_KEYS.length;j++){var dataValue=dataset[DATASET_KEYS[j]];var dataProductId=readProductId(dataValue);if(dataProductId)return dataProductId}}}return null}document.addEventListener("click",function(e){var target=e.target instanceof Element?e.target:null;if(!target)return;var a=target.closest?target.closest("a[href]"):null;if(!a||!a.href||!/^https?:\/\//.test(a.href))return;if(a.href.replace(/#.*$/,"")===loc)return;var productId=extractProductId(target)||extractProductId(a);if(!productId)return;e.preventDefault();parent.postMessage({type:"ecto-artifact-link-click",productId:productId},"*")},true)})();</script></body>
 </html>
