@@ -1,814 +1,853 @@
 <!DOCTYPE html>
 <html lang="id">
-<head><style>
-@font-face {
-  font-family: "Optimistic";
-  font-style: normal;
-  font-weight: 400 600;
-  font-display: swap;
-  src: url("/fonts/OptimisticAI_VF_Optimized.woff2") format("woff2");
-}
-@font-face {
-  font-family: "Optimistic Mono";
-  font-style: normal;
-  font-weight: 400;
-  font-display: swap;
-  src: url("/fonts/OptimisticMono_W_TextRegular.woff2") format("woff2");
-}
-:where(html) {
-  font-family: "Optimistic", system-ui, sans-serif;
-}
-:where(code, pre, kbd, samp) {
-  font-family: "Optimistic Mono", ui-monospace, monospace;
-}
-</style>
+<head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>CAT TOEFL ITP Paket B - Sekolah Kedinasan</title>
-<script src="https://cdn.tailwindcss.com"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>CAT Ujian</title>
 <style>
-  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
-  * { font-family: 'Inter', sans-serif; }
-  .question-grid { 
-    display: grid; 
-    grid-template-columns: repeat(12, 32px); 
-    gap: 6px; 
-    justify-content: center;
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    font-family: Arial, Helvetica, sans-serif;
+    background: #f3f4f6;
+    color: #111827;
+    padding-top: 140px;
   }
-  @media (max-width: 480px) {
-    .question-grid { 
-      grid-template-columns: repeat(8, 32px); 
-      gap: 4px;
-    }
+
+  /* ===================== HEADER STICKY ===================== */
+  header {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    z-index: 999;
+    background: #1e3a8a;
+    color: #fff;
+    padding: 8px 10px 10px 10px;
+    box-shadow: 0 2px 6px rgba(0,0,0,.3);
   }
-  .question-btn {
+  .header-row1 {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 8px;
+  }
+  #timer {
+    font-size: 20px;
+    font-weight: bold;
+    font-variant-numeric: tabular-nums;
+  }
+  #btnSelesai {
+    background: #dc2626;
+    color: #fff;
+    border: none;
+    padding: 9px 14px;
+    border-radius: 6px;
+    font-size: 13px;
+    font-weight: bold;
+    cursor: pointer;
+  }
+  .nav-grid {
+    display: grid;
+    grid-template-columns: repeat(12, 1fr);
+    gap: 4px;
+    max-height: 160px;
+    overflow-y: auto;
+    padding-right: 2px;
+  }
+  .nav-btn {
     width: 32px;
     height: 32px;
+    border: 2px solid #fff;
+    background: transparent;
+    color: #fff;
     font-size: 11px;
-    font-weight: 600;
-    border: 1.5px solid #cbd5e1;
-    border-radius: 6px;
-    background: white;
-    transition: all 0.2s;
+    border-radius: 4px;
+    cursor: pointer;
+    padding: 0;
   }
-  .question-btn:hover { transform: scale(1.05); }
-  .question-btn.answered { background: #3b82f6; color: white; border-color: #3b82f6; }
-  .question-btn.current { background: #f59e0b; color: white; border-color: #f59e0b; box-shadow: 0 0 0 2px #fbbf2433; }
-  .question-btn.flagged { border-color: #ef4444; border-width: 2px; }
-  .section-tab.active { background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%); color: white; }
-  .animate-fade-in { animation: fadeIn 0.3s ease-in; }
-  @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
-  .gradient-bg { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); }
-  .glass-effect { background: rgba(255, 255, 255, 0.95); backdrop-filter: blur(10px); }
-  audio { width: 100%; border-radius: 8px; }
-  .passage-text { line-height: 1.8; text-align: justify; }
-  .explanation-box { background: #f0f9ff; border-left: 4px solid #3b82f6; }
+  .nav-btn.answered {
+    background: #16a34a;
+    border-color: #16a34a;
+    color: #fff;
+  }
+  .nav-btn.active {
+    background: #facc15;
+    border-color: #facc15;
+    color: #000;
+    font-weight: bold;
+  }
+
+  /* ===================== START SCREEN ===================== */
+  #startScreen {
+    max-width: 480px;
+    margin: 20px auto;
+    background: #fff;
+    border-radius: 10px;
+    padding: 24px 20px;
+    box-shadow: 0 2px 10px rgba(0,0,0,.1);
+    text-align: center;
+  }
+  #startScreen h1 {
+    color: #1e3a8a;
+    font-size: 20px;
+    margin-bottom: 6px;
+  }
+  #startScreen p.info {
+    color: #374151;
+    font-size: 14px;
+    margin-bottom: 20px;
+  }
+  #inputNama {
+    width: 100%;
+    padding: 12px;
+    font-size: 15px;
+    border: 1px solid #d1d5db;
+    border-radius: 6px;
+    margin-bottom: 16px;
+  }
+  #btnMulai {
+    width: 100%;
+    background: #1e3a8a;
+    color: #fff;
+    border: none;
+    padding: 13px;
+    font-size: 15px;
+    font-weight: bold;
+    border-radius: 6px;
+    cursor: pointer;
+  }
+
+  /* ===================== EXAM AREA ===================== */
+  #examArea { max-width: 700px; margin: 0 auto; padding: 10px 10px 30px 10px; display: none; }
+  .soal-card {
+    background: #fff;
+    border: 1px solid #d1d5db;
+    border-radius: 8px;
+    padding: 15px;
+    margin-bottom: 14px;
+  }
+  .soal-nomor {
+    font-weight: bold;
+    color: #1e3a8a;
+    margin-bottom: 8px;
+    font-size: 14px;
+  }
+  .soal-teks {
+    margin-bottom: 12px;
+    font-size: 15px;
+    line-height: 1.5;
+  }
+  .opsi-list label {
+    display: block;
+    padding: 10px 12px;
+    border: 1px solid #e5e7eb;
+    border-radius: 6px;
+    margin-bottom: 8px;
+    cursor: pointer;
+    font-size: 14px;
+  }
+  .opsi-list label:active { background: #f3f4f6; }
+  .opsi-list input[type="radio"] { margin-right: 8px; }
+
+  /* ===================== RESULT SCREEN ===================== */
+  #resultScreen {
+    display: none;
+    max-width: 480px;
+    margin: 20px auto;
+    background: #fff;
+    border-radius: 10px;
+    padding: 24px 20px;
+    box-shadow: 0 2px 10px rgba(0,0,0,.1);
+    text-align: center;
+  }
+  #resultScreen h2 { color: #1e3a8a; margin-bottom: 4px; }
+  #resultScreen .skor-detail {
+    text-align: left;
+    background: #f3f4f6;
+    border-radius: 6px;
+    padding: 12px;
+    margin: 14px 0;
+    font-size: 14px;
+    white-space: pre-line;
+  }
+  .status-lulus { color: #16a34a; font-weight: bold; font-size: 18px; }
+  .status-gagal { color: #dc2626; font-weight: bold; font-size: 18px; }
+  .status-record { color: #16a34a; font-weight: bold; margin-top: 10px; }
 </style>
 </head>
-<body class="bg-slate-50">
-<!-- Start Screen -->
-<div id="startScreen" class="min-h-screen flex items-center justify-center p-4 gradient-bg">
-  <div class="glass-effect rounded-2xl shadow-2xl p-8 w-full max-w-md animate-fade-in">
-    <div class="text-center mb-8">
-      <div class="inline-flex items-center justify-center w-20 h-20 bg-gradient-to-br from-blue-500 to-indigo-600 rounded-2xl mb-4 shadow-lg">
-        <svg class="w-10 h-10 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
-        </svg>
-      </div>
-      <h1 class="text-3xl font-bold text-slate-800 mb-2">CAT TOEFL ITP</h1>
-      <p class="text-slate-600 font-medium">Paket B - Sekolah Kedinasan</p>
-      <div class="flex justify-center gap-2 mt-4">
-        <span class="px-3 py-1 bg-blue-100 text-blue-700 rounded-full text-xs font-semibold">140 Soal</span>
-        <span class="px-3 py-1 bg-purple-100 text-purple-700 rounded-full text-xs font-semibold">115 Menit</span>
-        <span class="px-3 py-1 bg-amber-100 text-amber-700 rounded-full text-xs font-semibold">⭐⭐⭐⭐</span>
-      </div>
-    </div>
-    <div class="space-y-4">
-      <div>
-        <label class="block text-sm font-semibold text-slate-700 mb-2">Nama Lengkap</label>
-        <input type="text" id="userName" placeholder="Masukkan nama lengkap Anda" 
-          class="w-full px-4 py-3 border-2 border-slate-200 rounded-xl focus:border-blue-500 focus:outline-none transition">
-      </div>
-      <div class="bg-blue-50 border border-blue-200 rounded-xl p-4">
-        <h3 class="font-semibold text-slate-800 mb-2 text-sm">Petunjuk Ujian:</h3>
-        <ul class="text-xs text-slate-600 space-y-1">
-          <li>• Listening: 50 soal - 35 menit</li>
-          <li>• Structure: 40 soal - 25 menit</li>
-          <li>• Reading: 50 soal - 55 menit</li>
-          <li>• Total waktu: 115 menit</li>
-          <li>• Passing Grade: 475</li>
-        </ul>
-      </div>
-      <button onclick="startTest()" 
-        class="w-full bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white font-semibold py-4 rounded-xl shadow-lg hover:shadow-xl transition transform hover:scale-105">
-        Mulai Ujian
-      </button>
-    </div>
+<body>
+
+<header>
+  <div class="header-row1">
+    <div id="timer">00:00</div>
+    <button id="btnSelesai" onclick="konfirmasiSelesai()">Selesaikan Ujian</button>
   </div>
+  <div class="nav-grid" id="navGrid"></div>
+</header>
+
+<!-- ===================== START SCREEN ===================== -->
+<div id="startScreen">
+  <h1 id="judulUjian"></h1>
+  <p class="info" id="infoUjian"></p>
+  <input type="text" id="inputNama" placeholder="Nama Lengkap" required>
+  <button id="btnMulai" onclick="mulaiUjian()">Mulai Tes</button>
 </div>
 
-<!-- Test Screen -->
-<div id="testScreen" class="hidden min-h-screen pb-24">
-  <!-- Header -->
-  <header class="bg-white shadow-md sticky top-0 z-50 border-b border-slate-200">
-    <div class="max-w-7xl mx-auto px-4 py-3">
-      <div class="flex items-center justify-between flex-wrap gap-3">
-        <div class="flex items-center gap-3">
-          <div class="w-10 h-10 bg-gradient-to-br from-blue-500 to-indigo-600 rounded-lg flex items-center justify-center">
-            <span class="text-white font-bold text-sm">TB</span>
-          </div>
-          <div>
-            <h2 class="font-bold text-slate-800 text-sm">TOEFL ITP Paket B</h2>
-            <p id="userNameDisplay" class="text-xs text-slate-500"></p>
-          </div>
-        </div>
-        <div class="flex items-center gap-3">
-          <div class="text-right">
-            <p class="text-xs text-slate-500">Sisa Waktu</p>
-            <p id="timer" class="text-lg font-bold text-red-600">115:00</p>
-          </div>
-          <button onclick="confirmSubmit()" 
-            class="bg-gradient-to-r from-red-500 to-red-600 hover:from-red-600 hover:to-red-700 text-white px-4 py-2.5 rounded-lg font-semibold text-sm shadow-md hover:shadow-lg transition">
-            Selesaikan Ujian
-          </button>
-        </div>
-      </div>
-    </div>
-  </header>
+<!-- ===================== EXAM AREA ===================== -->
+<div id="examArea"></div>
 
-  <div class="max-w-7xl mx-auto px-4 py-4">
-    <div class="grid lg:grid-cols-4 gap-4">
-      <!-- Main Content -->
-      <div class="lg:col-span-3">
-        <!-- Section Tabs -->
-        <div class="bg-white rounded-xl shadow-md p-2 mb-4 flex gap-2">
-          <button onclick="switchSection(1)" id="tab1" class="section-tab flex-1 py-2.5 px-3 rounded-lg text-sm font-semibold transition active">
-            Listening 1-50
-          </button>
-          <button onclick="switchSection(2)" id="tab2" class="section-tab flex-1 py-2.5 px-3 rounded-lg text-sm font-semibold transition bg-slate-100 text-slate-600">
-            Structure 51-90
-          </button>
-          <button onclick="switchSection(3)" id="tab3" class="section-tab flex-1 py-2.5 px-3 rounded-lg text-sm font-semibold transition bg-slate-100 text-slate-600">
-            Reading 91-140
-          </button>
-        </div>
-
-        <!-- Question Card -->
-        <div class="bg-white rounded-xl shadow-md p-5 md:p-6 animate-fade-in">
-          <div class="flex items-center justify-between mb-4 pb-4 border-b border-slate-200">
-            <div class="flex items-center gap-3">
-              <span class="bg-blue-100 text-blue-700 px-3 py-1 rounded-lg text-sm font-bold">Soal <span id="currentQ">1</span>/140</span>
-              <button onclick="toggleFlag()" id="flagBtn" class="p-2 hover:bg-slate-100 rounded-lg transition">
-                <svg class="w-5 h-5 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 21v-4m0 0V5a2 2 0 012-2h6.5l1 1H21l-3 6 3 6h-8.5l-1-1H5a2 2 0 00-2 2zm9-13.5V9"></path>
-                </svg>
-              </button>
-            </div>
-            <span id="sectionLabel" class="text-xs font-semibold text-slate-500 bg-slate-100 px-3 py-1 rounded-lg">LISTENING</span>
-          </div>
-
-          <div id="questionContent" class="space-y-4">
-            <!-- Question content will be loaded here -->
-          </div>
-
-          <!-- Navigation -->
-          <div class="flex justify-between items-center mt-6 pt-4 border-t border-slate-200">
-            <button onclick="prevQuestion()" id="prevBtn" 
-              class="px-5 py-2.5 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-lg font-semibold text-sm transition disabled:opacity-50 disabled:cursor-not-allowed">
-              ← Sebelumnya
-            </button>
-            <button onclick="nextQuestion()" id="nextBtn" 
-              class="px-5 py-2.5 bg-blue-600 hover:bg-blue-700 text-white rounded-lg font-semibold text-sm transition">
-              Selanjutnya →
-            </button>
-          </div>
-        </div>
-      </div>
-
-      <!-- Sidebar Navigation -->
-      <div class="lg:col-span-1">
-        <div class="bg-white rounded-xl shadow-md p-4 sticky top-20">
-          <h3 class="font-bold text-slate-800 mb-3 text-sm">Navigasi Soal</h3>
-          <div id="questionNav" class="question-grid mb-4 max-h-96 overflow-y-auto">
-            <!-- Question buttons will be generated here -->
-          </div>
-          <div class="space-y-2 text-xs">
-            <div class="flex items-center gap-2">
-              <div class="w-4 h-4 bg-blue-600 rounded"></div>
-              <span class="text-slate-600">Sudah dijawab</span>
-            </div>
-            <div class="flex items-center gap-2">
-              <div class="w-4 h-4 bg-amber-500 rounded"></div>
-              <span class="text-slate-600">Sedang dikerjakan</span>
-            </div>
-            <div class="flex items-center gap-2">
-              <div class="w-4 h-4 border-2 border-red-500 rounded"></div>
-              <span class="text-slate-600">Ditandai</span>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-</div>
-
-<!-- Result Screen -->
-<div id="resultScreen" class="hidden min-h-screen bg-slate-50 p-4">
-  <div class="max-w-5xl mx-auto">
-    <div class="bg-white rounded-2xl shadow-xl p-6 md:p-8 animate-fade-in">
-      <div class="text-center mb-8">
-        <div class="inline-flex items-center justify-center w-20 h-20 bg-gradient-to-br from-green-500 to-emerald-600 rounded-2xl mb-4 shadow-lg">
-          <svg class="w-10 h-10 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
-          </svg>
-        </div>
-        <h1 class="text-3xl font-bold text-slate-800 mb-2">Hasil Ujian</h1>
-        <p id="resultName" class="text-slate-600"></p>
-        <div id="notificationStatus" class="mt-3 inline-block px-4 py-2 bg-green-100 text-green-700 rounded-lg text-sm font-semibold">
-          ✓ Jawaban Anda sudah direkam
-        </div>
-      </div>
-
-      <div class="grid md:grid-cols-3 gap-4 mb-6">
-        <div class="bg-gradient-to-br from-blue-50 to-blue-100 rounded-xl p-5 text-center">
-          <p class="text-sm text-slate-600 mb-1">Skor Total</p>
-          <p id="totalScore" class="text-4xl font-bold text-blue-600">0</p>
-          <p class="text-xs text-slate-500 mt-1">Range: 310-677</p>
-        </div>
-        <div class="bg-gradient-to-br from-purple-50 to-purple-100 rounded-xl p-5 text-center">
-          <p class="text-sm text-slate-600 mb-1">Benar</p>
-          <p id="correctCount" class="text-4xl font-bold text-purple-600">0/140</p>
-        </div>
-        <div id="statusCard" class="bg-gradient-to-br from-green-50 to-green-100 rounded-xl p-5 text-center">
-          <p class="text-sm text-slate-600 mb-1">Status</p>
-          <p id="passStatus" class="text-2xl font-bold text-green-600">LULUS</p>
-          <p class="text-xs text-slate-500 mt-1">PG: 475</p>
-        </div>
-      </div>
-
-      <div class="bg-slate-50 rounded-xl p-5 mb-6">
-        <h3 class="font-bold text-slate-800 mb-4">Rincian Per Section</h3>
-        <div class="space-y-3">
-          <div>
-            <div class="flex justify-between text-sm mb-1">
-              <span class="font-semibold text-slate-700">Listening (1-50)</span>
-              <span id="listeningDetail" class="text-slate-600">0/50</span>
-            </div>
-            <div class="w-full bg-slate-200 rounded-full h-2">
-              <div id="listeningBar" class="bg-blue-600 h-2 rounded-full transition-all" style="width: 0%"></div>
-            </div>
-          </div>
-          <div>
-            <div class="flex justify-between text-sm mb-1">
-              <span class="font-semibold text-slate-700">Structure (51-90)</span>
-              <span id="structureDetail" class="text-slate-600">0/40</span>
-            </div>
-            <div class="w-full bg-slate-200 rounded-full h-2">
-              <div id="structureBar" class="bg-purple-600 h-2 rounded-full transition-all" style="width: 0%"></div>
-            </div>
-          <div>
-            <div class="flex justify-between text-sm mb-1">
-              <span class="font-semibold text-slate-700">Reading (91-140)</span>
-              <span id="readingDetail" class="text-slate-600">0/50</span>
-            </div>
-            <div class="w-full bg-slate-200 rounded-full h-2">
-              <div id="readingBar" class="bg-amber-600 h-2 rounded-full transition-all" style="width: 0%"></div>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <div class="flex gap-3 mb-6">
-        <button onclick="showDiscussion()" 
-          class="flex-1 bg-blue-600 hover:bg-blue-700 text-white py-3 rounded-xl font-semibold transition">
-          Lihat Pembahasan
-        </button>
-        <button onclick="location.reload()" 
-          class="flex-1 bg-slate-200 hover:bg-slate-300 text-slate-700 py-3 rounded-xl font-semibold transition">
-          Ujian Lagi
-        </button>
-      </div>
-
-      <div id="discussionArea" class="hidden">
-        <h3 class="font-bold text-slate-800 mb-4 text-xl">Pembahasan Soal</h3>
-        <div class="space-y-3 max-h-[600px] overflow-y-auto pr-2">
-          <div id="discussionContent"></div>
-        </div>
-      </div>
-    </div>
-  </div>
+<!-- ===================== RESULT SCREEN ===================== -->
+<div id="resultScreen">
+  <h2>Hasil Ujian</h2>
+  <p id="hasilNama"></p>
+  <div class="skor-detail" id="hasilSkor"></div>
+  <div id="hasilStatus"></div>
+  <div class="status-record">Jawaban Anda sudah direkam.</div>
 </div>
 
 <script>
-const TELEGRAM_BOT = '8644146007:AAHwi9kBAm-OIYA4NOiqvREBWV2xDoZyNTU';
-const TELEGRAM_CHAT_ID = '5748276018';
-const TOTAL_TIME = 115 * 60;
-let timeRemaining = TOTAL_TIME;
-let timerInterval;
-let currentQuestionIndex = 0;
-let userName = '';
-let answers = {};
-let flagged = new Set();
-let questions = [];
+/* =========================================================================
+   ================  CONFIG  ================================================
+   ========================================================================= */
+const CONFIG = {
+  NAMA_UJIAN: "TOEFL_KEDINASAN",
+  JUDUL_LENGKAP_UJIAN: "Tes TOEFL Prediction - Persiapan Sekolah Kedinasan",
+  WAKTU_MENIT: 115, // standar TOEFL ITP: 115 menit (35 Listening + 25 Structure + 55 Reading)
 
-// Generate 140 soal Paket B - Fixed all options & keys
-function generateQuestions() {
-  const q = [];
-  
-  // LISTENING 1-50 - Fixed with real options
-  const listeningData = [
-    { script: "Excuse me, could you tell me where the nearest post office is?", response: "Go straight two blocks and turn left. You can't miss it.", q: "What does the woman mean?", o: ["The post office is very far", "The post office is easy to find", "The man should turn right", "The post office is closed"], a: 1, e: "Frasa 'You can't miss it' artinya tempatnya mudah ditemukan." },
-    { script: "Did you finish the physics report last night?", response: "I was up until 2 AM working on it.", q: "What does the man mean?", o: ["He finished it early", "He worked late to finish it", "He didn't do the report", "He slept at 2 AM"], a: 1, e: "Up until 2 AM = begadang sampai jam 2 pagi untuk mengerjakannya." },
-    { script: "The weather forecast said it's going to rain tomorrow.", response: "I guess we should postpone the outdoor concert then.", q: "What will the speakers probably do?", o: ["Continue the concert", "Cancel the concert permanently", "Postpone the concert", "Hold it indoors"], a: 2, e: "Postpone = menunda, sesuai 'should postpone'." },
-    { script: "How long have you been studying Indonesian law?", response: "About three years, since I entered the academy.", q: "How long has the man studied law?", o: ["One year", "Two years", "Three years", "Four years"], a: 2, e: "Jawaban jelas: About three years." },
-    { script: "I think we should review the evacuation procedures again.", response: "That's a good idea. Safety is our priority.", q: "What does the woman mean?", o: ["She disagrees with the plan", "She agrees it's important", "She wants to cancel it", "She thinks it's unsafe"], a: 1, e: "That's a good idea = setuju, Safety is our priority = menegaskan pentingnya." },
-    { script: "Professor, can I submit my assignment next Monday?", response: "I'm afraid the deadline is fixed for this Friday.", q: "What can be inferred?", o: ["The professor agreed", "The deadline cannot be extended", "The assignment is cancelled", "Monday is the new deadline"], a: 1, e: "Deadline is fixed = tidak bisa diubah." },
-    { script: "The new cadets will arrive at the dormitory this afternoon.", response: "We need to make sure their rooms are ready.", q: "What should they do?", o: ["Cancel their arrival", "Prepare the rooms", "Close the dormitory", "Leave the rooms empty"], a: 1, e: "Make sure their rooms are ready = siapkan kamar." },
-    { script: "I haven't received the confirmation email yet.", response: "You might want to check your spam folder first.", q: "What does the man suggest?", o: ["Send another email", "Delete the email", "Check the spam folder", "Call the office"], a: 2, e: "Saran eksplisit: check your spam folder first." },
-    { script: "Would you like some coffee or tea?", response: "Tea would be great, thank you.", q: "What will the woman have?", o: ["Coffee", "Tea", "Water", "Nothing"], a: 1, e: "Tea would be great = memilih teh." },
-    { script: "The library closes at 9 PM on weekdays.", response: "What about weekends? Is it open on Saturday?", q: "What does the man want to know?", o: ["The weekday hours", "The weekend schedule", "The location", "The fee"], a: 1, e: "What about weekends? = tanya jadwal akhir pekan." },
-    { script: "I'm having trouble with this mathematics problem.", response: "Let me see if I can help you solve it.", q: "What does the man offer?", o: ["To ignore the problem", "To lend his book", "To help solve it", "To copy the answer"], a: 2, e: "Let me see if I can help = menawarkan bantuan." },
-    { script: "The annual sports competition is next month.", response: "Which events are you planning to join?", q: "What does the woman ask about?", o: ["The date of competition", "The events the man will join", "The location", "The prizes"], a: 1, e: "Which events are you planning to join = tanya cabang yang diikuti." },
-    { script: "Have you visited the Maritime Museum?", response: "Yes, it has an impressive collection of naval artifacts.", q: "What does the man think about the museum?", o: ["It's boring", "It's impressive", "It's closed", "It's small"], a: 1, e: "Impressive collection = koleksinya mengesankan." },
-    { script: "The bus usually arrives at 7:30 AM.", response: "But today it's 7:45 and there's no sign of it.", q: "What can be inferred?", o: ["The bus is on time", "The bus is late", "The bus is cancelled", "The bus came early"], a: 1, e: "No sign of it padahal sudah 7:45 = terlambat." },
-    { script: "I need to renew my student identification card.", response: "You can do that at the administration office on the second floor.", q: "Where should the woman go?", o: ["Library", "Administration office", "Cafeteria", "Gymnasium"], a: 1, e: "Administration office on the second floor." },
-    { script: "The professor canceled today's lecture.", response: "So we have a free period this morning.", q: "What does the man mean?", o: ["They have class", "They have no class", "The lecture is moved", "They have a test"], a: 1, e: "We have a free period = tidak ada kelas." },
-    { script: "This textbook is quite expensive.", response: "You can borrow one from the library instead.", q: "What does the woman suggest?", o: ["Buy the textbook", "Borrow from library", "Share the cost", "Skip the class"], a: 1, e: "Borrow one from the library = pinjam dari perpus." },
-    { script: "The training will start at 6 AM sharp.", response: "We should all be in uniform by 5:45 then.", q: "What time should they be in uniform?", o: ["6:00 AM", "5:45 AM", "5:30 AM", "6:15 AM"], a: 1, e: "By 5:45 = jam 5:45." },
-    { script: "Did you hear about the new regulation?", response: "The one about mandatory English proficiency?", q: "What is the regulation about?", o: ["Uniform rules", "English proficiency", "Training schedule", "Meal times"], a: 1, e: "Mandatory English proficiency." },
-    { script: "I'm looking for a quiet place to study.", response: "The reading room on the third floor is usually empty.", q: "What does the man suggest?", o: ["Study in dorm", "Use the reading room", "Go to cafeteria", "Study outside"], a: 1, e: "Reading room...usually empty = cocok untuk belajar." },
-    { script: "The examination will consist of multiple-choice questions.", response: "Will there be an essay section too?", q: "What does the man want to know?", o: ["Exam duration", "If there's an essay", "Where the exam is", "The passing grade"], a: 1, e: "Will there be an essay section too = tanya ada esai atau tidak." },
-    { script: "We need to submit the budget proposal by tomorrow.", response: "I already have the draft. Just need your approval.", q: "What does the woman mean?", o: ["She hasn't started", "The draft is ready for approval", "She needs help", "It's already submitted"], a: 1, e: "Already have the draft, need approval." },
-    { script: "The ceremony will be held in the main auditorium.", response: "All students are required to attend.", q: "What can be concluded?", o: ["Attendance is optional", "Attendance is mandatory", "Only cadets attend", "It's cancelled"], a: 1, e: "All students are required = wajib hadir." },
-    { script: "I couldn't understand the previous lecture.", response: "Maybe you should meet the professor during office hours.", q: "What does the man suggest?", o: ["Skip the next lecture", "Meet the professor", "Drop the course", "Copy notes"], a: 1, e: "Meet the professor during office hours." },
-    { script: "The restaurant downtown has authentic regional cuisine.", response: "I've heard their rendang is excellent.", q: "What is the woman implying?", o: ["She dislikes rendang", "Their rendang is good", "The restaurant is bad", "She never eats there"], a: 1, e: "Their rendang is excellent = enak." },
-    { script: "Our team lost the basketball tournament.", response: "We played well but the opponents were better prepared.", q: "Why did they lose?", o: ["They played badly", "Opponents were more prepared", "The referee was unfair", "They were late"], a: 1, e: "Opponents were better prepared." },
-    { script: "The internet connection in the dormitory is very slow.", response: "They're upgrading the system next week.", q: "What will happen to the internet?", o: ["It will be shut down", "It will be upgraded", "It costs more", "It's cancelled"], a: 1, e: "Upgrading the system = akan diperbarui." },
-    { script: "I have to attend a family wedding this weekend.", response: "Make sure you submit a leave request form.", q: "What must the woman do?", o: ["Cancel the wedding", "Submit leave request", "Ask for money", "Bring food"], a: 1, e: "Submit a leave request form." },
-    { script: "The swimming pool is closed for maintenance.", response: "It will reopen after the cleaning is completed.", q: "When will the pool reopen?", o: ["Today", "After cleaning", "Never", "Next month"], a: 1, e: "After cleaning is completed." },
-    { script: "Can you help me carry these boxes?", response: "Sure, where do you want to put them?", q: "What will the man probably do?", o: ["Refuse to help", "Help carry boxes", "Buy new boxes", "Call someone"], a: 1, e: "Sure = setuju membantu." },
-    { script: "The history test was more difficult than I expected.", response: "I agree. The questions were quite detailed.", q: "What do they think about the test?", o: ["It was easy", "It was difficult", "It was cancelled", "It was fun"], a: 1, e: "More difficult, quite detailed = sulit." },
-    { script: "We should start preparing for the final project.", response: "Let's meet tomorrow afternoon to discuss it.", q: "What do they decide to do?", o: ["Start today", "Meet tomorrow", "Cancel the project", "Do it alone"], a: 1, e: "Let's meet tomorrow afternoon." },
-    { script: "The museum exhibition features artifacts from colonial times.", response: "I'd love to see that. When does it end?", q: "What does the man want to know?", o: ["Ticket price", "Closing date", "Location", "Opening hours"], a: 1, e: "When does it end = kapan berakhir." },
-    { script: "I forgot to bring my textbook today.", response: "You can share with me if you want.", q: "What does the woman offer?", o: ["To lend a pen", "To share her textbook", "To go home", "To report it"], a: 1, e: "You can share with me = menawarkan berbagi." },
-    { script: "The guest speaker is an expert in criminal justice.", response: "Her lecture on forensic science was fascinating.", q: "What did the woman think of the lecture?", o: ["It was boring", "It was fascinating", "It was short", "It was cancelled"], a: 1, e: "Fascinating = menarik." },
-    { script: "Please submit your medical certificate to the nurse.", response: "Is it required for all new cadets?", q: "What does the man ask about?", o: ["The nurse's name", "If it's mandatory", "The doctor's schedule", "The cost"], a: 1, e: "Is it required = apakah wajib." },
-    { script: "The computer lab will be closed this Friday.", response: "They're installing new software on all machines.", q: "Why is the lab closed?", o: ["Holiday", "Software installation", "Broken computers", "No electricity"], a: 1, e: "Installing new software." },
-    { script: "I won the scholarship for academic excellence.", response: "Congratulations! You really deserved it.", q: "What does the woman mean?", o: ["She doubts it", "She congratulates him", "She wants it", "She is jealous"], a: 1, e: "Congratulations = memberi selamat." },
-    { script: "The train station is about fifteen minutes from here.", response: "We should leave now to catch the 8 o'clock train.", q: "What do they need to do?", o: ["Wait here", "Leave now", "Cancel trip", "Call a taxi"], a: 1, e: "Leave now to catch train." },
-    { script: "Your presentation skills have improved significantly.", response: "Thank you. I've been practicing a lot.", q: "Why did his skills improve?", o: ["Natural talent", "He practiced", "Lucky", "New equipment"], a: 1, e: "I've been practicing a lot." },
-    { script: "The cafeteria serves breakfast from 6 to 8 AM.", response: "And dinner is from 5 to 7 PM, right?", q: "What is the man confirming?", o: ["Breakfast time", "Dinner time", "Lunch time", "Closing time"], a: 1, e: "Dinner is from 5 to 7 PM." },
-    { script: "I need to extend my book loan for another week.", response: "You can renew it online through the library system.", q: "How can she extend the loan?", o: ["Visit the library", "Renew online", "Buy the book", "Return it"], a: 1, e: "Renew it online." },
-    { script: "The drill instructor was strict but fair.", response: "His training methods prepared us well for the field.", q: "What does the woman think of the instructor?", o: ["He was unfair", "He was effective", "He was lazy", "He was absent"], a: 1, e: "Prepared us well = efektif." },
-    { script: "We have a meeting with the dean tomorrow morning.", response: "What time should we gather at his office?", q: "What does the woman ask?", o: ["Meeting location", "Meeting time", "Who attends", "Meeting topic"], a: 1, e: "What time = tanya waktu." },
-    { script: "The weather is perfect for outdoor physical training.", response: "Yes, not too hot and not too cold.", q: "What does the man mean?", o: ["Weather is bad", "Weather is ideal", "It's raining", "It's too cold"], a: 1, e: "Not too hot/cold = ideal." },
-    { script: "I didn't know we had a quiz today.", response: "The professor announced it last week.", q: "What can be inferred?", o: ["There's no quiz", "He missed the announcement", "Quiz is cancelled", "Quiz is tomorrow"], a: 1, e: "Didn't know = tidak tahu pengumuman." },
-    { script: "The graduation ceremony will be broadcast live.", response: "Parents who can't attend can watch it online.", q: "Who can watch online?", o: ["Only students", "Parents who can't attend", "Everyone", "Only professors"], a: 1, e: "Parents who can't attend." },
-    { script: "You should proofread your essay before submitting.", response: "Thanks for the advice. I almost forgot.", q: "What did the man almost forget?", o: ["To write essay", "To proofread", "To submit", "The topic"], a: 1, e: "Almost forgot = hampir lupa proofread." },
-    { script: "The new policy starts next semester.", response: "We need to inform all students soon.", q: "What should they do?", o: ["Ignore policy", "Inform students", "Cancel policy", "Wait"], a: 1, e: "Inform all students soon." },
-    { script: "I heard the transportation allowance will increase.", response: "That's good news for all cadets.", q: "How does the woman feel?", o: ["Sad", "Happy", "Angry", "Confused"], a: 1, e: "Good news = senang." }
-  ];
+  TELEGRAM_TOKEN: "8644146007:AAHwi9kBAm-OIYA4NOiqvREBWV2xDoZyNTU",
+  TELEGRAM_CHAT_ID: "5748276018",
 
-  listeningData.forEach((item, i) => {
-    q.push({
-      id: i + 1,
-      section: 'listening',
-      type: 'listening',
-      script: `A: ${item.script}<br>B: ${item.response}`,
-      question: item.q,
-      options: item.o,
-      answer: item.a,
-      explanation: item.e
-    });
+  POIN_DEFAULT: 1, // tiap soal bernilai 1 poin mentah, konversi ke skor TOEFL dihitung terpisah
+
+  // ==== KRITERIA KELULUSAN ====
+  // Ambang batas skor TOEFL prediction bervariasi tiap sekolah kedinasan
+  // (STAN/PKN STAN, IPDN, Poltekip, dsb). GANTI passingScore sesuai
+  // ketentuan resmi instansi yang dituju.
+  cekKelulusan(skor) {
+    const passingScore = 450; // contoh ambang umum, sesuaikan per instansi
+    const lulus = skor.skorTOEFL >= passingScore;
+    return {
+      lulus,
+      teksStatus: lulus ? "LULUS" : "TIDAK LULUS"
+    };
+  }
+};
+
+/* =========================================================================
+   ================  DATA SOAL - TOEFL ITP STYLE (140 SOAL)  ===============
+   =========================================================================
+   Section 1: Listening Comprehension   -> id 1-50   (kategori: "Listening")
+     Part A: percakapan pendek           -> id 1-30
+     Part B: percakapan panjang          -> id 31-38 (2 skrip x 4 soal)
+     Part C: talks/lecture               -> id 39-50 (3 skrip x 4 soal)
+   Section 2: Structure & Written Expr. -> id 51-90  (kategori: "Structure")
+     Structure (sentence completion)     -> id 51-65
+     Written Expression (error ID)       -> id 66-90
+   Section 3: Reading Comprehension     -> id 91-140 (kategori: "Reading")
+     5 passage x 10 soal
+
+   Catatan: seluruh soal disusun orisinal untuk simulasi latihan,
+   BUKAN salinan dari bank soal TOEFL resmi/berhak cipta.
+   type "bacaan" = teks passage/skrip pendukung, tidak dihitung sebagai
+   nomor soal maupun ikut dalam scoring.
+*/
+const DATA_SOAL = [
+
+/* ================= SECTION 1: LISTENING - PART A (id 1-30) ================= */
+{ id:1, type:"pg", kategori:"Listening", teks:"Percakapan:\nM: Have you finished the report yet?\nW: I'm almost done, just need to check the numbers.\n\nQuestion: What does the woman mean?",
+  opsi:["She has completed the report.","She still needs to verify some data.","She refuses to do the report.","She lost the report."], kunci:1 },
+{ id:2, type:"pg", kategori:"Listening", teks:"Percakapan:\nW: Could you turn down the music? I'm trying to study.\nM: Oh sorry, I didn't realize it was that loud.\n\nQuestion: What will the man probably do next?",
+  opsi:["Turn up the music","Apologize and lower the volume","Leave the room","Ignore the woman"], kunci:1 },
+{ id:3, type:"pg", kategori:"Listening", teks:"Percakapan:\nM: Why didn't you come to the meeting yesterday?\nW: I was stuck in traffic for two hours.\n\nQuestion: Why didn't the woman attend the meeting?",
+  opsi:["She forgot about it","She was ill","She was delayed by traffic","She didn't want to attend"], kunci:2 },
+{ id:4, type:"pg", kategori:"Listening", teks:"Percakapan:\nW: Is this seat taken?\nM: No, go ahead.\n\nQuestion: What does the man mean?",
+  opsi:["The seat is reserved","She may sit there","He is sitting there","He doesn't know"], kunci:1 },
+{ id:5, type:"pg", kategori:"Listening", teks:"Percakapan:\nM: I heard you're moving to a new apartment.\nW: Yes, next month, closer to my office.\n\nQuestion: Why is the woman moving?",
+  opsi:["To be near her office","To save money","To live with her family","Because her apartment was sold"], kunci:0 },
+{ id:6, type:"pg", kategori:"Listening", teks:"Percakapan:\nW: Did you fix the printer?\nM: I tried, but I think we need a new cartridge.\n\nQuestion: What does the man imply?",
+  opsi:["The printer is fixed","The printer needs a new part","He couldn't find the printer","The printer was never broken"], kunci:1 },
+{ id:7, type:"pg", kategori:"Listening", teks:"Percakapan:\nM: Can I borrow your notes from yesterday's class?\nW: Sure, but I need them back by Friday.\n\nQuestion: What does the woman ask?",
+  opsi:["Not to borrow the notes","To return the notes by Friday","To keep the notes forever","To take her class"], kunci:1 },
+{ id:8, type:"pg", kategori:"Listening", teks:"Percakapan:\nW: The flight was delayed for three hours.\nM: That's frustrating, did you miss your connection?\n\nQuestion: What are they discussing?",
+  opsi:["A missed flight","A delayed flight","A canceled ticket","A lost bag"], kunci:1 },
+{ id:9, type:"pg", kategori:"Listening", teks:"Percakapan:\nM: Would you like some coffee?\nW: No thanks, I just had some tea.\n\nQuestion: What does the woman mean?",
+  opsi:["She wants coffee","She doesn't want coffee","She wants tea and coffee","She never drinks tea"], kunci:1 },
+{ id:10, type:"pg", kategori:"Listening", teks:"Percakapan:\nW: I can't believe how expensive rent has gotten.\nM: I know, that's why I decided to get a roommate.\n\nQuestion: Why did the man get a roommate?",
+  opsi:["He likes company","To share the cost of rent","He was lonely","His friend asked him to"], kunci:1 },
+{ id:11, type:"pg", kategori:"Listening", teks:"Percakapan:\nM: Are you coming to the party tonight?\nW: I wish I could, but I have to work late.\n\nQuestion: What does the woman mean?",
+  opsi:["She will attend the party","She cannot attend because of work","She doesn't like parties","She forgot about the party"], kunci:1 },
+{ id:12, type:"pg", kategori:"Listening", teks:"Percakapan:\nW: Have you seen my keys?\nM: Check the kitchen table, I saw them there earlier.\n\nQuestion: What does the man suggest?",
+  opsi:["The woman lost her keys","The keys might be on the kitchen table","He has the keys","The keys were stolen"], kunci:1 },
+{ id:13, type:"pg", kategori:"Listening", teks:"Percakapan:\nM: How was your trip to Bali?\nW: Amazing, but the flight back was terrible.\n\nQuestion: What was bad about the trip?",
+  opsi:["The hotel","The food","The return flight","The weather"], kunci:2 },
+{ id:14, type:"pg", kategori:"Listening", teks:"Percakapan:\nW: I think I left my umbrella at the office.\nM: Don't worry, I have an extra one you can borrow.\n\nQuestion: What does the man offer?",
+  opsi:["To buy a new umbrella","To lend his umbrella","To go back to the office","To call the office"], kunci:1 },
+{ id:15, type:"pg", kategori:"Listening", teks:"Percakapan:\nM: This assignment is due tomorrow, right?\nW: Actually, the deadline was extended to next week.\n\nQuestion: What does the woman say about the deadline?",
+  opsi:["It was moved earlier","It stays the same","It was extended","It was canceled"], kunci:2 },
+{ id:16, type:"pg", kategori:"Listening", teks:"Percakapan:\nW: Why is the store closed today?\nM: It's a national holiday.\n\nQuestion: Why is the store closed?",
+  opsi:["It's under renovation","It's a holiday","It closed permanently","The owner is sick"], kunci:1 },
+{ id:17, type:"pg", kategori:"Listening", teks:"Percakapan:\nM: Can you give me a ride to the airport?\nW: Sorry, my car is in the shop.\n\nQuestion: Why can't the woman help?",
+  opsi:["She doesn't have a license","Her car is being repaired","She's busy","She doesn't like driving"], kunci:1 },
+{ id:18, type:"pg", kategori:"Listening", teks:"Percakapan:\nW: Did you enjoy the concert last night?\nM: It was good, but the seats were too far from the stage.\n\nQuestion: What did the man dislike?",
+  opsi:["The music","The seating location","The crowd","The ticket price"], kunci:1 },
+{ id:19, type:"pg", kategori:"Listening", teks:"Percakapan:\nM: I heard the professor changed the exam schedule.\nW: Yes, it's now on Monday instead of Friday.\n\nQuestion: What changed?",
+  opsi:["The exam location","The exam date","The exam topic","The exam format"], kunci:1 },
+{ id:20, type:"pg", kategori:"Listening", teks:"Percakapan:\nW: Would you mind closing the window? It's getting cold.\nM: Not at all.\n\nQuestion: What will the man do?",
+  opsi:["Open the window further","Close the window","Turn on the heater","Leave the room"], kunci:1 },
+{ id:21, type:"pg", kategori:"Listening", teks:"Percakapan:\nM: Have you tried the new restaurant downtown?\nW: Not yet, but I've heard great things about it.\n\nQuestion: What does the woman imply?",
+  opsi:["She dislikes the restaurant","She hasn't been there but wants to go","She has already eaten there","She doesn't like eating out"], kunci:1 },
+{ id:22, type:"pg", kategori:"Listening", teks:"Percakapan:\nW: I need to renew my passport before the trip.\nM: You should do that soon, it usually takes a few weeks.\n\nQuestion: What does the man advise?",
+  opsi:["To cancel the trip","To renew the passport quickly","To travel without a passport","To wait until later"], kunci:1 },
+{ id:23, type:"pg", kategori:"Listening", teks:"Percakapan:\nM: The internet has been really slow lately.\nW: I think it's because of the new router.\n\nQuestion: What does the woman think is the cause?",
+  opsi:["Too many devices","The new router","The weather","A virus"], kunci:1 },
+{ id:24, type:"pg", kategori:"Listening", teks:"Percakapan:\nW: Can we reschedule our meeting to Thursday?\nM: Sure, that works better for me too.\n\nQuestion: What do they agree on?",
+  opsi:["Canceling the meeting","Moving the meeting to Thursday","Meeting twice","Meeting online instead"], kunci:1 },
+{ id:25, type:"pg", kategori:"Listening", teks:"Percakapan:\nM: I'm thinking about taking a photography course.\nW: That sounds like a great hobby.\n\nQuestion: What does the woman think about the man's idea?",
+  opsi:["She disapproves","She thinks it's a good idea","She wants to join","She thinks it's expensive"], kunci:1 },
+{ id:26, type:"pg", kategori:"Listening", teks:"Percakapan:\nW: The library closes at 9 pm on weekdays.\nM: What about weekends?\nW: It closes earlier, at 5 pm.\n\nQuestion: When does the library close on weekends?",
+  opsi:["9 pm","5 pm","It's closed","10 pm"], kunci:1 },
+{ id:27, type:"pg", kategori:"Listening", teks:"Percakapan:\nM: Do you know where the nearest ATM is?\nW: There's one right around the corner.\n\nQuestion: What does the woman tell the man?",
+  opsi:["There is no ATM nearby","The ATM is close by","The ATM is broken","He should ask someone else"], kunci:1 },
+{ id:28, type:"pg", kategori:"Listening", teks:"Percakapan:\nW: I'm nervous about my job interview tomorrow.\nM: Don't worry, you've prepared really well.\n\nQuestion: What does the man do?",
+  opsi:["Increase her anxiety","Reassure her","Cancel the interview","Criticize her preparation"], kunci:1 },
+{ id:29, type:"pg", kategori:"Listening", teks:"Percakapan:\nM: Our flight got moved to gate 22.\nW: Thanks for letting me know, I was waiting at gate 15.\n\nQuestion: What was the woman doing?",
+  opsi:["Boarding the plane","Waiting at the wrong gate","Buying a ticket","Checking in luggage"], kunci:1 },
+{ id:30, type:"pg", kategori:"Listening", teks:"Percakapan:\nW: The museum exhibit was fascinating.\nM: I agree, especially the section on ancient pottery.\n\nQuestion: What did they both like?",
+  opsi:["The gift shop","The exhibit","The parking","The cafeteria"], kunci:1 },
+
+/* ================= SECTION 1: LISTENING - PART B (id 31-38) ================= */
+{ id:"b1", type:"bacaan", judul:"Percakapan Panjang 1",
+  teks:"W: Excuse me, I'm here to talk about registering for next semester's classes.\nM: Sure, do you already know which courses you want to take?\nW: I'm interested in the Advanced Statistics course, but I heard it requires a prerequisite.\nM: That's right, you need to have completed Introduction to Statistics first.\nW: I took that two years ago, does it still count?\nM: As long as you passed it, yes, there's no time limit on prerequisites here.\nW: That's a relief. Can I register today?\nM: Yes, I'll help you enroll right now." },
+{ id:31, type:"pg", kategori:"Listening", teks:"Berdasarkan Percakapan Panjang 1: What is the woman trying to do?",
+  opsi:["Change her major","Register for a class","Apply for a scholarship","Withdraw from school"], kunci:1 },
+{ id:32, type:"pg", kategori:"Listening", teks:"Berdasarkan Percakapan Panjang 1: What is required before taking Advanced Statistics?",
+  opsi:["A letter of recommendation","Completing Introduction to Statistics","A placement test","Approval from the dean"], kunci:1 },
+{ id:33, type:"pg", kategori:"Listening", teks:"Berdasarkan Percakapan Panjang 1: How does the man reassure the woman?",
+  opsi:["The prerequisite doesn't matter","Old prerequisites still count","She doesn't need the prerequisite","She must retake the course"], kunci:1 },
+{ id:34, type:"pg", kategori:"Listening", teks:"Berdasarkan Percakapan Panjang 1: What will most likely happen next?",
+  opsi:["She will leave without registering","The man will help her enroll","She will take the prerequisite again","She will change her course"], kunci:1 },
+
+{ id:"b2", type:"bacaan", judul:"Percakapan Panjang 2",
+  teks:"M: I noticed the sales report you sent has some inconsistent numbers in the third quarter.\nW: Really? Let me check, I compiled it quickly this morning.\nM: No problem, just make sure the regional totals match the national total.\nW: Got it, I'll recalculate and send the corrected version by this afternoon.\nM: Great, we need it before the client meeting tomorrow.\nW: I'll prioritize it right away." },
+{ id:35, type:"pg", kategori:"Listening", teks:"Berdasarkan Percakapan Panjang 2: What problem did the man find?",
+  opsi:["Missing pages","Inconsistent numbers","Wrong client name","Late submission"], kunci:1 },
+{ id:36, type:"pg", kategori:"Listening", teks:"Berdasarkan Percakapan Panjang 2: What does the woman plan to do?",
+  opsi:["Ignore the mistake","Recalculate and resend the report","Ask someone else to fix it","Cancel the report"], kunci:1 },
+{ id:37, type:"pg", kategori:"Listening", teks:"Berdasarkan Percakapan Panjang 2: When is the report needed?",
+  opsi:["Next week","Before tomorrow's client meeting","By the end of the month","It's not urgent"], kunci:1 },
+{ id:38, type:"pg", kategori:"Listening", teks:"Berdasarkan Percakapan Panjang 2: What can be inferred about the woman?",
+  opsi:["She is careless about deadlines","She is willing to correct her mistake quickly","She disagrees with the man","She refuses to fix the report"], kunci:1 },
+
+/* ================= SECTION 1: LISTENING - PART C (id 39-50) ================= */
+{ id:"c1", type:"bacaan", judul:"Talk 1: Solar Energy",
+  teks:"Today we'll discuss solar energy as one of the fastest-growing renewable energy sources in the world. Unlike fossil fuels, solar power does not produce greenhouse gases during operation, making it an environmentally friendly option. However, the initial cost of installing solar panels can be high, though prices have dropped significantly over the past decade. Many governments now offer incentives to encourage households and businesses to switch to solar energy. Experts predict that within the next twenty years, solar power could become the primary source of electricity in many countries." },
+{ id:39, type:"pg", kategori:"Listening", teks:"Berdasarkan Talk 1: What is the talk mainly about?",
+  opsi:["The history of electricity","Solar energy as a renewable source","Government taxes","Fossil fuel production"], kunci:1 },
+{ id:40, type:"pg", kategori:"Listening", teks:"Berdasarkan Talk 1: What is one disadvantage of solar energy mentioned?",
+  opsi:["It produces greenhouse gases","High initial installation cost","It is illegal in some countries","It requires fossil fuels"], kunci:1 },
+{ id:41, type:"pg", kategori:"Listening", teks:"Berdasarkan Talk 1: What have governments done to encourage solar energy use?",
+  opsi:["Banned fossil fuels","Offered incentives","Increased taxes on solar panels","Required permits"], kunci:1 },
+{ id:42, type:"pg", kategori:"Listening", teks:"Berdasarkan Talk 1: What is predicted for the next twenty years?",
+  opsi:["Solar power will disappear","Solar power may become a primary energy source","Fossil fuels will be banned","Prices will rise sharply"], kunci:1 },
+
+{ id:"c2", type:"bacaan", judul:"Talk 2: Campus Announcement",
+  teks:"Attention students, the university library will be extending its operating hours during final exam week. Starting next Monday, the library will remain open until 2 a.m. instead of the usual 10 p.m. closing time. Additionally, extra study rooms have been set up on the third floor to accommodate the increased number of students. Free coffee and tea will also be available in the lounge area throughout the week. Students are reminded to bring their ID cards, as they will be required for entry after 10 p.m." },
+{ id:43, type:"pg", kategori:"Listening", teks:"Berdasarkan Talk 2: Why is the announcement being made?",
+  opsi:["To announce a new library building","To inform students about extended library hours","To cancel final exams","To close the library early"], kunci:1 },
+{ id:44, type:"pg", kategori:"Listening", teks:"Berdasarkan Talk 2: What time will the library close during exam week?",
+  opsi:["10 p.m.","Midnight","2 a.m.","It will stay open 24 hours"], kunci:2 },
+{ id:45, type:"pg", kategori:"Listening", teks:"Berdasarkan Talk 2: What is provided in the lounge area?",
+  opsi:["Free meals","Free coffee and tea","Free printing","Free tutoring"], kunci:1 },
+{ id:46, type:"pg", kategori:"Listening", teks:"Berdasarkan Talk 2: What do students need after 10 p.m.?",
+  opsi:["A reservation","Their ID cards","A parking pass","Permission from a professor"], kunci:1 },
+
+{ id:"c3", type:"bacaan", judul:"Talk 3: The Printing Press",
+  teks:"The invention of the printing press by Johannes Gutenberg in the fifteenth century revolutionized the way information was shared across Europe. Before this invention, books were copied by hand, a process that was slow and expensive, limiting access to knowledge to only the wealthy or religious institutions. With the printing press, books could be produced much faster and at a lower cost, allowing literacy rates to rise across the continent. This technological advancement is often credited with contributing to major historical movements, including the Renaissance and the Reformation." },
+{ id:47, type:"pg", kategori:"Listening", teks:"Berdasarkan Talk 3: What is the main topic of the talk?",
+  opsi:["The history of literacy tests","The impact of the printing press","Religious institutions in Europe","Modern printing technology"], kunci:1 },
+{ id:48, type:"pg", kategori:"Listening", teks:"Berdasarkan Talk 3: How were books produced before the printing press?",
+  opsi:["By machines","By hand","By computers","They were not produced"], kunci:1 },
+{ id:49, type:"pg", kategori:"Listening", teks:"Berdasarkan Talk 3: What effect did the printing press have on literacy?",
+  opsi:["It decreased literacy","It had no effect","It increased literacy rates","It only affected the wealthy"], kunci:2 },
+{ id:50, type:"pg", kategori:"Listening", teks:"Berdasarkan Talk 3: What historical movements are linked to the printing press?",
+  opsi:["The Industrial Revolution","The Renaissance and Reformation","World War I","The Cold War"], kunci:1 },
+
+/* ================= SECTION 2: STRUCTURE (id 51-65) ================= */
+{ id:51, type:"pg", kategori:"Structure", teks:"________ the heavy rain, the outdoor event continued as planned.",
+  opsi:["Despite","Although","Because","Since"], kunci:0 },
+{ id:52, type:"pg", kategori:"Structure", teks:"By the time the guests arrived, she ________ the entire dinner.",
+  opsi:["prepares","had prepared","preparing","will prepare"], kunci:1 },
+{ id:53, type:"pg", kategori:"Structure", teks:"________ works hard is likely to succeed.",
+  opsi:["Whoever","Whom","Who","Whose"], kunci:0 },
+{ id:54, type:"pg", kategori:"Structure", teks:"The committee ________ meeting is scheduled for Monday has not yet reviewed the proposal.",
+  opsi:["which","whose","that","who"], kunci:1 },
+{ id:55, type:"pg", kategori:"Structure", teks:"Not only ________ the exam, but she also received the highest score in class.",
+  opsi:["she passed","did she pass","she did pass","passed she"], kunci:1 },
+{ id:56, type:"pg", kategori:"Structure", teks:"The number of students enrolled in the program ________ increased significantly this year.",
+  opsi:["have","has","having","had being"], kunci:1 },
+{ id:57, type:"pg", kategori:"Structure", teks:"________ the instructions carefully, the technician was able to fix the machine quickly.",
+  opsi:["Follow","Following","Followed","To follow"], kunci:1 },
+{ id:58, type:"pg", kategori:"Structure", teks:"If the manager ________ the report earlier, the meeting would not have been delayed.",
+  opsi:["submits","submitted","had submitted","submit"], kunci:2 },
+{ id:59, type:"pg", kategori:"Structure", teks:"It is essential that every employee ________ the new safety regulations.",
+  opsi:["follows","follow","followed","following"], kunci:1 },
+{ id:60, type:"pg", kategori:"Structure", teks:"The research, ________ was funded by the government, took three years to complete.",
+  opsi:["that","which","who","whose"], kunci:1 },
+{ id:61, type:"pg", kategori:"Structure", teks:"Hardly ________ the presentation when the fire alarm went off.",
+  opsi:["he had started","had he started","he started","did he started"], kunci:1 },
+{ id:62, type:"pg", kategori:"Structure", teks:"The more you practice speaking English, ________ you will become.",
+  opsi:["fluent","the more fluent","fluently","most fluent"], kunci:1 },
+{ id:63, type:"pg", kategori:"Structure", teks:"________ from the survey results, most employees prefer flexible working hours.",
+  opsi:["Judge","Judging","Judged","To judge"], kunci:1 },
+{ id:64, type:"pg", kategori:"Structure", teks:"She would have attended the seminar ________ she had known about it in advance.",
+  opsi:["unless","if","because","although"], kunci:1 },
+{ id:65, type:"pg", kategori:"Structure", teks:"The novel, ________ author remains anonymous, has become a bestseller.",
+  opsi:["which","whose","that","who"], kunci:1 },
+
+/* ================= SECTION 2: WRITTEN EXPRESSION (id 66-90) ================= */
+/* Format: teks berisi kalimat dengan 4 bagian bergaris bawah [A][B][C][D].
+   opsi menampilkan ulang teks tiap bagian; kunci = bagian yang SALAH secara gramatikal. */
+{ id:66, type:"pg", kategori:"Structure", teks:"Each of the students [A]are required to submit [B]their assignments [C]no later than [D]Friday afternoon.\n\nManakah bagian yang salah secara gramatikal?",
+  opsi:["are required to submit","their assignments","no later than","Friday afternoon"], kunci:0 },
+{ id:67, type:"pg", kategori:"Structure", teks:"The committee has decided to [A]postpone the meeting because [B]the majority of members [C]was unable to [D]attend.\n\nManakah bagian yang salah secara gramatikal?",
+  opsi:["postpone the meeting because","the majority of members","was unable to","attend"], kunci:2 },
+{ id:68, type:"pg", kategori:"Structure", teks:"She is one of the [A]most talented musician [B]in the orchestra, [C]known for her [D]exceptional violin skills.\n\nManakah bagian yang salah secara gramatikal?",
+  opsi:["most talented musician","in the orchestra","known for her","exceptional violin skills"], kunci:0 },
+{ id:69, type:"pg", kategori:"Structure", teks:"By the time he [A]arrives at the station, the train [B]will already [C]leave, [D]so he'll have to wait for the next one.\n\nManakah bagian yang salah secara gramatikal?",
+  opsi:["arrives at the station","will already","leave","so he'll have to wait for the next one"], kunci:2 },
+{ id:70, type:"pg", kategori:"Structure", teks:"Neither the manager nor the employees [A]was aware [B]of the changes [C]until the announcement [D]was made.\n\nManakah bagian yang salah secara gramatikal?",
+  opsi:["was aware","of the changes","until the announcement","was made"], kunci:0 },
+{ id:71, type:"pg", kategori:"Structure", teks:"The professor asked the students to [A]hand in their essays, [B]revise their bibliography, and [C]checking [D]for grammatical errors before submission.\n\nManakah bagian yang salah secara gramatikal?",
+  opsi:["hand in their essays,","revise their bibliography, and","checking","for grammatical errors before submission"], kunci:2 },
+{ id:72, type:"pg", kategori:"Structure", teks:"[A]Despite of [B]the heavy traffic, [C]we managed to [D]arrive at the airport on time.\n\nManakah bagian yang salah secara gramatikal?",
+  opsi:["Despite of","the heavy traffic,","we managed to","arrive at the airport on time"], kunci:0 },
+{ id:73, type:"pg", kategori:"Structure", teks:"The data [A]collected from the experiment [B]shows that the new method is [C]more effective than [D]the old one.\n\nManakah bagian yang salah secara gramatikal?",
+  opsi:["collected from the experiment","shows that the new method is","more effective than","the old one"], kunci:1 },
+{ id:74, type:"pg", kategori:"Structure", teks:"He is [A]more taller than [B]any other student [C]in the class, [D]especially in basketball.\n\nManakah bagian yang salah secara gramatikal?",
+  opsi:["more taller than","any other student","in the class,","especially in basketball"], kunci:0 },
+{ id:75, type:"pg", kategori:"Structure", teks:"The teacher, [A]along with her students, [B]are planning [C]to visit the museum [D]next week.\n\nManakah bagian yang salah secara gramatikal?",
+  opsi:["along with her students,","are planning","to visit the museum","next week"], kunci:1 },
+{ id:76, type:"pg", kategori:"Structure", teks:"Scientists have discovered a new species of frog [A]that [B]can survive [C]in extremely cold temperature [D]without freezing.\n\nManakah bagian yang salah secara gramatikal?",
+  opsi:["that","can survive","in extremely cold temperature","without freezing"], kunci:2 },
+{ id:77, type:"pg", kategori:"Structure", teks:"The report [A]indicate that [B]sales have increased [C]by nearly [D]twenty percent this quarter.\n\nManakah bagian yang salah secara gramatikal?",
+  opsi:["indicate that","sales have increased","by nearly","twenty percent this quarter"], kunci:0 },
+{ id:78, type:"pg", kategori:"Structure", teks:"Although she was tired, [A]but she [B]continued working [C]until the project [D]was finished.\n\nManakah bagian yang salah secara gramatikal?",
+  opsi:["but she","continued working","until the project","was finished"], kunci:0 },
+{ id:79, type:"pg", kategori:"Structure", teks:"The children [A]was playing [B]in the park [C]when it [D]began to rain.\n\nManakah bagian yang salah secara gramatikal?",
+  opsi:["was playing","in the park","when it","began to rain"], kunci:0 },
+{ id:80, type:"pg", kategori:"Structure", teks:"One of the main [A]reason [B]for the delay [C]was the shortage [D]of raw materials.\n\nManakah bagian yang salah secara gramatikal?",
+  opsi:["reason","for the delay","was the shortage","of raw materials"], kunci:0 },
+{ id:81, type:"pg", kategori:"Structure", teks:"The airline announced that [A]all flight [B]to the northern region [C]would be canceled [D]due to the storm.\n\nManakah bagian yang salah secara gramatikal?",
+  opsi:["all flight","to the northern region","would be canceled","due to the storm"], kunci:0 },
+{ id:82, type:"pg", kategori:"Structure", teks:"It is important for every citizen [A]to voting [B]in the upcoming election [C]in order to [D]support democracy.\n\nManakah bagian yang salah secara gramatikal?",
+  opsi:["to voting","in the upcoming election","in order to","support democracy"], kunci:0 },
+{ id:83, type:"pg", kategori:"Structure", teks:"The two companies [A]has agreed [B]to merge [C]their operations [D]by the end of the year.\n\nManakah bagian yang salah secara gramatikal?",
+  opsi:["has agreed","to merge","their operations","by the end of the year"], kunci:0 },
+{ id:84, type:"pg", kategori:"Structure", teks:"She enjoys [A]reading novels, [B]to write poetry, and [C]painting landscapes [D]in her free time.\n\nManakah bagian yang salah secara gramatikal?",
+  opsi:["reading novels,","to write poetry, and","painting landscapes","in her free time"], kunci:1 },
+{ id:85, type:"pg", kategori:"Structure", teks:"The board members [A]discussed several proposal [B]before finally [C]choosing the one [D]that seemed most cost-effective.\n\nManakah bagian yang salah secara gramatikal?",
+  opsi:["discussed several proposal","before finally","choosing the one","that seemed most cost-effective"], kunci:0 },
+{ id:86, type:"pg", kategori:"Structure", teks:"Since the factory [A]opened last year, [B]it have produced [C]thousands of units [D]for export.\n\nManakah bagian yang salah secara gramatikal?",
+  opsi:["opened last year,","it have produced","thousands of units","for export"], kunci:1 },
+{ id:87, type:"pg", kategori:"Structure", teks:"The scientist explained [A]how does [B]the vaccine [C]work in [D]the human body.\n\nManakah bagian yang salah secara gramatikal?",
+  opsi:["how does","the vaccine","work in","the human body"], kunci:0 },
+{ id:88, type:"pg", kategori:"Structure", teks:"Most of the furniture in the house [A]were made [B]by local craftsmen [C]using traditional techniques [D]passed down for generations.\n\nManakah bagian yang salah secara gramatikal?",
+  opsi:["were made","by local craftsmen","using traditional techniques","passed down for generations"], kunci:0 },
+{ id:89, type:"pg", kategori:"Structure", teks:"The manager insisted that the report [A]is submitted [B]before the deadline [C]to avoid any [D]further delays.\n\nManakah bagian yang salah secara gramatikal?",
+  opsi:["is submitted","before the deadline","to avoid any","further delays"], kunci:0 },
+{ id:90, type:"pg", kategori:"Structure", teks:"Not until the results were announced [A]the students realized [B]how well [C]they had performed [D]on the exam.\n\nManakah bagian yang salah secara gramatikal?",
+  opsi:["the students realized","how well","they had performed","on the exam"], kunci:0 },
+
+/* ================= SECTION 3: READING COMPREHENSION (id 91-140) ================= */
+{ id:"r1", type:"bacaan", judul:"Bacaan 1: The History of Coffee",
+  teks:"Coffee is believed to have originated in the highlands of Ethiopia, where legend says a goat herder named Kaldi discovered the energizing effects of coffee berries after noticing his goats became unusually lively after eating them. From Ethiopia, coffee cultivation spread to the Arabian Peninsula, where it was first cultivated and traded on a large scale around the fifteenth century. Coffee houses, known as qahveh khaneh, became popular gathering places in cities such as Mecca and Cairo, where people would meet to socialize, listen to music, and discuss current events. By the seventeenth century, coffee had reached Europe, where it quickly gained popularity despite initial resistance from some religious leaders who viewed it with suspicion. European coffee houses soon became centers of intellectual exchange, frequented by writers, philosophers, and merchants. Today, coffee is one of the most widely consumed beverages in the world, with millions of people relying on it daily for its stimulating effects, driven primarily by its caffeine content." },
+{ id:91, type:"pg", kategori:"Reading", teks:"Berdasarkan Bacaan 1: What is the main idea of the passage?",
+  opsi:["The chemical composition of coffee","The historical spread and cultural significance of coffee","The health benefits of caffeine","Modern methods of coffee production"], kunci:1 },
+{ id:92, type:"pg", kategori:"Reading", teks:"Berdasarkan Bacaan 1: Who is said to have discovered coffee's effects?",
+  opsi:["A trader","A goat herder","A religious leader","A scientist"], kunci:1 },
+{ id:93, type:"pg", kategori:"Reading", teks:"Berdasarkan Bacaan 1: Where did coffee cultivation begin on a large scale?",
+  opsi:["Ethiopia","The Arabian Peninsula","Europe","Cairo"], kunci:1 },
+{ id:94, type:"pg", kategori:"Reading", teks:"Berdasarkan Bacaan 1: The word \"qahveh khaneh\" in the passage refers to",
+  opsi:["coffee beans","coffee houses","coffee farmers","coffee cups"], kunci:1 },
+{ id:95, type:"pg", kategori:"Reading", teks:"Berdasarkan Bacaan 1: What did people do in early coffee houses?",
+  opsi:["Only drink coffee silently","Socialize and discuss events","Sell goats","Practice religion"], kunci:1 },
+{ id:96, type:"pg", kategori:"Reading", teks:"Berdasarkan Bacaan 1: How did some religious leaders in Europe initially view coffee?",
+  opsi:["With enthusiasm","With suspicion","With indifference","With celebration"], kunci:1 },
+{ id:97, type:"pg", kategori:"Reading", teks:"Berdasarkan Bacaan 1: What kind of people frequented European coffee houses?",
+  opsi:["Only farmers","Writers, philosophers, and merchants","Only royalty","Only children"], kunci:1 },
+{ id:98, type:"pg", kategori:"Reading", teks:"Berdasarkan Bacaan 1: Why do many people drink coffee today, according to the passage?",
+  opsi:["For its taste only","For its stimulating effects from caffeine","For religious reasons","Because it is inexpensive"], kunci:1 },
+{ id:99, type:"pg", kategori:"Reading", teks:"Berdasarkan Bacaan 1: The word \"resistance\" in the passage is closest in meaning to",
+  opsi:["support","opposition","curiosity","celebration"], kunci:1 },
+{ id:100, type:"pg", kategori:"Reading", teks:"Berdasarkan Bacaan 1: It can be inferred that coffee houses played a role in",
+  opsi:["military strategy","the exchange of ideas","agricultural technology","religious ceremonies"], kunci:1 },
+
+{ id:"r2", type:"bacaan", judul:"Bacaan 2: Coral Reefs and Climate Change",
+  teks:"Coral reefs, often referred to as the rainforests of the sea, are among the most biologically diverse ecosystems on Earth. These underwater structures are built by tiny organisms called coral polyps, which secrete calcium carbonate to form hard skeletons. Over thousands of years, these skeletons accumulate to create the vast reef structures seen today. Coral reefs provide habitat for an estimated twenty-five percent of all marine species, despite covering less than one percent of the ocean floor. However, rising ocean temperatures caused by climate change pose a serious threat to these ecosystems. When water becomes too warm, corals expel the symbiotic algae living in their tissues, a process known as coral bleaching, which leaves the coral white and vulnerable to disease. If temperatures remain elevated for extended periods, bleached corals can die, leading to the collapse of the entire reef ecosystem. Scientists warn that without significant reductions in global carbon emissions, many of the world's coral reefs could disappear within the next few decades." },
+{ id:101, type:"pg", kategori:"Reading", teks:"Berdasarkan Bacaan 2: What is the main topic of the passage?",
+  opsi:["The formation of ocean currents","The threat of climate change to coral reefs","Marine species classification","The chemical composition of seawater"], kunci:1 },
+{ id:102, type:"pg", kategori:"Reading", teks:"Berdasarkan Bacaan 2: What builds coral reefs?",
+  opsi:["Fish","Coral polyps","Seaweed","Ocean currents"], kunci:1 },
+{ id:103, type:"pg", kategori:"Reading", teks:"Berdasarkan Bacaan 2: What percentage of marine species do coral reefs support?",
+  opsi:["1%","10%","25%","50%"], kunci:2 },
+{ id:104, type:"pg", kategori:"Reading", teks:"Berdasarkan Bacaan 2: What is coral bleaching?",
+  opsi:["The natural color of coral","The process of corals expelling algae due to heat","A method of coral reproduction","A type of coral disease unrelated to temperature"], kunci:1 },
+{ id:105, type:"pg", kategori:"Reading", teks:"Berdasarkan Bacaan 2: What happens to coral after bleaching if warm temperatures persist?",
+  opsi:["It becomes more colorful","It can die","It grows faster","It becomes immune to disease"], kunci:1 },
+{ id:106, type:"pg", kategori:"Reading", teks:"Berdasarkan Bacaan 2: The word \"vulnerable\" in the passage is closest in meaning to",
+  opsi:["resistant","susceptible","invisible","permanent"], kunci:1 },
+{ id:107, type:"pg", kategori:"Reading", teks:"Berdasarkan Bacaan 2: What covers less than one percent of the ocean floor?",
+  opsi:["Fish populations","Coral reefs","Algae","Sand"], kunci:1 },
+{ id:108, type:"pg", kategori:"Reading", teks:"Berdasarkan Bacaan 2: What do scientists warn about?",
+  opsi:["Overfishing","Possible disappearance of coral reefs","Ocean acidification only","New coral species"], kunci:1 },
+{ id:109, type:"pg", kategori:"Reading", teks:"Berdasarkan Bacaan 2: What is needed to prevent coral reef loss, according to the passage?",
+  opsi:["More tourism","Reduced carbon emissions","More fishing regulations","Building artificial reefs"], kunci:1 },
+{ id:110, type:"pg", kategori:"Reading", teks:"Berdasarkan Bacaan 2: It can be inferred that coral reefs are important because",
+  opsi:["they are the largest ocean structures","they support significant marine biodiversity","they produce oxygen for the atmosphere","they prevent all ocean storms"], kunci:1 },
+
+{ id:"r3", type:"bacaan", judul:"Bacaan 3: The Rise of Remote Work",
+  teks:"In recent years, remote work has transformed from a rare arrangement into a mainstream practice adopted by companies worldwide. This shift was accelerated significantly by advances in digital communication technology, which made it possible for employees to collaborate effectively without being physically present in an office. Video conferencing tools, cloud-based document sharing, and instant messaging platforms have all contributed to making remote work more feasible than ever before. Proponents of remote work argue that it offers numerous benefits, including increased flexibility, reduced commuting time, and improved work-life balance for employees. Companies also benefit from reduced overhead costs associated with maintaining large office spaces. However, remote work is not without its challenges. Some employees report feelings of isolation due to reduced face-to-face interaction with colleagues, while others struggle to separate their professional and personal lives when working from home. Additionally, managers have expressed concerns about maintaining team cohesion and monitoring productivity in a remote environment. As a result, many organizations have adopted hybrid models, combining remote and in-office work to balance these competing needs." },
+{ id:111, type:"pg", kategori:"Reading", teks:"Berdasarkan Bacaan 3: What is the passage mainly about?",
+  opsi:["The history of office buildings","The growth and challenges of remote work","Digital communication inventions","Employee salary trends"], kunci:1 },
+{ id:112, type:"pg", kategori:"Reading", teks:"Berdasarkan Bacaan 3: What accelerated the shift to remote work?",
+  opsi:["Government regulations","Advances in digital communication technology","Rising office rent","Employee strikes"], kunci:1 },
+{ id:113, type:"pg", kategori:"Reading", teks:"Berdasarkan Bacaan 3: What is one benefit of remote work for employees?",
+  opsi:["Higher salaries","Improved work-life balance","Guaranteed promotions","Free housing"], kunci:1 },
+{ id:114, type:"pg", kategori:"Reading", teks:"Berdasarkan Bacaan 3: What benefit do companies gain from remote work?",
+  opsi:["Increased office space","Reduced overhead costs","More employees","Higher taxes"], kunci:1 },
+{ id:115, type:"pg", kategori:"Reading", teks:"Berdasarkan Bacaan 3: What challenge do some employees face while working remotely?",
+  opsi:["Too much social interaction","Feelings of isolation","Lower pay","Lack of internet access"], kunci:1 },
+{ id:116, type:"pg", kategori:"Reading", teks:"Berdasarkan Bacaan 3: The word \"cohesion\" in the passage is closest in meaning to",
+  opsi:["division","unity","confusion","competition"], kunci:1 },
+{ id:117, type:"pg", kategori:"Reading", teks:"Berdasarkan Bacaan 3: What concern do managers have about remote work?",
+  opsi:["Employees traveling too much","Maintaining team unity and monitoring productivity","Office space shortages","Employee dress code"], kunci:1 },
+{ id:118, type:"pg", kategori:"Reading", teks:"Berdasarkan Bacaan 3: What is a hybrid work model, according to the passage?",
+  opsi:["Working only from home","Working only in the office","A combination of remote and in-office work","Working part-time only"], kunci:2 },
+{ id:119, type:"pg", kategori:"Reading", teks:"Berdasarkan Bacaan 3: Why have many organizations adopted hybrid models?",
+  opsi:["To eliminate remote work completely","To balance the benefits and challenges of remote work","To reduce employee salaries","To increase commuting time"], kunci:1 },
+{ id:120, type:"pg", kategori:"Reading", teks:"Berdasarkan Bacaan 3: It can be inferred that remote work success depends largely on",
+  opsi:["the availability of reliable digital tools","government subsidies","the size of the company","the location of employees"], kunci:0 },
+
+{ id:"r4", type:"bacaan", judul:"Bacaan 4: Ancient Trade Routes - The Silk Road",
+  teks:"The Silk Road was an extensive network of trade routes that connected the East and West for over a thousand years, facilitating the exchange of goods, ideas, and culture between civilizations. Stretching from China through Central Asia to the Mediterranean, the route derived its name from the lucrative silk trade that originated in China, a product highly prized in Europe and the Middle East. Beyond silk, merchants traded a variety of goods including spices, precious metals, textiles, and ceramics. The Silk Road was not a single path but rather a complex web of routes traveled by caravans, which had to cross deserts, mountains, and hostile territories, making the journey both profitable and dangerous. In addition to material goods, the Silk Road served as a conduit for the spread of religions such as Buddhism and Islam, as well as scientific knowledge and technological innovations like papermaking and gunpowder. The decline of the Silk Road began in the fifteenth century, largely due to the rise of maritime trade routes, which offered faster and safer alternatives for transporting goods between continents." },
+{ id:121, type:"pg", kategori:"Reading", teks:"Berdasarkan Bacaan 4: What is the main purpose of the passage?",
+  opsi:["To describe modern trade agreements","To explain the history and significance of the Silk Road","To analyze Chinese silk production techniques","To compare ancient and modern transportation"], kunci:1 },
+{ id:122, type:"pg", kategori:"Reading", teks:"Berdasarkan Bacaan 4: Why is the route called the \"Silk Road\"?",
+  opsi:["Because silk was the only good traded","Because of the significant silk trade originating in China","Because it was built from silk fibers","Because silk merchants named it"], kunci:1 },
+{ id:123, type:"pg", kategori:"Reading", teks:"Berdasarkan Bacaan 4: Besides silk, what other goods were traded along the route?",
+  opsi:["Only spices","Spices, precious metals, textiles, and ceramics","Only precious metals","Only textiles"], kunci:1 },
+{ id:124, type:"pg", kategori:"Reading", teks:"Berdasarkan Bacaan 4: What made the journey along the Silk Road dangerous?",
+  opsi:["Political conflicts only","Crossing deserts, mountains, and hostile territories","Bad weather only","Lack of merchants"], kunci:1 },
+{ id:125, type:"pg", kategori:"Reading", teks:"Berdasarkan Bacaan 4: What religions spread along the Silk Road, according to the passage?",
+  opsi:["Christianity and Judaism","Buddhism and Islam","Hinduism only","No religions spread"], kunci:1 },
+{ id:126, type:"pg", kategori:"Reading", teks:"Berdasarkan Bacaan 4: What technological innovations spread via the Silk Road?",
+  opsi:["Steam engines","Papermaking and gunpowder","Electricity","The printing press"], kunci:1 },
+{ id:127, type:"pg", kategori:"Reading", teks:"Berdasarkan Bacaan 4: Why did the Silk Road decline?",
+  opsi:["Wars destroyed the route","The rise of maritime trade routes","Silk became worthless","All merchants retired"], kunci:1 },
+{ id:128, type:"pg", kategori:"Reading", teks:"Berdasarkan Bacaan 4: The word \"conduit\" in the passage is closest in meaning to",
+  opsi:["barrier","channel","destination","obstacle"], kunci:1 },
+{ id:129, type:"pg", kategori:"Reading", teks:"Berdasarkan Bacaan 4: When did the decline of the Silk Road begin?",
+  opsi:["The tenth century","The fifteenth century","The twentieth century","It never declined"], kunci:1 },
+{ id:130, type:"pg", kategori:"Reading", teks:"Berdasarkan Bacaan 4: It can be inferred that maritime trade routes were preferred because they were",
+  opsi:["more expensive","faster and safer","less profitable","illegal"], kunci:1 },
+
+{ id:"r5", type:"bacaan", judul:"Bacaan 5: The Science of Sleep",
+  teks:"Sleep is a fundamental biological process that plays a crucial role in maintaining physical health, cognitive function, and emotional well-being. During sleep, the human body cycles through several stages, including light sleep, deep sleep, and rapid eye movement, or REM, sleep, each serving distinct physiological purposes. Deep sleep is particularly important for physical restoration, as it is during this stage that the body repairs tissues and strengthens the immune system. REM sleep, on the other hand, is closely associated with memory consolidation and emotional processing, as the brain organizes and stores information gathered throughout the day. Chronic sleep deprivation has been linked to a range of negative health outcomes, including impaired concentration, weakened immune response, and an increased risk of chronic conditions such as obesity and cardiovascular disease. Despite growing awareness of the importance of sleep, many people continue to prioritize work and social activities over adequate rest, often as a result of demanding schedules and the pervasive use of electronic devices before bedtime, which can interfere with the body's natural sleep-wake cycle." },
+{ id:131, type:"pg", kategori:"Reading", teks:"Berdasarkan Bacaan 5: What is the main idea of the passage?",
+  opsi:["The history of sleep research","The biological importance and stages of sleep","Treatments for insomnia","The invention of sleep-tracking devices"], kunci:1 },
+{ id:132, type:"pg", kategori:"Reading", teks:"Berdasarkan Bacaan 5: What happens during deep sleep?",
+  opsi:["Memory consolidation only","Physical restoration and immune strengthening","Increased heart rate","Dreaming only"], kunci:1 },
+{ id:133, type:"pg", kategori:"Reading", teks:"Berdasarkan Bacaan 5: What is REM sleep associated with?",
+  opsi:["Physical repair only","Memory consolidation and emotional processing","Muscle growth","Digestion"], kunci:1 },
+{ id:134, type:"pg", kategori:"Reading", teks:"Berdasarkan Bacaan 5: What is one consequence of chronic sleep deprivation mentioned in the passage?",
+  opsi:["Improved concentration","Weakened immune response","Better memory","Increased energy"], kunci:1 },
+{ id:135, type:"pg", kategori:"Reading", teks:"Berdasarkan Bacaan 5: The word \"pervasive\" in the passage is closest in meaning to",
+  opsi:["rare","widespread","beneficial","temporary"], kunci:1 },
+{ id:136, type:"pg", kategori:"Reading", teks:"Berdasarkan Bacaan 5: What can interfere with the body's natural sleep-wake cycle, according to the passage?",
+  opsi:["Deep sleep","Use of electronic devices before bedtime","REM sleep","Physical exercise"], kunci:1 },
+{ id:137, type:"pg", kategori:"Reading", teks:"Berdasarkan Bacaan 5: Why do many people fail to get adequate rest, according to the passage?",
+  opsi:["They don't need sleep","Demanding schedules and device use","They sleep too much already","Sleep is not important to them"], kunci:1 },
+{ id:138, type:"pg", kategori:"Reading", teks:"Berdasarkan Bacaan 5: What health conditions are linked to sleep deprivation?",
+  opsi:["Only mental health issues","Obesity and cardiovascular disease","Only vision problems","No health conditions"], kunci:1 },
+{ id:139, type:"pg", kategori:"Reading", teks:"Berdasarkan Bacaan 5: It can be inferred that adequate sleep is important for",
+  opsi:["overall physical and mental health","academic degrees only","financial success only","social status"], kunci:0 },
+{ id:140, type:"pg", kategori:"Reading", teks:"Berdasarkan Bacaan 5: What does the passage suggest about people's awareness of sleep's importance?",
+  opsi:["No one is aware of it","Despite awareness, many still don't prioritize sleep","Everyone prioritizes sleep","Sleep awareness has decreased over time"], kunci:1 }
+
+];
+
+/* =========================================================================
+   ========================  LOGIC APLIKASI  ================================
+   ========================================================================= */
+let nama = "";
+let answers = {};        // { soalId: jawaban }
+let sisaDetik = CONFIG.WAKTU_MENIT * 60;
+let timerInterval = null;
+let sudahSelesai = false;
+
+// isi halaman awal
+document.getElementById("judulUjian").textContent = CONFIG.JUDUL_LENGKAP_UJIAN;
+document.getElementById("infoUjian").textContent =
+  "Waktu: " + CONFIG.WAKTU_MENIT + " Menit | Jumlah Soal: " + DATA_SOAL.length;
+
+function formatWaktu(detik) {
+  const m = Math.floor(detik / 60).toString().padStart(2, "0");
+  const s = (detik % 60).toString().padStart(2, "0");
+  return m + ":" + s;
+}
+
+// soal dengan type "bacaan" adalah teks passage/skrip (tanpa jawaban),
+// tidak dihitung sebagai nomor soal dan tidak masuk nav grid / scoring.
+function daftarSoalBernomor() {
+  return DATA_SOAL.filter(s => s.type !== "bacaan");
+}
+
+function buatNavGrid() {
+  const grid = document.getElementById("navGrid");
+  grid.innerHTML = "";
+  daftarSoalBernomor().forEach((soal, idx) => {
+    const btn = document.createElement("button");
+    btn.className = "nav-btn";
+    btn.id = "nav-" + soal.id;
+    btn.textContent = idx + 1;
+    btn.onclick = () => {
+      document.getElementById("soal-" + soal.id).scrollIntoView({ behavior: "smooth", block: "start" });
+    };
+    grid.appendChild(btn);
   });
+}
 
-  // STRUCTURE 51-90 - Fixed with real questions
-  const structureQs = [
-    { q: "Neither the cadets nor their instructor ___ present at the morning roll call.", o: ["was", "were", "is", "has been"], a: 1, e: "Neither...nor... mengikuti subjek terdekat 'instructor' yang jamak dalam konteks, maka 'were'." },
-    { q: "The museum ___ we visited yesterday displays maritime artifacts.", o: ["which", "what", "whom", "whose"], a: 0, e: "Relative pronoun 'which' untuk benda 'museum'." },
-    { q: "If I ___ you, I would accept the scholarship offer immediately.", o: ["am", "was", "were", "be"], a: 2, e: "Conditional type 2 menggunakan 'were' untuk semua subjek." },
-    { q: "The report must ___ before Friday.", o: ["submit", "be submitted", "submitting", "submitted"], a: 1, e: "Modal 'must' + be + V3 untuk passive voice: be submitted." },
-    { q: "Scarcely ___ when the alarm went off.", o: ["he had slept", "had he slept", "he slept", "did he sleep"], a: 1, e: "Inversi setelah 'Scarcely': had + S + V3." },
-    { q: "The training is more demanding than ___ expected.", o: ["we", "us", "our", "ours"], a: 0, e: "Subjek 'we' diperlukan untuk klausa 'we expected'." },
-    { q: "By the time we arrived, the ceremony ___.", o: ["has begun", "had begun", "began", "begins"], a: 1, e: "Past perfect 'had begun' untuk kejadian sebelum 'arrived'." },
-    { q: "The professor suggested that the student ___ more references.", o: ["finds", "find", "found", "finding"], a: 1, e: "Subjunctive setelah 'suggest' menggunakan base verb 'find'." },
-    { q: "Not only ___ intelligent but also disciplined.", o: ["she is", "is she", "she", "was she"], a: 1, e: "Inversi setelah 'Not only': is she." },
-    { q: "The equipment, along with the uniforms, ___ checked daily.", o: ["is", "are", "were", "have been"], a: 0, e: "Subjek utama 'equipment' singular, maka 'is'." },
-    { q: "She would rather ___ at home than go to the party.", o: ["stay", "stays", "stayed", "staying"], a: 0, e: "Would rather + V1: stay." },
-    { q: "The number of applicants ___ increasing every year.", o: ["is", "are", "were", "have been"], a: 0, e: "The number of = singular, maka 'is'." },
-    { q: "Had I known about the test, I ___ harder.", o: ["would study", "would have studied", "studied", "study"], a: 1, e: "Inversi past perfect conditional: would have studied." },
-    { q: "It is important that he ___ on time for the ceremony.", o: ["arrives", "arrive", "arrived", "arriving"], a: 1, e: "Subjunctive 'It is important that' + V1: arrive." },
-    { q: "The book ___ you borrowed is overdue.", o: ["which", "what", "who", "whom"], a: 0, e: "Relative pronoun 'which' untuk benda 'book'." },
-    { q: "She speaks English ___ than her classmates.", o: ["fluent", "more fluent", "more fluently", "most fluently"], a: 2, e: "Comparative adverb: more fluently." },
-    { q: "No sooner ___ the bell rang than the students left.", o: ["did", "had", "has", "have"], a: 1, e: "No sooner had...than...'." },
-    { q: "The commander ordered that every cadet ___ in uniform.", o: ["is", "be", "was", "are"], a: 1, e: "Subjunctive setelah 'ordered that': be." },
-    { q: "Each of the students ___ responsible for their own equipment.", o: ["is", "are", "were", "have been"], a: 0, e: "Each of = singular, maka 'is'." },
-    { q: "The doctor advised me ___ smoking immediately.", o: ["stop", "to stop", "stopping", "stopped"], a: 1, e: "Advise + to infinitive: to stop." },
-    { q: "Rarely ___ such a dedicated officer.", o: ["I have seen", "have I seen", "I saw", "I see"], a: 1, e: "Inversi setelah 'Rarely': have I seen." },
-    { q: "The government is considering ___ taxes to fund new projects.", o: ["raise", "raising", "to raise", "raised"], a: 1, e: "Consider + V-ing: raising." },
-    { q: "He acts as if he ___ everything.", o: ["knows", "knew", "known", "know"], a: 1, e: "As if + past untuk unreal: knew." },
-    { q: "Neither of the answers ___ correct.", o: ["is", "are", "were", "have been"], a: 0, e: "Neither of = singular: is." },
-    { q: "The committee ___ divided in their opinions.", o: ["is", "are", "was", "has been"], a: 1, e: "Committee = anggota individu, maka 'are'." },
-    { q: "I look forward to ___ from you soon.", o: ["hear", "hearing", "hear", "heard"], a: 1, e: "Look forward to + V-ing: hearing." },
-    { q: "Such ___ the noise that we couldn't concentrate.", o: ["is", "was", "are", "were"], a: 1, e: "Such + be + noun: was the noise." },
-    { q: "The man ___ car was stolen reported to the police.", o: ["who", "whose", "which", "whom"], a: 1, e: "Possessive relative: whose." },
-    { q: "I'd rather you ___ tell anyone about this.", o: ["don't", "didn't", "won't", "wouldn't"], a: 1, e: "Would rather + subject + V2: didn't." },
-    { q: "The lecture was ___ boring that half the students fell asleep.", o: ["so", "such", "too", "very"], a: 0, e: "So + adjective + that: so boring." },
-    { q: "He is said ___ the best cadet in the academy.", o: ["to be", "being", "been", "is"], a: 0, e: "Passive infinitive: to be." },
-    { q: "Hardly ___ entered the room when the meeting started.", o: ["we had", "had we", "we have", "have we"], a: 1, e: "Hardly had...when...'." },
-    { q: "The more he studied, ___ he understood.", o: ["the more", "the most", "more", "most"], a: 0, e: "The comparative..., the comparative...: the more." },
-    { q: "She insisted that I ___ with her.", o: ["go", "goes", "went", "going"], a: 0, e: "Subjunctive setelah 'insisted': go." },
-    { q: "The proposal will be discussed at ___ next meeting.", o: ["a", "an", "the", "no article"], a: 2, e: "The next meeting = spesifik." },
-    { q: "Not until yesterday ___ the truth about the incident.", o: ["we knew", "did we know", "we know", "do we know"], a: 1, e: "Inversi Not until: did we know." },
-    { q: "Having ___ the exam, he felt relieved.", o: ["finish", "finished", "finishing", "finishes"], a: 1, e: "Having + V3: finished." },
-    { q: "The officer demanded that the report ___ immediately.", o: ["submit", "be submitted", "submitting", "submitted"], a: 1, e: "Subjunctive passive: be submitted." },
-    { q: "Little ___ about the new regulations.", o: ["we knew", "did we know", "we know", "do we know"], a: 1, e: "Inversi Little: did we know." },
-    { q: "It is high time the government ___ action.", o: ["takes", "took", "take", "taking"], a: 1, e: "It is high time + V2: took." }
-  ];
+function buatSoalArea() {
+  const area = document.getElementById("examArea");
+  area.innerHTML = "";
+  let nomorSoal = 0;
 
-  structureQs.forEach((item, i) => {
-    q.push({
-      id: 51 + i,
-      section: 'structure',
-      type: 'structure',
-      question: item.q,
-      options: item.o,
-      answer: item.a,
-      explanation: item.e
-    });
-  });
+  DATA_SOAL.forEach((soal) => {
+    const card = document.createElement("div");
+    card.className = "soal-card";
+    card.id = "soal-" + soal.id;
 
-  // READING 91-140 - 5 passages with real questions
-  const passages = [
-    {
-      title: "Civil Service Ethics",
-      text: "Civil servants in Indonesia are expected to adhere to a strict code of ethics that emphasizes integrity, professionalism, and dedication to public service. The core principles include avoiding conflicts of interest, maintaining political neutrality, and treating all citizens equally regardless of their background. Civil servants must also protect confidential information and use public resources responsibly. These ethical standards are enforced through regular training, performance evaluations, and disciplinary measures for violations. The goal is to build public trust in government institutions and ensure efficient delivery of public services. Recent reforms have introduced digital reporting systems to increase transparency and accountability in civil service administration.",
-      questions: [
-        { q: "What is the main topic of the passage?", o: ["Civil service salaries", "Code of ethics for civil servants", "Government budgets", "Public transportation"], a: 1, e: "Paragraf membahas code of ethics/ kode etik PNS." },
-        { q: "The word 'adhere' in line 1 is closest in meaning to:", o: ["follow", "create", "avoid", "question"], a: 0, e: "Adhere to = follow/memegang teguh." },
-        { q: "Which is NOT mentioned as a core principle?", o: ["Political neutrality", "Equal treatment", "High salary demands", "Protecting confidential information"], a: 2, e: "High salary demands tidak disebutkan." },
-        { q: "How are ethical standards enforced?", o: ["Through training and evaluations", "By increasing salaries", "By reducing work hours", "Through public voting"], a: 0, e: "Enforced through regular training, performance evaluations." },
-        { q: "What is the goal of the ethical code?", o: ["To build public trust", "To reduce staff numbers", "To increase taxes", "To privatize services"], a: 0, e: "Goal is to build public trust." },
-        { q: "What do recent reforms introduce?", o: ["Digital reporting systems", "New uniforms", "Longer working hours", "More holidays"], a: 0, e: "Recent reforms introduced digital reporting systems." },
-        { q: "The passage suggests that conflicts of interest should be:", o: ["encouraged", "avoided", "ignored", "rewarded"], a: 1, e: "Avoiding conflicts of interest adalah prinsip inti." },
-        { q: "Who must civil servants treat equally?", o: ["Only their colleagues", "All citizens", "Only government officials", "Only their families"], a: 1, e: "Treating all citizens equally." },
-        { q: "What must civil servants protect?", o: ["Public resources only", "Confidential information", "Their personal belongings", "Political parties"], a: 1, e: "Protect confidential information." },
-        { q: "The tone of the passage is:", o: ["Informative", "Humorous", "Sarcastic", "Angry"], a: 0, e: "Tone informatif, menjelaskan fakta dan regulasi." }
-      ]
-    },
-    {
-      title: "Indonesian Archipelago",
-      text: "Indonesia is the world's largest archipelagic state, consisting of over 17,000 islands spread across the equator between the Indian and Pacific Oceans. The five major islands are Sumatra, Java, Kalimantan, Sulawesi, and Papua. The country is located on the Pacific Ring of Fire, making it prone to volcanic activity and earthquakes. Despite these natural challenges, Indonesia possesses rich biodiversity and abundant natural resources including oil, gas, timber, and minerals. The tropical climate supports extensive agriculture, with rice being the staple food crop. Indonesia's strategic location along major sea lanes has made it an important center for international trade since ancient times. The nation declared independence in 1945 and has since developed into a democratic republic with a diverse population of over 270 million people.",
-      questions: [
-        { q: "Indonesia has approximately how many islands?", o: ["5,000", "10,000", "Over 17,000", "50,000"], a: 2, e: "Over 17,000 islands disebutkan di awal." },
-        { q: "Which is NOT one of the five major islands mentioned?", o: ["Sumatra", "Bali", "Kalimantan", "Papua"], a: 1, e: "Bali tidak disebut, yang disebut Sumatra, Java, Kalimantan, Sulawesi, Papua." },
-        { q: "Why is Indonesia prone to earthquakes?", o: ["Located on Pacific Ring of Fire", "Heavy rainfall", "Dense population", "Deforestation"], a: 0, e: "Located on the Pacific Ring of Fire." },
-        { q: "What is Indonesia's staple food crop?", o: ["Wheat", "Corn", "Rice", "Potato"], a: 2, e: "Rice being the staple food crop." },
-        { q: "When did Indonesia declare independence?", o: ["1935", "1945", "1955", "1965"], a: 1, e: "Declared independence in 1945." },
-        { q: "Indonesia is located between which two oceans?", o: ["Atlantic and Indian", "Indian and Pacific", "Pacific and Arctic", "Atlantic and Pacific"], a: 1, e: "Between the Indian and Pacific Oceans." },
-        { q: "The word 'abundant' is closest in meaning to:", o: ["scarce", "plentiful", "expensive", "dangerous"], a: 1, e: "Abundant = plentiful/berlimpah." },
-        { q: "What makes Indonesia important for trade?", o: ["Desert climate", "Strategic location", "Small population", "Mountain ranges"], a: 1, e: "Strategic location along major sea lanes." },
-        { q: "Indonesia's population is over:", o: ["100 million", "200 million", "270 million", "500 million"], a: 2, e: "Over 270 million people." },
-        { q: "Which natural resource is NOT mentioned?", o: ["Oil", "Gas", "Timber", "Gold"], a: 3, e: "Gold tidak disebut, yang disebut oil, gas, timber, minerals." }
-      ]
-    },
-    {
-      title: "Maritime Security Training",
-      text: "Maritime security academies provide specialized training for future coast guard and navy personnel. The curriculum includes navigation, search and rescue operations, maritime law enforcement, and environmental protection. Cadets undergo rigorous physical training and simulation exercises to prepare for real-world scenarios such as piracy interdiction, illegal fishing prevention, and disaster response. International cooperation is emphasized, as maritime threats often cross national boundaries. Graduates are expected to demonstrate leadership, quick decision-making, and technical proficiency in operating sophisticated equipment. The training also covers international maritime conventions and diplomatic protocols for dealing with foreign vessels. Continuous professional development is required throughout their careers to adapt to evolving security challenges and technological advances in maritime operations.",
-      questions: [
-        { q: "What is the main purpose of maritime security academies?", o: ["To train coast guard personnel", "To build ships", "To sell equipment", "To write books"], a: 0, e: "Provide specialized training for coast guard and navy personnel." },
-        { q: "Which is NOT part of the curriculum?", o: ["Navigation", "Cooking techniques", "Maritime law", "Search and rescue"], a: 1, e: "Cooking techniques tidak disebutkan." },
-        { q: "Why is international cooperation emphasized?", o: ["Threats cross boundaries", "To reduce costs", "To avoid training", "To increase holidays"], a: 0, e: "As maritime threats often cross national boundaries." },
-        { q: "What quality must graduates demonstrate?", o: ["Leadership", "Laziness", "Hesitation", "Isolation"], a: 0, e: "Graduates expected to demonstrate leadership." },
-        { q: "The training covers protocols for dealing with:", o: ["Foreign vessels", "Desert animals", "Mountain climbers", "Space stations"], a: 0, e: "Diplomatic protocols for dealing with foreign vessels." },
-        { q: "What type of exercises do cadets undergo?", o: ["Simulation exercises", "Dance exercises", "Writing exercises", "Sleeping exercises"], a: 0, e: "Simulation exercises." },
-        { q: "Continuous professional development is required to adapt to:", o: ["Evolving challenges", "Ancient history", "Fictional stories", "Celebrity news"], a: 0, e: "Adapt to evolving security challenges." },
-        { q: "The word 'interdiction' is closest to:", o: ["prevention", "promotion", "celebration", "invitation"], a: 0, e: "Interdiction = pencegahan/penindakan." },
-        { q: "Which scenario is mentioned?", o: ["Piracy interdiction", "Space exploration", "Olympic games", "Fashion shows"], a: 0, e: "Piracy interdiction disebutkan." },
-        { q: "Cadets must operate:", o: ["Sophisticated equipment", "Simple tools only", "No equipment", "Musical instruments"], a: 0, e: "Operating sophisticated equipment." }
-      ]
-    },
-    {
-      title: "Public Administration Reform",
-      text: "Public administration reform in Indonesia aims to create a more efficient, transparent, and accountable bureaucracy. Key initiatives include digitalization of government services, merit-based recruitment, and performance-based budgeting. The implementation of e-government systems has reduced processing times and minimized opportunities for corruption. Civil service reform emphasizes professional development and ethical conduct among government employees. Citizen participation is encouraged through public consultation mechanisms and complaint handling systems. Despite progress, challenges remain including resistance to change, limited infrastructure in remote areas, and the need for continuous capacity building. The government continues to collaborate with international organizations to benchmark best practices and improve service delivery standards across all levels of administration.",
-      questions: [
-        { q: "What is the goal of public administration reform?", o: ["Create efficient bureaucracy", "Increase paperwork", "Reduce public services", "Limit transparency"], a: 0, e: "Create more efficient, transparent, accountable bureaucracy." },
-        { q: "Which initiative is mentioned?", o: ["Digitalization of services", "Banning internet", "Increasing corruption", "Reducing salaries"], a: 0, e: "Digitalization of government services." },
-        { q: "E-government systems have:", o: ["Reduced processing times", "Increased waiting times", "Stopped all services", "Created more paperwork"], a: 0, e: "Reduced processing times." },
-        { q: "What type of recruitment is emphasized?", o: ["Merit-based", "Random selection", "Political appointment", "Family connections"], a: 0, e: "Merit-based recruitment." },
-        { q: "Citizen participation is encouraged through:", o: ["Public consultation", "Voting restrictions", "Information hiding", "Service closure"], a: 0, e: "Public consultation mechanisms." },
-        { q: "Which challenge is mentioned?", o: ["Resistance to change", "Too much funding", "Excess staff", "Over-qualification"], a: 0, e: "Resistance to change disebutkan." },
-        { q: "The government collaborates with:", o: ["International organizations", "Criminal groups", "No one", "Foreign armies"], a: 0, e: "Collaborate with international organizations." },
-        { q: "The word 'benchmark' means:", o: ["compare with standards", "ignore completely", "destroy evidence", "hide information"], a: 0, e: "Benchmark = membandingkan dengan standar terbaik." },
-        { q: "Performance-based budgeting is related to:", o: ["Service quality", "Employee height", "Office decoration", "Parking availability"], a: 0, e: "Terkait kualitas/kinerja layanan." },
-        { q: "Where is infrastructure limited?", o: ["Remote areas", "Capital city", "All cities", "Online platforms"], a: 0, e: "Limited infrastructure in remote areas." }
-      ]
-    },
-    {
-      title: "Disaster Management Protocol",
-      text: "Indonesia's disaster management protocol follows a comprehensive cycle of prevention, preparedness, response, and recovery. The National Disaster Management Agency coordinates with regional governments, military units, and volunteer organizations during emergencies. Early warning systems utilize satellite technology, seismic sensors, and community-based monitoring to detect tsunamis, volcanic eruptions, and floods. Evacuation routes and emergency shelters are established in high-risk areas, with regular drills conducted to familiarize residents with procedures. Post-disaster recovery focuses on rebuilding infrastructure, providing psychosocial support, and implementing measures to reduce future vulnerability. International assistance is welcomed but coordinated through official channels to ensure efficient distribution of aid. Climate change adaptation strategies are increasingly integrated into disaster risk reduction planning to address long-term environmental challenges.",
-      questions: [
-        { q: "How many phases are in the disaster management cycle?", o: ["Two", "Three", "Four", "Five"], a: 2, e: "Prevention, preparedness, response, recovery = 4." },
-        { q: "Who coordinates during emergencies?", o: ["National Disaster Management Agency", "Tourism board", "Sports committee", "Art council"], a: 0, e: "National Disaster Management Agency coordinates." },
-        { q: "Early warning systems use:", o: ["Satellite technology", "Magic crystal", "Weather balloons only", "Ancient texts"], a: 0, e: "Utilize satellite technology." },
-        { q: "What are established in high-risk areas?", o: ["Evacuation routes", "Shopping malls", "Amusement parks", "Golf courses"], a: 0, e: "Evacuation routes and emergency shelters." },
-        { q: "Regular drills are conducted to:", o: ["Familiarize residents", "Entertain tourists", "Test weapons", "Practice dancing"], a: 0, e: "Familiarize residents with procedures." },
-        { q: "Post-disaster recovery includes:", o: ["Rebuilding infrastructure", "Ignoring damage", "Abandoning areas", "Celebration parties"], a: 0, e: "Rebuilding infrastructure." },
-        { q: "International assistance is coordinated through:", o: ["Official channels", "Social media", "Street vendors", "Random people"], a: 0, e: "Coordinated through official channels." },
-        { q: "What is integrated into risk reduction planning?", o: ["Climate change adaptation", "Fashion trends", "Cooking recipes", "Music charts"], a: 0, e: "Climate change adaptation strategies integrated." },
-        { q: "The word 'vulnerability' is closest to:", o: ["susceptibility", "strength", "immunity", "wealth"], a: 0, e: "Vulnerability = susceptibility/kerentanan." },
-        { q: "Which disaster is NOT mentioned?", o: ["Tsunamis", "Volcanic eruptions", "Floods", "Tornadoes"], a: 3, e: "Tornadoes tidak disebut, yang disebut tsunamis, volcanic eruptions, floods." }
-      ]
+    if (soal.type === "bacaan") {
+      // kartu passage/skrip: judul + teks, tanpa pilihan jawaban
+      const judul = document.createElement("div");
+      judul.className = "soal-nomor";
+      judul.textContent = soal.judul || "Bacaan";
+      card.appendChild(judul);
+
+      const teks = document.createElement("div");
+      teks.className = "soal-teks";
+      teks.style.whiteSpace = "pre-line";
+      teks.textContent = soal.teks;
+      card.appendChild(teks);
+
+      area.appendChild(card);
+      return;
     }
-  ];
 
-  let qNum = 91;
-  passages.forEach((passage) => {
-    passage.questions.forEach((pq) => {
-      q.push({
-        id: qNum,
-        section: 'reading',
-        type: 'reading',
-        passage: passage.text,
-        passageTitle: passage.title,
-        question: pq.q,
-        options: pq.o,
-        answer: pq.a,
-        explanation: pq.e
+    nomorSoal++;
+    const nomor = document.createElement("div");
+    nomor.className = "soal-nomor";
+    nomor.textContent = "Soal " + nomorSoal + (soal.kategori ? " (" + soal.kategori + ")" : "");
+    card.appendChild(nomor);
+
+    const teks = document.createElement("div");
+    teks.className = "soal-teks";
+    teks.style.whiteSpace = "pre-line";
+    teks.textContent = soal.teks;
+    card.appendChild(teks);
+
+    const opsiWrap = document.createElement("div");
+    opsiWrap.className = "opsi-list";
+
+    if (soal.type === "yatidak") {
+      ["YA", "TIDAK"].forEach(val => {
+        const label = document.createElement("label");
+        const radio = document.createElement("input");
+        radio.type = "radio";
+        radio.name = "soal-" + soal.id;
+        radio.value = val;
+        radio.onchange = () => pilihJawaban(soal.id, val);
+        label.appendChild(radio);
+        label.appendChild(document.createTextNode(val));
+        opsiWrap.appendChild(label);
       });
-      qNum++;
-    });
+    } else {
+      const huruf = ["A", "B", "C", "D", "E"];
+      soal.opsi.forEach((opsiTeks, i) => {
+        const label = document.createElement("label");
+        const radio = document.createElement("input");
+        radio.type = "radio";
+        radio.name = "soal-" + soal.id;
+        radio.value = i;
+        radio.onchange = () => pilihJawaban(soal.id, i);
+        label.appendChild(radio);
+        label.appendChild(document.createTextNode(huruf[i] + ". " + opsiTeks));
+        opsiWrap.appendChild(label);
+      });
+    }
+
+    card.appendChild(opsiWrap);
+    area.appendChild(card);
   });
-
-  return q;
 }
 
-function initTest() {
-  questions = generateQuestions();
-  renderQuestionNav();
-  loadQuestion(0);
-  startTimer();
+function pilihJawaban(soalId, val) {
+  answers[soalId] = val;
+  const navBtn = document.getElementById("nav-" + soalId);
+  if (navBtn) navBtn.classList.add("answered");
 }
 
-function startTest() {
-  const nameInput = document.getElementById('userName').value.trim();
-  if (!nameInput) {
-    alert('Silakan masukkan nama lengkap Anda');
+// highlight soal aktif berdasarkan scroll
+function setupActiveObserver() {
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      const id = entry.target.id.replace("soal-", "");
+      const navBtn = document.getElementById("nav-" + id);
+      if (!navBtn) return;
+      if (entry.isIntersecting) {
+        document.querySelectorAll(".nav-btn.active").forEach(b => b.classList.remove("active"));
+        navBtn.classList.add("active");
+      }
+    });
+  }, { root: null, threshold: 0.5, rootMargin: "-140px 0px -60% 0px" });
+
+  DATA_SOAL.forEach(soal => {
+    const el = document.getElementById("soal-" + soal.id);
+    if (el) observer.observe(el);
+  });
+}
+
+function mulaiUjian() {
+  const inputNama = document.getElementById("inputNama");
+  if (!inputNama.value.trim()) {
+    inputNama.focus();
     return;
   }
-  userName = nameInput;
-  document.getElementById('userNameDisplay').textContent = userName;
-  document.getElementById('startScreen').classList.add('hidden');
-  document.getElementById('testScreen').classList.remove('hidden');
-  initTest();
-}
+  nama = inputNama.value.trim();
 
-function startTimer() {
+  document.getElementById("startScreen").style.display = "none";
+  document.getElementById("examArea").style.display = "block";
+
+  buatNavGrid();
+  buatSoalArea();
+  setupActiveObserver();
+
+  document.getElementById("timer").textContent = formatWaktu(sisaDetik);
   timerInterval = setInterval(() => {
-    timeRemaining--;
-    const minutes = Math.floor(timeRemaining / 60);
-    const seconds = timeRemaining % 60;
-    document.getElementById('timer').textContent = `${minutes}:${seconds.toString().padStart(2, '0')}`;
-    if (timeRemaining <= 0) {
+    sisaDetik--;
+    document.getElementById("timer").textContent = formatWaktu(sisaDetik);
+    if (sisaDetik <= 0) {
       clearInterval(timerInterval);
-      submitTest();
+      selesai(true); // auto selesai, tanpa konfirmasi
     }
   }, 1000);
 }
 
-function renderQuestionNav() {
-  const nav = document.getElementById('questionNav');
-  nav.innerHTML = '';
-  questions.forEach((q, idx) => {
-    const btn = document.createElement('button');
-    btn.className = 'question-btn';
-    btn.textContent = idx + 1;
-    btn.onclick = () => loadQuestion(idx);
-    btn.id = `nav-${idx}`;
-    nav.appendChild(btn);
-  });
-  updateNavButtons();
-}
-
-function updateNavButtons() {
-  questions.forEach((q, idx) => {
-    const btn = document.getElementById(`nav-${idx}`);
-    btn.classList.remove('answered', 'current', 'flagged');
-    if (answers[idx] !== undefined) btn.classList.add('answered');
-    if (idx === currentQuestionIndex) btn.classList.add('current');
-    if (flagged.has(idx)) btn.classList.add('flagged');
-  });
-}
-
-function loadQuestion(idx) {
-  currentQuestionIndex = idx;
-  const q = questions[idx];
-  document.getElementById('currentQ').textContent = idx + 1;
-  
-  let sectionLabel = 'LISTENING';
-  if (idx >= 50) sectionLabel = 'STRUCTURE';
-  if (idx >= 90) sectionLabel = 'READING';
-  document.getElementById('sectionLabel').textContent = sectionLabel;
-  
-  let html = '';
-  if (q.type === 'listening') {
-    html += `<div class="bg-blue-50 border border-blue-200 rounded-lg p-4 mb-4">
-      <p class="text-sm font-semibold text-blue-800 mb-2">🎧 Listening Script:</p>
-      <p class="text-sm text-slate-700">${q.script}</p>
-    </div>`;
-  } else if (q.type === 'reading' && q.passage) {
-    html += `<div class="bg-slate-50 border border-slate-200 rounded-lg p-4 mb-4 max-h-48 overflow-y-auto">
-      <p class="text-sm font-semibold text-slate-800 mb-2">${q.passageTitle}</p>
-      <p class="text-sm text-slate-700 passage-text">${q.passage}</p>
-    </div>`;
-  }
-  
-  html += `<p class="text-slate-800 font-medium mb-4">${q.question}</p>`;
-  html += '<div class="space-y-2">';
-  q.options.forEach((opt, optIdx) => {
-    const isSelected = answers[idx] === optIdx;
-    html += `<button onclick="selectAnswer(${optIdx})" 
-      class="w-full text-left p-3 rounded-lg border-2 transition ${isSelected ? 'border-blue-600 bg-blue-50' : 'border-slate-200 hover:border-slate-300 bg-white'}">
-      <span class="font-semibold text-slate-700">${String.fromCharCode(65 + optIdx)}.</span>
-      <span class="text-slate-700 ml-2">${opt}</span>
-    </button>`;
-  });
-  html += '</div>';
-  
-  document.getElementById('questionContent').innerHTML = html;
-  document.getElementById('prevBtn').disabled = idx === 0;
-  document.getElementById('nextBtn').textContent = idx === 139 ? 'Selesai' : 'Selanjutnya →';
-  
-  const flagBtn = document.getElementById('flagBtn');
-  const flagIcon = flagBtn.querySelector('svg');
-  if (flagged.has(idx)) {
-    flagIcon.classList.remove('text-slate-400');
-    flagIcon.classList.add('text-red-500');
-  } else {
-    flagIcon.classList.remove('text-red-500');
-    flagIcon.classList.add('text-slate-400');
-  }
-  
-  updateNavButtons();
-}
-
-function selectAnswer(optIdx) {
-  answers[currentQuestionIndex] = optIdx;
-  loadQuestion(currentQuestionIndex);
-}
-
-function toggleFlag() {
-  if (flagged.has(currentQuestionIndex)) {
-    flagged.delete(currentQuestionIndex);
-  } else {
-    flagged.add(currentQuestionIndex);
-  }
-  loadQuestion(currentQuestionIndex);
-}
-
-function prevQuestion() {
-  if (currentQuestionIndex > 0) {
-    loadQuestion(currentQuestionIndex - 1);
+function konfirmasiSelesai() {
+  if (confirm("Yakin ingin menyelesaikan ujian sekarang?")) {
+    selesai(false);
   }
 }
 
-function nextQuestion() {
-  if (currentQuestionIndex < 139) {
-    loadQuestion(currentQuestionIndex + 1);
-  } else {
-    confirmSubmit();
-  }
-}
+function hitungSkor() {
+  let total = 0;
+  const perKategori = {};
 
-function switchSection(section) {
-  document.querySelectorAll('.section-tab').forEach(tab => tab.classList.remove('active'));
-  document.getElementById(`tab${section}`).classList.add('active');
-  
-  let targetIdx = 0;
-  if (section === 2) targetIdx = 50;
-  if (section === 3) targetIdx = 90;
-  loadQuestion(targetIdx);
-}
+  DATA_SOAL.forEach(soal => {
+    if (soal.type === "bacaan") return; // passage bukan soal, dilewati
 
-function confirmSubmit() {
-  const answered = Object.keys(answers).length;
-  if (answered < 140) {
-    if (!confirm(`Anda baru menjawab ${answered}/140 soal. Yakin ingin menyelesaikan ujian?`)) {
-      return;
+    const poin = soal.poin || CONFIG.POIN_DEFAULT;
+    const jawabanUser = answers[soal.id];
+    let benar = false;
+
+    if (soal.type === "pg") {
+      benar = jawabanUser === soal.kunci;
+    } else if (soal.type === "yatidak") {
+      benar = jawabanUser === soal.kunci;
     }
-  }
-  submitTest();
-}
 
-function calculateScore() {
-  let listening = 0, structure = 0, reading = 0;
-  questions.forEach((q, idx) => {
-    if (answers[idx] === q.answer) {
-      if (idx < 50) listening++;
-      else if (idx < 90) structure++;
-      else reading++;
+    const nilai = benar ? poin : 0;
+    total += nilai;
+
+    if (soal.kategori) {
+      perKategori[soal.kategori] = (perKategori[soal.kategori] || 0) + nilai;
     }
   });
-  
-  // TOEFL ITP conversion formula approximation
-  const listeningConverted = Math.round(24 + (listening / 50) * 44);
-  const structureConverted = Math.round(20 + (structure / 40) * 48);
-  const readingConverted = Math.round(21 + (reading / 50) * 46);
-  const totalScore = Math.round((listeningConverted + structureConverted + readingConverted) * 10 / 3);
-  
-  return { listening, structure, reading, listeningConverted, structureConverted, readingConverted, totalScore };
+
+  // ==== ESTIMASI SKOR TOEFL ITP (APROKSIMASI, BUKAN TABEL RESMI) ====
+  // Konversi linear dari skor mentah per section ke rentang scaled score
+  // resmi TOEFL ITP (Listening & Structure 31-68, Reading 31-67), lalu
+  // total = rata-rata ketiga scaled score x 10 (rentang 310-677).
+  // Ini HANYA aproksimasi untuk keperluan latihan; skor TOEFL ITP asli
+  // menggunakan tabel konversi non-linear resmi dari lembaga penyelenggara.
+  const maxRaw = { Listening: 50, Structure: 40, Reading: 50 };
+  const scaledRange = {
+    Listening: [31, 68],
+    Structure: [31, 68],
+    Reading: [31, 67]
+  };
+
+  const scaled = {};
+  Object.keys(maxRaw).forEach(kat => {
+    const raw = perKategori[kat] || 0;
+    const [min, max] = scaledRange[kat];
+    scaled[kat] = Math.round(min + (raw / maxRaw[kat]) * (max - min));
+  });
+
+  const skorTOEFL = Math.round(
+    ((scaled.Listening + scaled.Structure + scaled.Reading) / 3) * 10
+  );
+
+  return { total, perKategori, scaled, skorTOEFL };
 }
 
-function submitTest() {
+function selesai(otomatis) {
+  if (sudahSelesai) return;
+  sudahSelesai = true;
   clearInterval(timerInterval);
-  const scores = calculateScore();
-  const correctTotal = scores.listening + scores.structure + scores.reading;
-  const passed = scores.totalScore >= 475;
-  
-  // Send to Telegram
-  sendToTelegram(scores, correctTotal, passed);
-  
-  // Show results
-  document.getElementById('testScreen').classList.add('hidden');
-  document.getElementById('resultScreen').classList.remove('hidden');
-  document.getElementById('resultName').textContent = userName;
-  document.getElementById('totalScore').textContent = scores.totalScore;
-  document.getElementById('correctCount').textContent = `${correctTotal}/140`;
-  
-  document.getElementById('listeningDetail').textContent = `${scores.listening}/50`;
-  document.getElementById('listeningBar').style.width = `${(scores.listening/50)*100}%`;
-  document.getElementById('structureDetail').textContent = `${scores.structure}/40`;
-  document.getElementById('structureBar').style.width = `${(scores.structure/40)*100}%`;
-  document.getElementById('readingDetail').textContent = `${scores.reading}/50`;
-  document.getElementById('readingBar').style.width = `${(scores.reading/50)*100}%`;
-  
-  document.getElementById('passStatus').textContent = passed ? 'LULUS' : 'TIDAK LULUS';
-  if (!passed) {
-    document.getElementById('statusCard').className = 'bg-gradient-to-br from-red-50 to-red-100 rounded-xl p-5 text-center';
-    document.getElementById('passStatus').className = 'text-2xl font-bold text-red-600';
-  }
-  
-  generateDiscussion();
-}
 
-function sendToTelegram(scores, correctTotal, passed) {
-  const message = `🎓 *HASIL CAT TOEFL ITP PAKET B*\n\n` +
-    `👤 Nama: ${userName}\n` +
-    `📊 Skor Total: ${scores.totalScore} / 677\n` +
-    `✅ Benar: ${correctTotal}/140\n` +
-    `🎯 Status: ${passed ? 'LULUS' : 'TIDAK LULUS'} (PG: 475)\n\n` +
-    `📈 *Rincian Section:*\n` +
-    `🎧 Listening: ${scores.listening}/50 (${scores.listeningConverted})\n` +
-    `📝 Structure: ${scores.structure}/40 (${scores.structureConverted})\n` +
-    `📖 Reading: ${scores.reading}/50 (${scores.readingConverted})\n\n` +
-    `⏰ Waktu: ${new Date().toLocaleString('id-ID')}`;
-  
-  fetch(`https://api.telegram.org/bot${TELEGRAM_BOT}/sendMessage`, {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({
-      chat_id: TELEGRAM_CHAT_ID,
-      text: message,
-      parse_mode: 'Markdown'
-    })
-  }).then(() => {
-    document.getElementById('notificationStatus').textContent = '✓ Jawaban Anda sudah direkam';
-  }).catch(() => {
-    document.getElementById('notificationStatus').textContent = '✓ Jawaban Anda sudah direkam';
+  const skor = hitungSkor();
+  const { lulus, teksStatus } = CONFIG.cekKelulusan(skor);
+
+  // susun teks detail skor: jawaban benar per section + estimasi skor TOEFL
+  let detailSkorText = "Jawaban Benar:";
+  const kategoriKeys = Object.keys(skor.perKategori);
+  kategoriKeys.forEach(k => {
+    detailSkorText += "\n" + k + ": " + skor.perKategori[k] + " benar (estimasi scaled score: " + skor.scaled[k] + ")";
   });
-}
+  detailSkorText += "\nEstimasi Skor TOEFL ITP: " + skor.skorTOEFL;
 
-function showDiscussion() {
-  document.getElementById('discussionArea').classList.remove('hidden');
-  document.getElementById('discussionAreaBtn')?.scrollIntoView({ behavior: 'smooth' });
-}
+  const waktuTerpakaiMenit = Math.ceil((CONFIG.WAKTU_MENIT * 60 - Math.max(sisaDetik, 0)) / 60);
 
-function generateDiscussion() {
-  const content = document.getElementById('discussionContent');
-  let html = '';
-  questions.forEach((q, idx) => {
-    const userAns = answers[idx];
-    const isCorrect = userAns === q.answer;
-    html += `<div class="border border-slate-200 rounded-lg p-4 ${isCorrect ? 'bg-green-50' : 'bg-red-50'}">
-      <div class="flex items-start gap-3 mb-2">
-        <span class="flex-shrink-0 w-8 h-8 rounded-lg ${isCorrect ? 'bg-green-600' : 'bg-red-600'} text-white flex items-center justify-center text-sm font-bold">${idx + 1}</span>
-        <div class="flex-1">
-          <p class="text-sm font-semibold text-slate-800 mb-1">${q.question}</p>
-          ${q.script ? `<p class="text-xs text-slate-600 mb-2">${q.script}</p>` : ''}
-          <div class="text-xs space-y-1">
-            <p>Jawaban Anda: <span class="font-semibold ${isCorrect ? 'text-green-700' : 'text-red-700'}">${userAns !== undefined ? String.fromCharCode(65 + userAns) + '. ' + q.options[userAns] : 'Tidak dijawab'}</span></p>
-            <p>Jawaban Benar: <span class="font-semibold text-green-700">${String.fromCharCode(65 + q.answer)}. ${q.options[q.answer]}</span></p>
-          </div>
-          <div class="explanation-box mt-2 p-2 rounded text-xs text-slate-700">
-            <strong>Pembahasan:</strong> ${q.explanation}
-          </div>
-        </div>
-      </div>
-    </div>`;
-  });
-  content.innerHTML = html;
+  // kirim ke telegram (tetap terkirim walau tab ditutup)
+  const data = new FormData();
+  data.append("chat_id", CONFIG.TELEGRAM_CHAT_ID);
+  data.append("text",
+    "Nama: " + nama +
+    "\nUjian: " + CONFIG.NAMA_UJIAN +
+    "\nStatus: " + teksStatus +
+    "\nSkor: " + detailSkorText.replace(/\n/g, ", ") +
+    "\nWaktu: " + waktuTerpakaiMenit + " menit"
+  );
+  navigator.sendBeacon(
+    "https://api.telegram.org/bot" + CONFIG.TELEGRAM_TOKEN + "/sendMessage",
+    data
+  );
+
+  // tampilkan halaman hasil, sembunyikan header & area soal
+  document.querySelector("header").style.display = "none";
+  document.getElementById("examArea").style.display = "none";
+  document.getElementById("resultScreen").style.display = "block";
+
+  document.getElementById("hasilNama").textContent = "Nama: " + nama;
+  document.getElementById("hasilSkor").textContent = detailSkorText;
+
+  const statusEl = document.getElementById("hasilStatus");
+  statusEl.innerHTML = "";
+  const statusDiv = document.createElement("div");
+  statusDiv.className = lulus ? "status-lulus" : "status-gagal";
+  statusDiv.textContent = teksStatus;
+  statusEl.appendChild(statusDiv);
 }
 </script>
-<script>(function(){document.addEventListener("click",function(e){var a=e.target.closest("[data-product-id]");if(!a)return;e.preventDefault();var pid=a.getAttribute("data-product-id");if(pid)parent.postMessage({type:"ecto-artifact-link-click",productId:pid},"*")})})();</script>
-<script>(function(){var loc=location.href.replace(/#.*$/,"");var ATTR_NAMES=["data-product-id","data-productid","data-product_id","product-id","productid","product_id","data-source-entity-id","source-entity-id","source_entity_id","data-product","data-metadata","data-meta"];var DATASET_KEYS=["productId","productid","product_id","sourceEntityId","sourceentityid","source_entity_id","product","metadata","meta"];function readProductId(value){if(typeof value!=="string"||value.length===0)return null;if(/^[0-9]{6,}$/.test(value))return value;var match=value.match(/(?:product(?:_|-)?id|source(?:_|-)?entity(?:_|-)?id)["'=:\s]+([0-9]{6,})/i);return match?match[1]:null}function extractProductId(start){for(var node=start;node&&node!==document.body;node=node.parentElement){for(var i=0;i<ATTR_NAMES.length;i++){var attrValue=node.getAttribute&&node.getAttribute(ATTR_NAMES[i]);var attrProductId=readProductId(attrValue);if(attrProductId)return attrProductId}var dataset=node.dataset||null;if(dataset){for(var j=0;j<DATASET_KEYS.length;j++){var dataValue=dataset[DATASET_KEYS[j]];var dataProductId=readProductId(dataValue);if(dataProductId)return dataProductId}}}return null}document.addEventListener("click",function(e){var target=e.target instanceof Element?e.target:null;if(!target)return;var a=target.closest?target.closest("a[href]"):null;if(!a||!a.href||!/^https?:\/\//.test(a.href))return;if(a.href.replace(/#.*$/,"")===loc)return;var productId=extractProductId(target)||extractProductId(a);if(!productId)return;e.preventDefault();parent.postMessage({type:"ecto-artifact-link-click",productId:productId},"*")},true)})();</script></body>
+</body>
 </html>
