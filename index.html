@@ -424,7 +424,7 @@
 
 <header class="topbar">
   <img id="headerLogo" class="header-logo" alt="Logo" style="display:none;">
-  <h1 id="headerTitle">KELUARGA BESAR KADET UNHAN RI<br>KORDA JAWA TENGAH</h1>
+  <h1 id="headerTitle">KELUARGA BESAR KADET UNHAN RI<br>KORDA JATENG-DIY</h1>
   <nav class="menu">
     <button id="btnDashboard" class="active" onclick="gantiHalaman('dashboard')">Dashboard</button>
     <button id="btnInput" onclick="gantiHalaman('input')">Input Data</button>
@@ -437,7 +437,7 @@
 
   <!-- ===================== HALAMAN DASHBOARD ===================== -->
   <section id="page-dashboard" class="page active">
-    <div class="dash-title">KELUARGA BESAR KADET UNHAN RI<br>KORDA JAWA TENGAH</div>
+    <div class="dash-title">KELUARGA BESAR KADET UNHAN RI<br>KORDA JATENG-DIY</div>
 
     <div id="statusKoneksi" class="status-koneksi"></div>
     <button type="button" class="btn-refresh" onclick="muatData(true)">🔄 Muat Ulang Data</button>
@@ -546,7 +546,7 @@
     <div class="card admin-info">
       <span class="badge-kuning">INFO PENGELOLA</span>
       <h2 style="border:none; padding:0; margin-bottom:6px;">👤 Profil Admin</h2>
-      <p><strong>Pengelola:</strong> Keluarga Besar Kadet UNHAN RI - Korda Jawa Tengah</p>
+      <p><strong>Pengelola:</strong> Keluarga Besar Kadet UNHAN RI - Korda JATENG-DIY</p>
       <p><strong>Kontak:</strong> Hubungi perwakilan daerah masing-masing</p>
       <p><strong>Catatan:</strong> Data terintegrasi dan terupdate</p>
     </div>
@@ -568,7 +568,7 @@
 
       <label for="inputJudul" style="display:block; font-weight:700; font-size:13.5px; color:var(--biru-tua); margin:18px 0 6px 0;">Judul Header</label>
       <div class="pengaturan-row" style="margin-bottom:4px;">
-        <input type="text" id="inputJudul" placeholder="Contoh: KELUARGA BESAR KADET UNHAN RI | KORDA JAWA TENGAH">
+        <input type="text" id="inputJudul" placeholder="Contoh: KELUARGA BESAR KADET UNHAN RI | KORDA JATENG-DIY">
       </div>
       <div class="keterangan-kecil">Gunakan tanda | (garis tegak) di tempat judul ingin ganti baris.</div>
       <div class="baris-tombol">
@@ -1026,7 +1026,7 @@ document.getElementById("keyword").addEventListener("keyup", function(e){
    (disimpan di localStorage perangkat ini, terpisah dari
    data kadet yang tersimpan di Spreadsheet)
 ========================================================= */
-const JUDUL_DEFAULT = "KELUARGA BESAR KADET UNHAN RI|KORDA JAWA TENGAH";
+const JUDUL_DEFAULT = "KELUARGA BESAR KADET UNHAN RI|KORDA JATENG-DIY";
 
 function tampilkanJudul(teksMentah){
   const aman = document.createElement("div");
