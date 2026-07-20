@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
-<title>Keluarga Besar Kadet UNHAN RI - Korda Jawa Tengah</title>
+<title>Keluarga Besar Kadet UNHAN RI - Korda JATENG-DIY</title>
 <style>
   :root{
     --biru-tua:#0d2b6b;
@@ -402,6 +402,117 @@
     font-weight:700;
     text-align:center;
   }
+
+  /* ---- Modal Konfirmasi ---- */
+  .modal-overlay{
+    display:none;
+    position:fixed;
+    inset:0;
+    background:rgba(13,43,107,0.55);
+    z-index:200;
+    align-items:center;
+    justify-content:center;
+    padding:20px;
+  }
+  .modal-overlay.tampil{
+    display:flex;
+  }
+  .modal-box{
+    background:var(--putih);
+    border-radius:14px;
+    padding:22px 18px;
+    max-width:360px;
+    width:100%;
+    text-align:center;
+    box-shadow:0 8px 30px rgba(0,0,0,0.3);
+  }
+  .modal-box p{
+    font-size:14.5px;
+    line-height:1.6;
+    color:var(--teks);
+    margin:0 0 18px 0;
+  }
+  .modal-tombol-row{
+    display:flex;
+    gap:10px;
+  }
+  .modal-tombol-row button{
+    flex:1;
+    padding:11px;
+    border-radius:10px;
+    border:none;
+    font-weight:700;
+    font-size:14px;
+    cursor:pointer;
+  }
+  .btn-modal-ganti{
+    background:var(--biru-tua);
+    color:var(--putih);
+  }
+  .btn-modal-batal{
+    background:var(--abu);
+    color:var(--biru-tua);
+    border:1.5px solid #cfd8e6 !important;
+  }
+
+  /* ---- Login & Panel Admin ---- */
+  .login-admin-box input[type="text"], .login-admin-box input[type="password"]{
+    width:100%;
+    padding:11px 12px;
+    border-radius:10px;
+    border:1.5px solid #cfd8e6;
+    font-size:14.5px;
+    margin-bottom:10px;
+  }
+  .pesan-login-gagal{
+    display:none;
+    color:#c0392b;
+    font-size:13px;
+    font-weight:700;
+    margin:-2px 0 10px 0;
+  }
+  .badge-terkunci{
+    display:inline-block;
+    background:#eaf1fd;
+    color:var(--biru-sedang);
+    padding:2px 10px;
+    border-radius:20px;
+    font-size:12px;
+    font-weight:700;
+    margin-bottom:10px;
+  }
+  #adminArea{ display:none; }
+  .baris-hasil-kelola{
+    border:1.5px solid #e6ebf2;
+    border-radius:10px;
+    padding:10px 12px;
+    margin-bottom:8px;
+    font-size:13px;
+  }
+  .baris-hasil-kelola .baris-atas{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    gap:8px;
+  }
+  .baris-hasil-kelola strong{color:var(--biru-tua);}
+  .btn-edit-kecil{
+    background:var(--kuning);
+    color:#5a3d00;
+    border:none;
+    padding:6px 12px;
+    border-radius:8px;
+    font-size:12px;
+    font-weight:700;
+    cursor:pointer;
+    flex-shrink:0;
+  }
+  #panelEditData{
+    display:none;
+    margin-top:14px;
+    padding-top:14px;
+    border-top:2px solid var(--abu);
+  }
   .badge-kuning{
     display:inline-block;
     background:var(--kuning);
@@ -424,7 +535,7 @@
 
 <header class="topbar">
   <img id="headerLogo" class="header-logo" alt="Logo" style="display:none;">
-  <h1 id="headerTitle">KELUARGA BESAR KADET UNHAN RI<br>KORDA JATENG-DIY</h1>
+  <h1 id="headerTitle">KELUARGA BESAR KADET UNHAN RI<br>KORDA JAWA TENGAH</h1>
   <nav class="menu">
     <button id="btnDashboard" class="active" onclick="gantiHalaman('dashboard')">Dashboard</button>
     <button id="btnInput" onclick="gantiHalaman('input')">Input Data</button>
@@ -437,7 +548,7 @@
 
   <!-- ===================== HALAMAN DASHBOARD ===================== -->
   <section id="page-dashboard" class="page active">
-    <div class="dash-title">KELUARGA BESAR KADET UNHAN RI<br>KORDA JATENG-DIY</div>
+    <div class="dash-title">KELUARGA BESAR KADET UNHAN RI<br>KORDA JAWA TENGAH</div>
 
     <div id="statusKoneksi" class="status-koneksi"></div>
     <button type="button" class="btn-refresh" onclick="muatData(true)">🔄 Muat Ulang Data</button>
@@ -459,12 +570,12 @@
     </div>
 
     <div class="card">
-      <h2>🎓 5 Program Studi Terbanyak</h2>
+      <h2>🎓 Rekap Per Program Studi</h2>
       <div id="prodiChart"></div>
     </div>
 
     <div class="card">
-      <h2>📍 5 Domisili / Kota Terbanyak</h2>
+      <h2>📍 Rekap Per Domisili / Kota</h2>
       <div id="domisiliChart"></div>
     </div>
   </section>
@@ -533,6 +644,7 @@
               <th>Nama Kadet</th>
               <th>Kota</th>
               <th>Prodi</th>
+              <th>No HP</th>
             </tr>
           </thead>
           <tbody id="hasilCari"></tbody>
@@ -546,42 +658,119 @@
     <div class="card admin-info">
       <span class="badge-kuning">INFO PENGELOLA</span>
       <h2 style="border:none; padding:0; margin-bottom:6px;">👤 Profil Admin</h2>
-      <p><strong>Pengelola:</strong> Keluarga Besar Kadet UNHAN RI - Korda JATENG-DIY</p>
+      <p><strong>Pengelola:</strong> Keluarga Besar Kadet UNHAN RI - Korda Jawa Tengah</p>
       <p><strong>Kontak:</strong> Hubungi perwakilan daerah masing-masing</p>
       <p><strong>Catatan:</strong> Data terintegrasi dan terupdate</p>
     </div>
 
-    <div class="card">
-      <h2>🖼️ Pengaturan Logo &amp; Judul Header</h2>
+    <div class="card login-admin-box" id="kartuLoginAdmin">
+      <span class="badge-terkunci">🔒 KHUSUS ADMIN</span>
+      <h2>Login Admin</h2>
+      <p style="font-size:13px; color:#5a6579; margin-top:-4px;">Login untuk mengubah/memperbaiki data yang sudah tersimpan, dan mengatur logo &amp; judul header.</p>
+      <label for="inputUsernameAdmin" style="display:block; font-weight:600; font-size:13px; color:var(--biru-tua); margin-bottom:6px;">Nama Pengguna</label>
+      <input type="text" id="inputUsernameAdmin" autocomplete="off">
+      <label for="inputPasswordAdmin" style="display:block; font-weight:600; font-size:13px; color:var(--biru-tua); margin-bottom:6px;">Kata Sandi</label>
+      <input type="password" id="inputPasswordAdmin" autocomplete="off">
+      <div class="pesan-login-gagal" id="pesanLoginGagal">❌ Nama pengguna atau kata sandi salah</div>
+      <button type="button" class="btn-kecil" style="width:100%;" onclick="loginAdmin()">Login</button>
+    </div>
 
-      <div class="pengaturan-row">
-        <img id="previewLogo" class="preview-logo" alt="Preview Logo">
-        <div style="flex:1; min-width:160px;">
-          <input type="file" id="inputLogo" accept="image/*">
-          <div class="keterangan-kecil">Format gambar (PNG/JPG), disarankan persegi &amp; ukuran kecil.</div>
+    <div id="adminArea">
+      <div class="card">
+        <div style="display:flex; justify-content:space-between; align-items:center;">
+          <h2 style="border:none; padding:0; margin:0;">✏️ Kelola / Perbaiki Data</h2>
+          <button type="button" class="btn-kecil secondary" onclick="logoutAdmin()">Logout</button>
+        </div>
+        <div class="search-row" style="margin-top:12px;">
+          <input type="text" id="keywordKelola" placeholder="Cari data yang mau diperbaiki...">
+          <button onclick="cariDataKelola()">Cari</button>
+        </div>
+        <div id="hasilKelola" style="margin-top:14px;"></div>
+
+        <div id="panelEditData">
+          <h2 style="border:none; padding:0;">Edit Data</h2>
+          <label>Cohort / Angkatan</label>
+          <select id="editCohort">
+            <option value="1">1</option>
+            <option value="2">2</option>
+            <option value="3">3</option>
+            <option value="4">4</option>
+            <option value="5">5</option>
+            <option value="6">6</option>
+            <option value="7">7</option>
+            <option value="lainnya">Lainnya</option>
+          </select>
+          <div id="editCohortLainnyaBox" style="display:none; margin-top:8px;">
+            <label for="editCohortLainnya">Masukkan Nomor Cohort</label>
+            <input type="number" id="editCohortLainnya" min="1">
+          </div>
+
+          <label>Nama Lengkap Orang Tua</label>
+          <input type="text" id="editOrtu">
+
+          <label>Domisili / Alamat Lengkap</label>
+          <input type="text" id="editDomisili">
+
+          <label>Nomor HP Aktif</label>
+          <input type="tel" id="editHp">
+
+          <label>Nama Kadet</label>
+          <input type="text" id="editKadet">
+
+          <label>Program Studi</label>
+          <select id="editProdi"></select>
+
+          <div class="baris-tombol" style="margin-top:16px;">
+            <button type="button" class="btn-kecil" onclick="simpanEditData()">💾 Simpan Perubahan</button>
+            <button type="button" class="btn-kecil secondary" onclick="batalEditData()">Batal</button>
+          </div>
+          <div class="pesan-pengaturan" id="pesanEditData"></div>
         </div>
       </div>
-      <div class="baris-tombol">
-        <button type="button" class="btn-kecil" onclick="simpanLogo()">Simpan Logo</button>
-        <button type="button" class="btn-kecil secondary" onclick="hapusLogo()">Hapus Logo</button>
-      </div>
 
-      <label for="inputJudul" style="display:block; font-weight:700; font-size:13.5px; color:var(--biru-tua); margin:18px 0 6px 0;">Judul Header</label>
-      <div class="pengaturan-row" style="margin-bottom:4px;">
-        <input type="text" id="inputJudul" placeholder="Contoh: KELUARGA BESAR KADET UNHAN RI | KORDA JATENG-DIY">
-      </div>
-      <div class="keterangan-kecil">Gunakan tanda | (garis tegak) di tempat judul ingin ganti baris.</div>
-      <div class="baris-tombol">
-        <button type="button" class="btn-kecil" onclick="simpanJudul()">Simpan Judul</button>
-        <button type="button" class="btn-kecil secondary" onclick="resetJudul()">Kembalikan Default</button>
-      </div>
+      <div class="card">
+        <h2>🖼️ Pengaturan Logo &amp; Judul Header</h2>
 
-      <div class="pesan-pengaturan" id="pesanPengaturan">✅ Pengaturan tersimpan</div>
-      <div class="keterangan-kecil" style="margin-top:12px;">Catatan: pengaturan logo &amp; judul ini tersimpan di perangkat/browser ini saja (bukan di Spreadsheet), jadi perlu diatur ulang jika dibuka dari HP/browser lain.</div>
+        <div class="pengaturan-row">
+          <img id="previewLogo" class="preview-logo" alt="Preview Logo">
+          <div style="flex:1; min-width:160px;">
+            <input type="file" id="inputLogo" accept="image/*">
+            <div class="keterangan-kecil">Format gambar (PNG/JPG), disarankan persegi &amp; ukuran kecil.</div>
+          </div>
+        </div>
+        <div class="baris-tombol">
+          <button type="button" class="btn-kecil" onclick="simpanLogo()">Simpan Logo</button>
+          <button type="button" class="btn-kecil secondary" onclick="hapusLogo()">Hapus Logo</button>
+        </div>
+
+        <label for="inputJudul" style="display:block; font-weight:700; font-size:13.5px; color:var(--biru-tua); margin:18px 0 6px 0;">Judul Header</label>
+        <div class="pengaturan-row" style="margin-bottom:4px;">
+          <input type="text" id="inputJudul" placeholder="Contoh: KELUARGA BESAR KADET UNHAN RI | KORDA JAWA TENGAH">
+        </div>
+        <div class="keterangan-kecil">Gunakan tanda | (garis tegak) di tempat judul ingin ganti baris.</div>
+        <div class="baris-tombol">
+          <button type="button" class="btn-kecil" onclick="simpanJudul()">Simpan Judul</button>
+          <button type="button" class="btn-kecil secondary" onclick="resetJudul()">Kembalikan Default</button>
+        </div>
+
+        <div class="pesan-pengaturan" id="pesanPengaturan">✅ Pengaturan tersimpan</div>
+        <div class="keterangan-kecil" style="margin-top:12px;">Catatan: pengaturan logo &amp; judul ini tersimpan di perangkat/browser ini saja (bukan di Spreadsheet), jadi perlu diatur ulang jika dibuka dari HP/browser lain.</div>
+      </div>
     </div>
   </section>
 
 </main>
+
+<!-- ===================== MODAL KONFIRMASI DATA SUDAH ADA ===================== -->
+<div class="modal-overlay" id="modalKonfirmasi">
+  <div class="modal-box">
+    <p id="pesanModalKonfirmasi">Data ini sudah tercatat. Apakah Anda ingin mengganti/memperbarui data tersebut?</p>
+    <div class="modal-tombol-row">
+      <button type="button" class="btn-modal-batal" onclick="modalBatal()">Batal</button>
+      <button type="button" class="btn-modal-ganti" onclick="modalGanti()">Ya, Ganti</button>
+    </div>
+  </div>
+</div>
 
 <script>
 /* =========================================================
@@ -767,11 +956,25 @@ async function muatData(dariTombol){
   }
 }
 
-async function kirimDataKeServer(dataBaru){
+async function kirimDataKeServer(dataBaru, aksi, dataAsli){
+  // aksi: "insert" (default) atau "update"
+  // dataAsli: {cohort, kadet} nilai ASLI sebelum diubah, dipakai backend untuk
+  //           menemukan baris yang tepat saat aksi = "update"
+  const payload = {
+    action: aksi || "insert",
+    match: dataAsli || null,
+    data: dataBaru
+  };
+
   // --- BAGIAN KONEKSI KE GAS ---
   if(!urlGasSudahDiisi()){
     // Belum tersambung ke GAS: data hanya disimpan sementara di memori halaman ini
-    records.push(dataBaru);
+    if(payload.action === "update" && dataAsli){
+      const idx = records.findIndex(r => String(r.cohort) === String(dataAsli.cohort) && (r.kadet||"").trim().toLowerCase() === (dataAsli.kadet||"").trim().toLowerCase());
+      if(idx > -1){ records[idx] = dataBaru; }else{ records.push(dataBaru); }
+    }else{
+      records.push(dataBaru);
+    }
     return { success:true, offline:true };
   }
 
@@ -779,11 +982,16 @@ async function kirimDataKeServer(dataBaru){
     const res = await fetch(GAS_URL, {
       method: "POST",
       headers: { "Content-Type": "text/plain;charset=utf-8" }, // hindari preflight CORS
-      body: JSON.stringify(dataBaru)
+      body: JSON.stringify(payload)
     });
     const hasil = await res.json();
     if(hasil.success){
-      records.push(dataBaru);
+      if(payload.action === "update" && dataAsli){
+        const idx = records.findIndex(r => String(r.cohort) === String(dataAsli.cohort) && (r.kadet||"").trim().toLowerCase() === (dataAsli.kadet||"").trim().toLowerCase());
+        if(idx > -1){ records[idx] = dataBaru; }else{ records.push(dataBaru); }
+      }else{
+        records.push(dataBaru);
+      }
     }
     return hasil;
   }catch(e){
@@ -823,45 +1031,51 @@ function renderDashboard(){
   const cohortSet = new Set(records.map(r => r.cohort));
   document.getElementById("totalCohort").textContent = cohortSet.size;
 
-  // ---- Grafik Batang Per Cohort (1-7) ----
+  // ---- Grafik Batang Rekap Per Cohort (dinamis, urut mulai dari terkecil) ----
   const cohortChart = document.getElementById("cohortChart");
   cohortChart.innerHTML = "";
   const hitungCohort = {};
-  for(let i = 1; i <= 7; i++){ hitungCohort[i] = 0; }
   records.forEach(r => {
     hitungCohort[r.cohort] = (hitungCohort[r.cohort] || 0) + 1;
   });
-  const maxCohort = Math.max(1, ...Object.values(hitungCohort));
+  const daftarCohort = Object.keys(hitungCohort)
+    .map(k => parseInt(k, 10))
+    .sort((a,b) => a - b);
 
-  for(let i = 1; i <= 7; i++){
-    const jumlah = hitungCohort[i] || 0;
-    const persen = Math.round((jumlah / maxCohort) * 100);
-    const row = document.createElement("div");
-    row.className = "bar-row";
-    row.innerHTML = `
-      <div class="bar-label">Cohort ${i}</div>
-      <div class="bar-track"><div class="bar-fill" style="width:${persen}%"></div></div>
-      <div class="bar-value">${jumlah}</div>
-    `;
-    cohortChart.appendChild(row);
+  if(daftarCohort.length === 0){
+    cohortChart.innerHTML = '<div class="no-data">Belum ada data</div>';
+  }else{
+    const maxCohort = Math.max(...daftarCohort.map(c => hitungCohort[c]));
+    daftarCohort.forEach(c => {
+      const jumlah = hitungCohort[c];
+      const persen = Math.round((jumlah / maxCohort) * 100);
+      const row = document.createElement("div");
+      row.className = "bar-row";
+      row.innerHTML = `
+        <div class="bar-label">Cohort ${c}</div>
+        <div class="bar-track"><div class="bar-fill" style="width:${persen}%"></div></div>
+        <div class="bar-value">${jumlah}</div>
+      `;
+      cohortChart.appendChild(row);
+    });
   }
 
-  // ---- 5 Program Studi Terbanyak ----
+  // ---- Rekap Per Program Studi (SEMUA, urut terbanyak ke tersedikit) ----
   const hitungProdi = {};
   records.forEach(r => {
     hitungProdi[r.prodi] = (hitungProdi[r.prodi] || 0) + 1;
   });
-  const topProdi = Object.entries(hitungProdi).sort((a,b) => b[1]-a[1]).slice(0,5);
-  renderMiniChart("prodiChart", topProdi);
+  const semuaProdi = Object.entries(hitungProdi).sort((a,b) => b[1]-a[1]);
+  renderMiniChart("prodiChart", semuaProdi);
 
-  // ---- 5 Domisili Terbanyak ----
+  // ---- Rekap Per Domisili / Kota (SEMUA, urut terbanyak ke tersedikit) ----
   const hitungDomisili = {};
   records.forEach(r => {
     const kota = (r.domisili || "-").trim();
     hitungDomisili[kota] = (hitungDomisili[kota] || 0) + 1;
   });
-  const topDomisili = Object.entries(hitungDomisili).sort((a,b) => b[1]-a[1]).slice(0,5);
-  renderMiniChart("domisiliChart", topDomisili);
+  const semuaDomisili = Object.entries(hitungDomisili).sort((a,b) => b[1]-a[1]);
+  renderMiniChart("domisiliChart", semuaDomisili);
 }
 
 function renderMiniChart(idElemen, daftar){
@@ -911,6 +1125,8 @@ selectCohort.addEventListener("change", function(){
   }
 });
 
+let dataMenungguKonfirmasi = null; // {dataBaru, dataAsli}
+
 document.getElementById("formInput").addEventListener("submit", async function(e){
   e.preventDefault();
 
@@ -938,11 +1154,30 @@ document.getElementById("formInput").addEventListener("submit", async function(e
     prodi: document.getElementById("prodi").value
   };
 
+  // Cek apakah Nama Kadet ini sudah pernah tercatat sebelumnya
+  const dataSama = records.find(r => (r.kadet || "").trim().toLowerCase() === dataBaru.kadet.toLowerCase());
+
+  if(dataSama){
+    dataMenungguKonfirmasi = {
+      dataBaru: dataBaru,
+      dataAsli: { cohort: dataSama.cohort, kadet: dataSama.kadet },
+      sumberForm: "input"
+    };
+    document.getElementById("pesanModalKonfirmasi").textContent =
+      "Data ini sudah tercatat. Apakah Anda ingin mengganti/memperbarui data tersebut?";
+    document.getElementById("modalKonfirmasi").classList.add("tampil");
+    return;
+  }
+
+  await prosesKirimForm(dataBaru, "insert", null);
+});
+
+async function prosesKirimForm(dataBaru, aksi, dataAsli){
   const tombolKirim = document.querySelector("#formInput .btn-submit");
   tombolKirim.disabled = true;
   tombolKirim.textContent = "Mengirim...";
 
-  const hasil = await kirimDataKeServer(dataBaru);
+  const hasil = await kirimDataKeServer(dataBaru, aksi, dataAsli);
 
   tombolKirim.disabled = false;
   tombolKirim.textContent = "Kirim Data";
@@ -952,7 +1187,7 @@ document.getElementById("formInput").addEventListener("submit", async function(e
   if(hasil.success){
     pesan.textContent = hasil.offline
       ? "✅ Data Berhasil Disimpan (sementara di perangkat ini — GAS_URL belum diisi)"
-      : "✅ Data Berhasil Disimpan";
+      : (aksi === "update" ? "✅ Data Berhasil Diperbarui" : "✅ Data Berhasil Disimpan");
     pesan.style.background = "#e6f6ea";
     pesan.style.color = "#1e7e34";
     pesan.style.borderColor = "#b6e6c2";
@@ -961,6 +1196,7 @@ document.getElementById("formInput").addEventListener("submit", async function(e
 
     document.getElementById("formInput").reset();
     boxLainnya.style.display = "none";
+    renderDashboard();
   }else{
     pesan.textContent = "❌ Gagal menyimpan data: " + (hasil.error || "periksa koneksi internet");
     pesan.style.background = "#fdeaea";
@@ -968,7 +1204,27 @@ document.getElementById("formInput").addEventListener("submit", async function(e
     pesan.style.borderColor = "#f5c2c2";
     pesan.style.display = "block";
   }
-});
+}
+
+/* ---- Kontrol Modal Konfirmasi Data Duplikat ---- */
+function modalBatal(){
+  document.getElementById("modalKonfirmasi").classList.remove("tampil");
+  dataMenungguKonfirmasi = null;
+}
+
+async function modalGanti(){
+  document.getElementById("modalKonfirmasi").classList.remove("tampil");
+  if(!dataMenungguKonfirmasi) return;
+
+  const { dataBaru, dataAsli, sumberForm } = dataMenungguKonfirmasi;
+  dataMenungguKonfirmasi = null;
+
+  if(sumberForm === "input"){
+    await prosesKirimForm(dataBaru, "update", dataAsli);
+  }else if(sumberForm === "edit"){
+    await prosesSimpanEdit(dataBaru, dataAsli);
+  }
+}
 
 /* =========================================================
    HALAMAN CARI DATA
@@ -979,7 +1235,7 @@ function cariData(){
   tbody.innerHTML = "";
 
   if(kataKunci === ""){
-    tbody.innerHTML = '<tr><td colspan="5" class="no-data">Masukkan kata kunci pencarian</td></tr>';
+    tbody.innerHTML = '<tr><td colspan="6" class="no-data">Masukkan kata kunci pencarian</td></tr>';
     return;
   }
 
@@ -1000,7 +1256,7 @@ function cariData(){
   });
 
   if(hasil.length === 0){
-    tbody.innerHTML = '<tr><td colspan="5" class="no-data">Data tidak ditemukan</td></tr>';
+    tbody.innerHTML = '<tr><td colspan="6" class="no-data">Data tidak ditemukan</td></tr>';
     return;
   }
 
@@ -1012,6 +1268,7 @@ function cariData(){
       <td>${r.kadet}</td>
       <td>${r.domisili}</td>
       <td>${r.prodi}</td>
+      <td>${r.hp || "-"}</td>
     `;
     tbody.appendChild(tr);
   });
@@ -1020,6 +1277,204 @@ function cariData(){
 document.getElementById("keyword").addEventListener("keyup", function(e){
   if(e.key === "Enter"){ cariData(); }
 });
+
+/* =========================================================
+   LOGIN ADMIN & KELOLA/EDIT DATA
+========================================================= */
+const ADMIN_USERNAME = "admin";
+const ADMIN_PASSWORD = "unhan123"; // GANTI kata sandi ini sebelum dipakai!
+
+function tampilkanAreaAdmin(login){
+  document.getElementById("adminArea").style.display = login ? "block" : "none";
+  document.getElementById("kartuLoginAdmin").style.display = login ? "none" : "block";
+  if(login){
+    isiPilihanProdiEdit();
+  }
+}
+
+function cekSesiAdminTersimpan(){
+  let sudahLogin = false;
+  try{ sudahLogin = sessionStorage.getItem("kbkAdminLogin") === "1"; }catch(e){}
+  tampilkanAreaAdmin(sudahLogin);
+}
+
+function loginAdmin(){
+  const u = document.getElementById("inputUsernameAdmin").value.trim();
+  const p = document.getElementById("inputPasswordAdmin").value;
+  const pesanGagal = document.getElementById("pesanLoginGagal");
+
+  if(u === ADMIN_USERNAME && p === ADMIN_PASSWORD){
+    pesanGagal.style.display = "none";
+    try{ sessionStorage.setItem("kbkAdminLogin", "1"); }catch(e){}
+    document.getElementById("inputUsernameAdmin").value = "";
+    document.getElementById("inputPasswordAdmin").value = "";
+    tampilkanAreaAdmin(true);
+  }else{
+    pesanGagal.style.display = "block";
+  }
+}
+
+function logoutAdmin(){
+  try{ sessionStorage.removeItem("kbkAdminLogin"); }catch(e){}
+  tampilkanAreaAdmin(false);
+  batalEditData();
+  document.getElementById("hasilKelola").innerHTML = "";
+  document.getElementById("keywordKelola").value = "";
+}
+
+function isiPilihanProdiEdit(){
+  const sel = document.getElementById("editProdi");
+  if(sel.options.length > 0) return; // sudah pernah diisi
+  daftarProdi.forEach(p => {
+    const opt = document.createElement("option");
+    opt.value = p;
+    opt.textContent = p;
+    sel.appendChild(opt);
+  });
+}
+
+document.getElementById("editCohort").addEventListener("change", function(){
+  document.getElementById("editCohortLainnyaBox").style.display =
+    (this.value === "lainnya") ? "block" : "none";
+});
+
+let hasilKelolaSaatIni = [];
+
+function cariDataKelola(){
+  const kk = document.getElementById("keywordKelola").value.trim().toLowerCase();
+  const wadah = document.getElementById("hasilKelola");
+  wadah.innerHTML = "";
+
+  if(kk === ""){
+    wadah.innerHTML = '<div class="no-data">Masukkan kata kunci pencarian</div>';
+    return;
+  }
+
+  const isAngkaMurni = /^\d+$/.test(kk);
+  hasilKelolaSaatIni = records.filter(r => {
+    if(isAngkaMurni){ return String(r.cohort) === kk; }
+    return (
+      (r.kadet || "").toLowerCase().includes(kk) ||
+      (r.ortu || "").toLowerCase().includes(kk) ||
+      (r.domisili || "").toLowerCase().includes(kk)
+    );
+  });
+
+  if(hasilKelolaSaatIni.length === 0){
+    wadah.innerHTML = '<div class="no-data">Data tidak ditemukan</div>';
+    return;
+  }
+
+  hasilKelolaSaatIni.forEach((r, idx) => {
+    const div = document.createElement("div");
+    div.className = "baris-hasil-kelola";
+    div.innerHTML = `
+      <div class="baris-atas">
+        <div><strong>${r.kadet}</strong> — Cohort ${r.cohort}<br>${r.ortu} · ${r.domisili}</div>
+        <button type="button" class="btn-edit-kecil" onclick="bukaEditData(${idx})">✏️ Edit</button>
+      </div>
+    `;
+    wadah.appendChild(div);
+  });
+}
+
+document.getElementById("keywordKelola").addEventListener("keyup", function(e){
+  if(e.key === "Enter"){ cariDataKelola(); }
+});
+
+let editDataAsli = null;
+
+function bukaEditData(idx){
+  const r = hasilKelolaSaatIni[idx];
+  if(!r) return;
+
+  editDataAsli = { cohort: r.cohort, kadet: r.kadet };
+  isiPilihanProdiEdit();
+
+  const cohortStr = String(r.cohort);
+  const opsiBaku = ["1","2","3","4","5","6","7"];
+  if(opsiBaku.includes(cohortStr)){
+    document.getElementById("editCohort").value = cohortStr;
+    document.getElementById("editCohortLainnyaBox").style.display = "none";
+  }else{
+    document.getElementById("editCohort").value = "lainnya";
+    document.getElementById("editCohortLainnyaBox").style.display = "block";
+    document.getElementById("editCohortLainnya").value = cohortStr;
+  }
+
+  document.getElementById("editOrtu").value = r.ortu || "";
+  document.getElementById("editDomisili").value = r.domisili || "";
+  document.getElementById("editHp").value = (r.hp && r.hp !== "-") ? r.hp : "";
+  document.getElementById("editKadet").value = r.kadet || "";
+  document.getElementById("editProdi").value = r.prodi || "";
+
+  const panel = document.getElementById("panelEditData");
+  panel.style.display = "block";
+  panel.scrollIntoView({ behavior:"smooth", block:"start" });
+}
+
+function batalEditData(){
+  document.getElementById("panelEditData").style.display = "none";
+  editDataAsli = null;
+}
+
+async function simpanEditData(){
+  if(!editDataAsli) return;
+
+  let nilaiCohort;
+  if(document.getElementById("editCohort").value === "lainnya"){
+    nilaiCohort = parseInt(document.getElementById("editCohortLainnya").value, 10);
+    if(!nilaiCohort || nilaiCohort < 1){
+      alert("Masukkan nomor cohort baru yang valid.");
+      return;
+    }
+  }else{
+    nilaiCohort = parseInt(document.getElementById("editCohort").value, 10);
+  }
+
+  const dataBaru = {
+    cohort: nilaiCohort,
+    ortu: document.getElementById("editOrtu").value.trim(),
+    domisili: document.getElementById("editDomisili").value.trim(),
+    hp: document.getElementById("editHp").value.trim() || "-",
+    kadet: document.getElementById("editKadet").value.trim(),
+    prodi: document.getElementById("editProdi").value
+  };
+
+  if(!dataBaru.ortu || !dataBaru.domisili || !dataBaru.kadet || !dataBaru.prodi){
+    alert("Mohon lengkapi semua kolom.");
+    return;
+  }
+
+  await prosesSimpanEdit(dataBaru, editDataAsli);
+}
+
+async function prosesSimpanEdit(dataBaru, dataAsli){
+  const pesan = document.getElementById("pesanEditData");
+  pesan.style.display = "none";
+
+  const hasil = await kirimDataKeServer(dataBaru, "update", dataAsli);
+
+  if(hasil.success){
+    pesan.textContent = "✅ Data berhasil diperbarui";
+    pesan.style.background = "#e6f6ea";
+    pesan.style.color = "#1e7e34";
+    pesan.style.borderColor = "#b6e6c2";
+    pesan.style.display = "block";
+    renderDashboard();
+    cariDataKelola();
+    setTimeout(() => {
+      document.getElementById("panelEditData").style.display = "none";
+      pesan.style.display = "none";
+    }, 1800);
+  }else{
+    pesan.textContent = "❌ Gagal menyimpan: " + (hasil.error || "periksa koneksi internet");
+    pesan.style.background = "#fdeaea";
+    pesan.style.color = "#c0392b";
+    pesan.style.borderColor = "#f5c2c2";
+    pesan.style.display = "block";
+  }
+}
 
 /* =========================================================
    PENGATURAN LOGO & JUDUL HEADER
@@ -1127,6 +1582,7 @@ function hapusLogo(){
 ========================================================= */
 isiPilihanProdi();
 muatPengaturanTampilan();
+cekSesiAdminTersimpan();
 muatData();
 </script>
 </body>
