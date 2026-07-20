@@ -2,852 +2,1132 @@
 <html lang="id">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<title>CAT Ujian</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title>Keluarga Besar Kadet UNHAN RI - Korda Jawa Tengah</title>
 <style>
-  * { box-sizing: border-box; }
-  body {
-    margin: 0;
-    font-family: Arial, Helvetica, sans-serif;
-    background: #f3f4f6;
-    color: #111827;
-    padding-top: 140px;
+  :root{
+    --biru-tua:#0d2b6b;
+    --biru-sedang:#1a4494;
+    --putih:#ffffff;
+    --abu:#f0f4f8;
+    --kuning:#ffc107;
+    --teks:#14213d;
+  }
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;}
+  body{
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
+    background:var(--abu);
+    color:var(--teks);
+    padding-bottom:40px;
+  }
+  header.topbar{
+    background:var(--biru-tua);
+    color:var(--putih);
+    padding:14px 16px 10px 16px;
+    text-align:center;
+    position:sticky;
+    top:0;
+    z-index:50;
+    box-shadow:0 2px 8px rgba(0,0,0,0.25);
+  }
+  .header-logo{
+    width:56px;
+    height:56px;
+    object-fit:contain;
+    border-radius:10px;
+    background:var(--putih);
+    padding:3px;
+    margin-bottom:8px;
+  }
+  header.topbar h1{
+    margin:0 0 10px 0;
+    font-size:17px;
+    line-height:1.3;
+    letter-spacing:0.3px;
+  }
+  nav.menu{
+    display:flex;
+    gap:6px;
+    justify-content:center;
+    flex-wrap:wrap;
+  }
+  nav.menu button{
+    flex:1 1 auto;
+    min-width:80px;
+    background:var(--biru-sedang);
+    color:var(--putih);
+    border:none;
+    padding:12px 10px;
+    font-size:13.5px;
+    font-weight:600;
+    border-radius:10px 10px 0 0;
+    cursor:pointer;
+    transition:background 0.15s ease, transform 0.1s ease;
+    border-bottom:4px solid transparent;
+  }
+  nav.menu button:active{
+    transform:scale(0.97);
+  }
+  nav.menu button.active{
+    background:#0a2158;
+    border-bottom:4px solid var(--kuning);
+  }
+  nav.menu button:hover{
+    background:#153a7d;
   }
 
-  /* ===================== HEADER STICKY ===================== */
-  header {
-    position: fixed;
-    top: 0; left: 0; right: 0;
-    z-index: 999;
-    background: #1e3a8a;
-    color: #fff;
-    padding: 8px 10px 10px 10px;
-    box-shadow: 0 2px 6px rgba(0,0,0,.3);
+  main{
+    max-width:900px;
+    margin:0 auto;
+    padding:16px;
   }
-  .header-row1 {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 8px;
+  .page{display:none;}
+  .page.active{display:block; animation:fadeIn 0.25s ease;}
+  @keyframes fadeIn{from{opacity:0; transform:translateY(6px);} to{opacity:1; transform:translateY(0);}}
+
+  .card{
+    background:var(--putih);
+    border-radius:14px;
+    padding:16px;
+    margin-bottom:16px;
+    box-shadow:0 2px 10px rgba(13,43,107,0.08);
   }
-  #timer {
-    font-size: 20px;
-    font-weight: bold;
-    font-variant-numeric: tabular-nums;
-  }
-  #btnSelesai {
-    background: #dc2626;
-    color: #fff;
-    border: none;
-    padding: 9px 14px;
-    border-radius: 6px;
-    font-size: 13px;
-    font-weight: bold;
-    cursor: pointer;
-  }
-  .nav-grid {
-    display: grid;
-    grid-template-columns: repeat(12, 1fr);
-    gap: 4px;
-    max-height: 160px;
-    overflow-y: auto;
-    padding-right: 2px;
-  }
-  .nav-btn {
-    width: 32px;
-    height: 32px;
-    border: 2px solid #fff;
-    background: transparent;
-    color: #fff;
-    font-size: 11px;
-    border-radius: 4px;
-    cursor: pointer;
-    padding: 0;
-  }
-  .nav-btn.answered {
-    background: #16a34a;
-    border-color: #16a34a;
-    color: #fff;
-  }
-  .nav-btn.active {
-    background: #facc15;
-    border-color: #facc15;
-    color: #000;
-    font-weight: bold;
+  .card h2{
+    margin-top:0;
+    font-size:16px;
+    color:var(--biru-tua);
+    border-bottom:2px solid var(--abu);
+    padding-bottom:8px;
   }
 
-  /* ===================== START SCREEN ===================== */
-  #startScreen {
-    max-width: 480px;
-    margin: 20px auto;
-    background: #fff;
-    border-radius: 10px;
-    padding: 24px 20px;
-    box-shadow: 0 2px 10px rgba(0,0,0,.1);
-    text-align: center;
+  .status-koneksi{
+    text-align:center;
+    font-size:12.5px;
+    font-weight:700;
+    padding:6px 10px;
+    border-radius:8px;
+    margin-bottom:8px;
+    display:none;
   }
-  #startScreen h1 {
-    color: #1e3a8a;
-    font-size: 20px;
-    margin-bottom: 6px;
+  .status-koneksi.online{
+    display:block;
+    background:#e6f6ea;
+    color:#1e7e34;
   }
-  #startScreen p.info {
-    color: #374151;
-    font-size: 14px;
-    margin-bottom: 20px;
+  .status-koneksi.offline{
+    display:block;
+    background:#fdeaea;
+    color:#c0392b;
   }
-  #inputNama {
-    width: 100%;
-    padding: 12px;
-    font-size: 15px;
-    border: 1px solid #d1d5db;
-    border-radius: 6px;
-    margin-bottom: 16px;
+  .status-koneksi.loading{
+    display:block;
+    background:#eaf1fd;
+    color:var(--biru-sedang);
   }
-  #btnMulai {
-    width: 100%;
-    background: #1e3a8a;
-    color: #fff;
-    border: none;
-    padding: 13px;
-    font-size: 15px;
-    font-weight: bold;
-    border-radius: 6px;
-    cursor: pointer;
+  .btn-refresh{
+    display:block;
+    margin:0 auto 16px auto;
+    background:var(--biru-sedang);
+    color:var(--putih);
+    border:none;
+    padding:9px 18px;
+    border-radius:20px;
+    font-size:12.5px;
+    font-weight:700;
+    cursor:pointer;
+  }
+  .btn-refresh:active{background:var(--biru-tua);}
+
+  .dash-title{
+    text-align:center;
+    color:var(--biru-tua);
+    font-size:19px;
+    font-weight:800;
+    margin:6px 0 18px 0;
+    line-height:1.4;
   }
 
-  /* ===================== EXAM AREA ===================== */
-  #examArea { max-width: 700px; margin: 0 auto; padding: 10px 10px 30px 10px; display: none; }
-  .soal-card {
-    background: #fff;
-    border: 1px solid #d1d5db;
-    border-radius: 8px;
-    padding: 15px;
-    margin-bottom: 14px;
+  .summary-row{
+    display:flex;
+    gap:12px;
+    margin-bottom:16px;
+    flex-wrap:wrap;
   }
-  .soal-nomor {
-    font-weight: bold;
-    color: #1e3a8a;
-    margin-bottom: 8px;
-    font-size: 14px;
+  .summary-box{
+    flex:1 1 45%;
+    background:linear-gradient(135deg, var(--biru-tua), var(--biru-sedang));
+    color:var(--putih);
+    border-radius:14px;
+    padding:18px 14px;
+    text-align:center;
+    box-shadow:0 3px 10px rgba(13,43,107,0.25);
   }
-  .soal-teks {
-    margin-bottom: 12px;
-    font-size: 15px;
-    line-height: 1.5;
+  .summary-box .angka{
+    font-size:32px;
+    font-weight:800;
+    display:block;
   }
-  .opsi-list label {
-    display: block;
-    padding: 10px 12px;
-    border: 1px solid #e5e7eb;
-    border-radius: 6px;
-    margin-bottom: 8px;
-    cursor: pointer;
-    font-size: 14px;
+  .summary-box .label{
+    font-size:12.5px;
+    opacity:0.9;
+    margin-top:4px;
+    display:block;
   }
-  .opsi-list label:active { background: #f3f4f6; }
-  .opsi-list input[type="radio"] { margin-right: 8px; }
 
-  /* ===================== RESULT SCREEN ===================== */
-  #resultScreen {
-    display: none;
-    max-width: 480px;
-    margin: 20px auto;
-    background: #fff;
-    border-radius: 10px;
-    padding: 24px 20px;
-    box-shadow: 0 2px 10px rgba(0,0,0,.1);
-    text-align: center;
+  .bar-row{
+    display:flex;
+    align-items:center;
+    margin-bottom:10px;
+    font-size:13.5px;
   }
-  #resultScreen h2 { color: #1e3a8a; margin-bottom: 4px; }
-  #resultScreen .skor-detail {
-    text-align: left;
-    background: #f3f4f6;
-    border-radius: 6px;
-    padding: 12px;
-    margin: 14px 0;
-    font-size: 14px;
-    white-space: pre-line;
+  .bar-label{
+    width:78px;
+    flex-shrink:0;
+    font-weight:600;
+    color:var(--biru-tua);
   }
-  .status-lulus { color: #16a34a; font-weight: bold; font-size: 18px; }
-  .status-gagal { color: #dc2626; font-weight: bold; font-size: 18px; }
-  .status-record { color: #16a34a; font-weight: bold; margin-top: 10px; }
+  .bar-track{
+    flex:1;
+    background:var(--abu);
+    border-radius:8px;
+    overflow:hidden;
+    height:22px;
+    margin:0 8px;
+    border:1px solid #e0e6ee;
+  }
+  .bar-fill{
+    height:100%;
+    background:var(--biru-tua);
+    border-radius:8px 0 0 8px;
+    transition:width 0.6s ease;
+    min-width:2px;
+  }
+  .bar-value{
+    width:32px;
+    text-align:right;
+    font-weight:700;
+    color:var(--biru-tua);
+    flex-shrink:0;
+  }
+
+  .small-bar-label{
+    display:flex;
+    justify-content:space-between;
+    font-size:13px;
+    margin-bottom:3px;
+  }
+  .small-bar-track{
+    background:var(--abu);
+    border-radius:6px;
+    height:12px;
+    overflow:hidden;
+    margin-bottom:10px;
+    border:1px solid #e0e6ee;
+  }
+  .small-bar-fill{
+    height:100%;
+    background:var(--biru-sedang);
+  }
+
+  form label{
+    display:block;
+    font-weight:600;
+    font-size:13.5px;
+    color:var(--biru-tua);
+    margin:14px 0 6px 0;
+  }
+  form select, form input[type="text"], form input[type="tel"], form input[type="number"]{
+    width:100%;
+    padding:11px 12px;
+    border-radius:10px;
+    border:1.5px solid #cfd8e6;
+    font-size:14.5px;
+    background:var(--putih);
+    color:var(--teks);
+  }
+  form select:focus, form input:focus{
+    outline:none;
+    border-color:var(--biru-sedang);
+  }
+  #cohortLainnyaBox{
+    display:none;
+    margin-top:8px;
+  }
+  .btn-submit{
+    width:100%;
+    margin-top:20px;
+    padding:14px;
+    background:var(--biru-tua);
+    color:var(--putih);
+    font-size:15.5px;
+    font-weight:700;
+    border:none;
+    border-radius:12px;
+    cursor:pointer;
+    transition:background 0.15s ease, transform 0.1s ease;
+  }
+  .btn-submit:active{transform:scale(0.98); background:var(--biru-sedang);}
+  .pesan-sukses{
+    display:none;
+    background:#e6f6ea;
+    color:#1e7e34;
+    border:1.5px solid #b6e6c2;
+    padding:12px;
+    border-radius:10px;
+    margin-top:14px;
+    font-weight:700;
+    text-align:center;
+    font-size:14px;
+  }
+
+  .search-row{
+    display:flex;
+    gap:8px;
+  }
+  .search-row input{
+    flex:1;
+  }
+  .search-row button{
+    background:var(--biru-tua);
+    color:var(--putih);
+    border:none;
+    padding:0 18px;
+    border-radius:10px;
+    font-weight:700;
+    cursor:pointer;
+    font-size:14px;
+  }
+  .search-row button:active{background:var(--biru-sedang);}
+
+  .table-wrap{
+    overflow-x:auto;
+    margin-top:16px;
+    -webkit-overflow-scrolling:touch;
+  }
+  table{
+    border-collapse:collapse;
+    width:100%;
+    min-width:560px;
+    font-size:13px;
+  }
+  thead th{
+    background:var(--biru-tua);
+    color:var(--putih);
+    padding:9px 8px;
+    text-align:left;
+    position:sticky;
+    top:0;
+  }
+  tbody td{
+    padding:8px;
+    border-bottom:1px solid #e6ebf2;
+  }
+  tbody tr:nth-child(even){background:#f7f9fc;}
+  tbody tr:hover{background:#eef3fb;}
+  .no-data{
+    text-align:center;
+    padding:18px;
+    color:#8a94a6;
+    font-weight:600;
+  }
+
+  .admin-info p{
+    font-size:14.5px;
+    line-height:1.8;
+    margin:8px 0;
+  }
+  .admin-info strong{color:var(--biru-tua);}
+
+  .pengaturan-row{
+    display:flex;
+    align-items:center;
+    gap:14px;
+    margin-bottom:14px;
+    flex-wrap:wrap;
+  }
+  .preview-logo{
+    width:64px;
+    height:64px;
+    border-radius:12px;
+    object-fit:contain;
+    background:var(--abu);
+    border:1.5px dashed #c3cede;
+    padding:4px;
+  }
+  .pengaturan-row input[type="text"]{
+    flex:1;
+    min-width:180px;
+    padding:10px 12px;
+    border-radius:10px;
+    border:1.5px solid #cfd8e6;
+    font-size:14px;
+  }
+  .baris-tombol{
+    display:flex;
+    gap:8px;
+    flex-wrap:wrap;
+    margin-top:8px;
+  }
+  .btn-kecil{
+    background:var(--biru-tua);
+    color:var(--putih);
+    border:none;
+    padding:9px 16px;
+    border-radius:9px;
+    font-size:13px;
+    font-weight:700;
+    cursor:pointer;
+  }
+  .btn-kecil.secondary{
+    background:var(--abu);
+    color:var(--biru-tua);
+    border:1.5px solid #cfd8e6;
+  }
+  .btn-kecil:active{opacity:0.85;}
+  .keterangan-kecil{
+    font-size:11.5px;
+    color:#7a8494;
+    margin-top:6px;
+  }
+  .pesan-pengaturan{
+    display:none;
+    background:#e6f6ea;
+    color:#1e7e34;
+    border:1.5px solid #b6e6c2;
+    padding:8px 12px;
+    border-radius:8px;
+    margin-top:10px;
+    font-size:13px;
+    font-weight:700;
+    text-align:center;
+  }
+  .badge-kuning{
+    display:inline-block;
+    background:var(--kuning);
+    color:#5a3d00;
+    padding:2px 10px;
+    border-radius:20px;
+    font-size:12px;
+    font-weight:700;
+    margin-bottom:10px;
+  }
+
+  @media (min-width:640px){
+    header.topbar h1{font-size:20px;}
+    nav.menu button{font-size:14.5px; padding:13px 16px;}
+    .summary-box{flex:1 1 22%;}
+  }
 </style>
 </head>
 <body>
 
-<header>
-  <div class="header-row1">
-    <div id="timer">00:00</div>
-    <button id="btnSelesai" onclick="konfirmasiSelesai()">Selesaikan Ujian</button>
-  </div>
-  <div class="nav-grid" id="navGrid"></div>
+<header class="topbar">
+  <img id="headerLogo" class="header-logo" alt="Logo" style="display:none;">
+  <h1 id="headerTitle">KELUARGA BESAR KADET UNHAN RI<br>KORDA JAWA TENGAH</h1>
+  <nav class="menu">
+    <button id="btnDashboard" class="active" onclick="gantiHalaman('dashboard')">Dashboard</button>
+    <button id="btnInput" onclick="gantiHalaman('input')">Input Data</button>
+    <button id="btnCari" onclick="gantiHalaman('cari')">Cari Data</button>
+    <button id="btnProfil" onclick="gantiHalaman('profil')">Profil Admin</button>
+  </nav>
 </header>
 
-<!-- ===================== START SCREEN ===================== -->
-<div id="startScreen">
-  <h1 id="judulUjian"></h1>
-  <p class="info" id="infoUjian"></p>
-  <input type="text" id="inputNama" placeholder="Nama Lengkap" required>
-  <button id="btnMulai" onclick="mulaiUjian()">Mulai Tes</button>
-</div>
+<main>
 
-<!-- ===================== EXAM AREA ===================== -->
-<div id="examArea"></div>
+  <!-- ===================== HALAMAN DASHBOARD ===================== -->
+  <section id="page-dashboard" class="page active">
+    <div class="dash-title">KELUARGA BESAR KADET UNHAN RI<br>KORDA JAWA TENGAH</div>
 
-<!-- ===================== RESULT SCREEN ===================== -->
-<div id="resultScreen">
-  <h2>Hasil Ujian</h2>
-  <p id="hasilNama"></p>
-  <div class="skor-detail" id="hasilSkor"></div>
-  <div id="hasilStatus"></div>
-  <div class="status-record">Jawaban Anda sudah direkam.</div>
-</div>
+    <div id="statusKoneksi" class="status-koneksi"></div>
+    <button type="button" class="btn-refresh" onclick="muatData(true)">🔄 Muat Ulang Data</button>
+
+    <div class="summary-row">
+      <div class="summary-box">
+        <span class="angka" id="totalData">0</span>
+        <span class="label">Total Data Terdaftar</span>
+      </div>
+      <div class="summary-box">
+        <span class="angka" id="totalCohort">0</span>
+        <span class="label">Cohort Aktif</span>
+      </div>
+    </div>
+
+    <div class="card">
+      <h2>📊 Rekap Per Cohort</h2>
+      <div id="cohortChart"></div>
+    </div>
+
+    <div class="card">
+      <h2>🎓 5 Program Studi Terbanyak</h2>
+      <div id="prodiChart"></div>
+    </div>
+
+    <div class="card">
+      <h2>📍 5 Domisili / Kota Terbanyak</h2>
+      <div id="domisiliChart"></div>
+    </div>
+  </section>
+
+  <!-- ===================== HALAMAN INPUT DATA ===================== -->
+  <section id="page-input" class="page">
+    <div class="card">
+      <h2>📝 Formulir Input Data Kadet</h2>
+      <form id="formInput">
+
+        <label for="cohort">Cohort / Angkatan</label>
+        <select id="cohort" required>
+          <option value="">-- Pilih Cohort --</option>
+          <option value="1">1</option>
+          <option value="2">2</option>
+          <option value="3">3</option>
+          <option value="4">4</option>
+          <option value="5">5</option>
+          <option value="6">6</option>
+          <option value="7">7</option>
+          <option value="Lainnya">Lainnya</option>
+        </select>
+        <div id="cohortLainnyaBox">
+          <label for="cohortLainnya">Masukkan Nomor Cohort Baru</label>
+          <input type="number" id="cohortLainnya" min="1" placeholder="Contoh: 8">
+        </div>
+
+        <label for="namaOrtu">Nama Lengkap Orang Tua</label>
+        <input type="text" id="namaOrtu" required placeholder="Contoh: Bapak/Ibu ...">
+
+        <label for="domisili">Domisili / Alamat Lengkap</label>
+        <input type="text" id="domisili" required placeholder="Contoh: Purbalingga">
+
+        <label for="hp">Nomor HP Aktif</label>
+        <input type="tel" id="hp" placeholder="Contoh: 0812xxxxxxx">
+
+        <label for="namaKadet">Nama Kadet</label>
+        <input type="text" id="namaKadet" required placeholder="Nama lengkap kadet">
+
+        <label for="prodi">Program Studi</label>
+        <select id="prodi" required>
+          <option value="">-- Pilih Program Studi --</option>
+        </select>
+
+        <button type="submit" class="btn-submit">Kirim Data</button>
+        <div class="pesan-sukses" id="pesanSukses">✅ Data Berhasil Disimpan</div>
+      </form>
+    </div>
+  </section>
+
+  <!-- ===================== HALAMAN CARI DATA ===================== -->
+  <section id="page-cari" class="page">
+    <div class="card">
+      <h2>🔍 Cari Data</h2>
+      <div class="search-row">
+        <input type="text" id="keyword" placeholder="Cari Nama Kadet, Nama Orang Tua, Kota, atau Cohort...">
+        <button onclick="cariData()">Cari</button>
+      </div>
+
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>Cohort</th>
+              <th>Nama Orang Tua</th>
+              <th>Nama Kadet</th>
+              <th>Kota</th>
+              <th>Prodi</th>
+            </tr>
+          </thead>
+          <tbody id="hasilCari"></tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===================== HALAMAN PROFIL ADMIN ===================== -->
+  <section id="page-profil" class="page">
+    <div class="card admin-info">
+      <span class="badge-kuning">INFO PENGELOLA</span>
+      <h2 style="border:none; padding:0; margin-bottom:6px;">👤 Profil Admin</h2>
+      <p><strong>Pengelola:</strong> Keluarga Besar Kadet UNHAN RI - Korda Jawa Tengah</p>
+      <p><strong>Kontak:</strong> Hubungi perwakilan daerah masing-masing</p>
+      <p><strong>Catatan:</strong> Data terintegrasi dan terupdate</p>
+    </div>
+
+    <div class="card">
+      <h2>🖼️ Pengaturan Logo &amp; Judul Header</h2>
+
+      <div class="pengaturan-row">
+        <img id="previewLogo" class="preview-logo" alt="Preview Logo">
+        <div style="flex:1; min-width:160px;">
+          <input type="file" id="inputLogo" accept="image/*">
+          <div class="keterangan-kecil">Format gambar (PNG/JPG), disarankan persegi &amp; ukuran kecil.</div>
+        </div>
+      </div>
+      <div class="baris-tombol">
+        <button type="button" class="btn-kecil" onclick="simpanLogo()">Simpan Logo</button>
+        <button type="button" class="btn-kecil secondary" onclick="hapusLogo()">Hapus Logo</button>
+      </div>
+
+      <label for="inputJudul" style="display:block; font-weight:700; font-size:13.5px; color:var(--biru-tua); margin:18px 0 6px 0;">Judul Header</label>
+      <div class="pengaturan-row" style="margin-bottom:4px;">
+        <input type="text" id="inputJudul" placeholder="Contoh: KELUARGA BESAR KADET UNHAN RI | KORDA JAWA TENGAH">
+      </div>
+      <div class="keterangan-kecil">Gunakan tanda | (garis tegak) di tempat judul ingin ganti baris.</div>
+      <div class="baris-tombol">
+        <button type="button" class="btn-kecil" onclick="simpanJudul()">Simpan Judul</button>
+        <button type="button" class="btn-kecil secondary" onclick="resetJudul()">Kembalikan Default</button>
+      </div>
+
+      <div class="pesan-pengaturan" id="pesanPengaturan">✅ Pengaturan tersimpan</div>
+      <div class="keterangan-kecil" style="margin-top:12px;">Catatan: pengaturan logo &amp; judul ini tersimpan di perangkat/browser ini saja (bukan di Spreadsheet), jadi perlu diatur ulang jika dibuka dari HP/browser lain.</div>
+    </div>
+  </section>
+
+</main>
 
 <script>
-/* =========================================================================
-   ================  CONFIG  ================================================
-   ========================================================================= */
-const CONFIG = {
-  NAMA_UJIAN: "TOEFL_KEDINASAN",
-  JUDUL_LENGKAP_UJIAN: "Tes TOEFL Prediction - Persiapan Sekolah Kedinasan",
-  WAKTU_MENIT: 115, // standar TOEFL ITP: 115 menit (35 Listening + 25 Structure + 55 Reading)
-
-  TELEGRAM_TOKEN: "8644146007:AAHwi9kBAm-OIYA4NOiqvREBWV2xDoZyNTU",
-  TELEGRAM_CHAT_ID: "5748276018",
-
-  POIN_DEFAULT: 1, // tiap soal bernilai 1 poin mentah, konversi ke skor TOEFL dihitung terpisah
-
-  // ==== KRITERIA KELULUSAN ====
-  // Ambang batas skor TOEFL prediction bervariasi tiap sekolah kedinasan
-  // (STAN/PKN STAN, IPDN, Poltekip, dsb). GANTI passingScore sesuai
-  // ketentuan resmi instansi yang dituju.
-  cekKelulusan(skor) {
-    const passingScore = 450; // contoh ambang umum, sesuaikan per instansi
-    const lulus = skor.skorTOEFL >= passingScore;
-    return {
-      lulus,
-      teksStatus: lulus ? "LULUS" : "TIDAK LULUS"
-    };
-  }
-};
-
-/* =========================================================================
-   ================  DATA SOAL - TOEFL ITP STYLE (140 SOAL)  ===============
-   =========================================================================
-   Section 1: Listening Comprehension   -> id 1-50   (kategori: "Listening")
-     Part A: percakapan pendek           -> id 1-30
-     Part B: percakapan panjang          -> id 31-38 (2 skrip x 4 soal)
-     Part C: talks/lecture               -> id 39-50 (3 skrip x 4 soal)
-   Section 2: Structure & Written Expr. -> id 51-90  (kategori: "Structure")
-     Structure (sentence completion)     -> id 51-65
-     Written Expression (error ID)       -> id 66-90
-   Section 3: Reading Comprehension     -> id 91-140 (kategori: "Reading")
-     5 passage x 10 soal
-
-   Catatan: seluruh soal disusun orisinal untuk simulasi latihan,
-   BUKAN salinan dari bank soal TOEFL resmi/berhak cipta.
-   type "bacaan" = teks passage/skrip pendukung, tidak dihitung sebagai
-   nomor soal maupun ikut dalam scoring.
-*/
-const DATA_SOAL = [
-
-/* ================= SECTION 1: LISTENING - PART A (id 1-30) ================= */
-{ id:1, type:"pg", kategori:"Listening", teks:"Percakapan:\nM: Have you finished the report yet?\nW: I'm almost done, just need to check the numbers.\n\nQuestion: What does the woman mean?",
-  opsi:["She has completed the report.","She still needs to verify some data.","She refuses to do the report.","She lost the report."], kunci:1 },
-{ id:2, type:"pg", kategori:"Listening", teks:"Percakapan:\nW: Could you turn down the music? I'm trying to study.\nM: Oh sorry, I didn't realize it was that loud.\n\nQuestion: What will the man probably do next?",
-  opsi:["Turn up the music","Apologize and lower the volume","Leave the room","Ignore the woman"], kunci:1 },
-{ id:3, type:"pg", kategori:"Listening", teks:"Percakapan:\nM: Why didn't you come to the meeting yesterday?\nW: I was stuck in traffic for two hours.\n\nQuestion: Why didn't the woman attend the meeting?",
-  opsi:["She forgot about it","She was ill","She was delayed by traffic","She didn't want to attend"], kunci:2 },
-{ id:4, type:"pg", kategori:"Listening", teks:"Percakapan:\nW: Is this seat taken?\nM: No, go ahead.\n\nQuestion: What does the man mean?",
-  opsi:["The seat is reserved","She may sit there","He is sitting there","He doesn't know"], kunci:1 },
-{ id:5, type:"pg", kategori:"Listening", teks:"Percakapan:\nM: I heard you're moving to a new apartment.\nW: Yes, next month, closer to my office.\n\nQuestion: Why is the woman moving?",
-  opsi:["To be near her office","To save money","To live with her family","Because her apartment was sold"], kunci:0 },
-{ id:6, type:"pg", kategori:"Listening", teks:"Percakapan:\nW: Did you fix the printer?\nM: I tried, but I think we need a new cartridge.\n\nQuestion: What does the man imply?",
-  opsi:["The printer is fixed","The printer needs a new part","He couldn't find the printer","The printer was never broken"], kunci:1 },
-{ id:7, type:"pg", kategori:"Listening", teks:"Percakapan:\nM: Can I borrow your notes from yesterday's class?\nW: Sure, but I need them back by Friday.\n\nQuestion: What does the woman ask?",
-  opsi:["Not to borrow the notes","To return the notes by Friday","To keep the notes forever","To take her class"], kunci:1 },
-{ id:8, type:"pg", kategori:"Listening", teks:"Percakapan:\nW: The flight was delayed for three hours.\nM: That's frustrating, did you miss your connection?\n\nQuestion: What are they discussing?",
-  opsi:["A missed flight","A delayed flight","A canceled ticket","A lost bag"], kunci:1 },
-{ id:9, type:"pg", kategori:"Listening", teks:"Percakapan:\nM: Would you like some coffee?\nW: No thanks, I just had some tea.\n\nQuestion: What does the woman mean?",
-  opsi:["She wants coffee","She doesn't want coffee","She wants tea and coffee","She never drinks tea"], kunci:1 },
-{ id:10, type:"pg", kategori:"Listening", teks:"Percakapan:\nW: I can't believe how expensive rent has gotten.\nM: I know, that's why I decided to get a roommate.\n\nQuestion: Why did the man get a roommate?",
-  opsi:["He likes company","To share the cost of rent","He was lonely","His friend asked him to"], kunci:1 },
-{ id:11, type:"pg", kategori:"Listening", teks:"Percakapan:\nM: Are you coming to the party tonight?\nW: I wish I could, but I have to work late.\n\nQuestion: What does the woman mean?",
-  opsi:["She will attend the party","She cannot attend because of work","She doesn't like parties","She forgot about the party"], kunci:1 },
-{ id:12, type:"pg", kategori:"Listening", teks:"Percakapan:\nW: Have you seen my keys?\nM: Check the kitchen table, I saw them there earlier.\n\nQuestion: What does the man suggest?",
-  opsi:["The woman lost her keys","The keys might be on the kitchen table","He has the keys","The keys were stolen"], kunci:1 },
-{ id:13, type:"pg", kategori:"Listening", teks:"Percakapan:\nM: How was your trip to Bali?\nW: Amazing, but the flight back was terrible.\n\nQuestion: What was bad about the trip?",
-  opsi:["The hotel","The food","The return flight","The weather"], kunci:2 },
-{ id:14, type:"pg", kategori:"Listening", teks:"Percakapan:\nW: I think I left my umbrella at the office.\nM: Don't worry, I have an extra one you can borrow.\n\nQuestion: What does the man offer?",
-  opsi:["To buy a new umbrella","To lend his umbrella","To go back to the office","To call the office"], kunci:1 },
-{ id:15, type:"pg", kategori:"Listening", teks:"Percakapan:\nM: This assignment is due tomorrow, right?\nW: Actually, the deadline was extended to next week.\n\nQuestion: What does the woman say about the deadline?",
-  opsi:["It was moved earlier","It stays the same","It was extended","It was canceled"], kunci:2 },
-{ id:16, type:"pg", kategori:"Listening", teks:"Percakapan:\nW: Why is the store closed today?\nM: It's a national holiday.\n\nQuestion: Why is the store closed?",
-  opsi:["It's under renovation","It's a holiday","It closed permanently","The owner is sick"], kunci:1 },
-{ id:17, type:"pg", kategori:"Listening", teks:"Percakapan:\nM: Can you give me a ride to the airport?\nW: Sorry, my car is in the shop.\n\nQuestion: Why can't the woman help?",
-  opsi:["She doesn't have a license","Her car is being repaired","She's busy","She doesn't like driving"], kunci:1 },
-{ id:18, type:"pg", kategori:"Listening", teks:"Percakapan:\nW: Did you enjoy the concert last night?\nM: It was good, but the seats were too far from the stage.\n\nQuestion: What did the man dislike?",
-  opsi:["The music","The seating location","The crowd","The ticket price"], kunci:1 },
-{ id:19, type:"pg", kategori:"Listening", teks:"Percakapan:\nM: I heard the professor changed the exam schedule.\nW: Yes, it's now on Monday instead of Friday.\n\nQuestion: What changed?",
-  opsi:["The exam location","The exam date","The exam topic","The exam format"], kunci:1 },
-{ id:20, type:"pg", kategori:"Listening", teks:"Percakapan:\nW: Would you mind closing the window? It's getting cold.\nM: Not at all.\n\nQuestion: What will the man do?",
-  opsi:["Open the window further","Close the window","Turn on the heater","Leave the room"], kunci:1 },
-{ id:21, type:"pg", kategori:"Listening", teks:"Percakapan:\nM: Have you tried the new restaurant downtown?\nW: Not yet, but I've heard great things about it.\n\nQuestion: What does the woman imply?",
-  opsi:["She dislikes the restaurant","She hasn't been there but wants to go","She has already eaten there","She doesn't like eating out"], kunci:1 },
-{ id:22, type:"pg", kategori:"Listening", teks:"Percakapan:\nW: I need to renew my passport before the trip.\nM: You should do that soon, it usually takes a few weeks.\n\nQuestion: What does the man advise?",
-  opsi:["To cancel the trip","To renew the passport quickly","To travel without a passport","To wait until later"], kunci:1 },
-{ id:23, type:"pg", kategori:"Listening", teks:"Percakapan:\nM: The internet has been really slow lately.\nW: I think it's because of the new router.\n\nQuestion: What does the woman think is the cause?",
-  opsi:["Too many devices","The new router","The weather","A virus"], kunci:1 },
-{ id:24, type:"pg", kategori:"Listening", teks:"Percakapan:\nW: Can we reschedule our meeting to Thursday?\nM: Sure, that works better for me too.\n\nQuestion: What do they agree on?",
-  opsi:["Canceling the meeting","Moving the meeting to Thursday","Meeting twice","Meeting online instead"], kunci:1 },
-{ id:25, type:"pg", kategori:"Listening", teks:"Percakapan:\nM: I'm thinking about taking a photography course.\nW: That sounds like a great hobby.\n\nQuestion: What does the woman think about the man's idea?",
-  opsi:["She disapproves","She thinks it's a good idea","She wants to join","She thinks it's expensive"], kunci:1 },
-{ id:26, type:"pg", kategori:"Listening", teks:"Percakapan:\nW: The library closes at 9 pm on weekdays.\nM: What about weekends?\nW: It closes earlier, at 5 pm.\n\nQuestion: When does the library close on weekends?",
-  opsi:["9 pm","5 pm","It's closed","10 pm"], kunci:1 },
-{ id:27, type:"pg", kategori:"Listening", teks:"Percakapan:\nM: Do you know where the nearest ATM is?\nW: There's one right around the corner.\n\nQuestion: What does the woman tell the man?",
-  opsi:["There is no ATM nearby","The ATM is close by","The ATM is broken","He should ask someone else"], kunci:1 },
-{ id:28, type:"pg", kategori:"Listening", teks:"Percakapan:\nW: I'm nervous about my job interview tomorrow.\nM: Don't worry, you've prepared really well.\n\nQuestion: What does the man do?",
-  opsi:["Increase her anxiety","Reassure her","Cancel the interview","Criticize her preparation"], kunci:1 },
-{ id:29, type:"pg", kategori:"Listening", teks:"Percakapan:\nM: Our flight got moved to gate 22.\nW: Thanks for letting me know, I was waiting at gate 15.\n\nQuestion: What was the woman doing?",
-  opsi:["Boarding the plane","Waiting at the wrong gate","Buying a ticket","Checking in luggage"], kunci:1 },
-{ id:30, type:"pg", kategori:"Listening", teks:"Percakapan:\nW: The museum exhibit was fascinating.\nM: I agree, especially the section on ancient pottery.\n\nQuestion: What did they both like?",
-  opsi:["The gift shop","The exhibit","The parking","The cafeteria"], kunci:1 },
-
-/* ================= SECTION 1: LISTENING - PART B (id 31-38) ================= */
-{ id:"b1", type:"bacaan", judul:"Percakapan Panjang 1",
-  teks:"W: Excuse me, I'm here to talk about registering for next semester's classes.\nM: Sure, do you already know which courses you want to take?\nW: I'm interested in the Advanced Statistics course, but I heard it requires a prerequisite.\nM: That's right, you need to have completed Introduction to Statistics first.\nW: I took that two years ago, does it still count?\nM: As long as you passed it, yes, there's no time limit on prerequisites here.\nW: That's a relief. Can I register today?\nM: Yes, I'll help you enroll right now." },
-{ id:31, type:"pg", kategori:"Listening", teks:"Berdasarkan Percakapan Panjang 1: What is the woman trying to do?",
-  opsi:["Change her major","Register for a class","Apply for a scholarship","Withdraw from school"], kunci:1 },
-{ id:32, type:"pg", kategori:"Listening", teks:"Berdasarkan Percakapan Panjang 1: What is required before taking Advanced Statistics?",
-  opsi:["A letter of recommendation","Completing Introduction to Statistics","A placement test","Approval from the dean"], kunci:1 },
-{ id:33, type:"pg", kategori:"Listening", teks:"Berdasarkan Percakapan Panjang 1: How does the man reassure the woman?",
-  opsi:["The prerequisite doesn't matter","Old prerequisites still count","She doesn't need the prerequisite","She must retake the course"], kunci:1 },
-{ id:34, type:"pg", kategori:"Listening", teks:"Berdasarkan Percakapan Panjang 1: What will most likely happen next?",
-  opsi:["She will leave without registering","The man will help her enroll","She will take the prerequisite again","She will change her course"], kunci:1 },
-
-{ id:"b2", type:"bacaan", judul:"Percakapan Panjang 2",
-  teks:"M: I noticed the sales report you sent has some inconsistent numbers in the third quarter.\nW: Really? Let me check, I compiled it quickly this morning.\nM: No problem, just make sure the regional totals match the national total.\nW: Got it, I'll recalculate and send the corrected version by this afternoon.\nM: Great, we need it before the client meeting tomorrow.\nW: I'll prioritize it right away." },
-{ id:35, type:"pg", kategori:"Listening", teks:"Berdasarkan Percakapan Panjang 2: What problem did the man find?",
-  opsi:["Missing pages","Inconsistent numbers","Wrong client name","Late submission"], kunci:1 },
-{ id:36, type:"pg", kategori:"Listening", teks:"Berdasarkan Percakapan Panjang 2: What does the woman plan to do?",
-  opsi:["Ignore the mistake","Recalculate and resend the report","Ask someone else to fix it","Cancel the report"], kunci:1 },
-{ id:37, type:"pg", kategori:"Listening", teks:"Berdasarkan Percakapan Panjang 2: When is the report needed?",
-  opsi:["Next week","Before tomorrow's client meeting","By the end of the month","It's not urgent"], kunci:1 },
-{ id:38, type:"pg", kategori:"Listening", teks:"Berdasarkan Percakapan Panjang 2: What can be inferred about the woman?",
-  opsi:["She is careless about deadlines","She is willing to correct her mistake quickly","She disagrees with the man","She refuses to fix the report"], kunci:1 },
-
-/* ================= SECTION 1: LISTENING - PART C (id 39-50) ================= */
-{ id:"c1", type:"bacaan", judul:"Talk 1: Solar Energy",
-  teks:"Today we'll discuss solar energy as one of the fastest-growing renewable energy sources in the world. Unlike fossil fuels, solar power does not produce greenhouse gases during operation, making it an environmentally friendly option. However, the initial cost of installing solar panels can be high, though prices have dropped significantly over the past decade. Many governments now offer incentives to encourage households and businesses to switch to solar energy. Experts predict that within the next twenty years, solar power could become the primary source of electricity in many countries." },
-{ id:39, type:"pg", kategori:"Listening", teks:"Berdasarkan Talk 1: What is the talk mainly about?",
-  opsi:["The history of electricity","Solar energy as a renewable source","Government taxes","Fossil fuel production"], kunci:1 },
-{ id:40, type:"pg", kategori:"Listening", teks:"Berdasarkan Talk 1: What is one disadvantage of solar energy mentioned?",
-  opsi:["It produces greenhouse gases","High initial installation cost","It is illegal in some countries","It requires fossil fuels"], kunci:1 },
-{ id:41, type:"pg", kategori:"Listening", teks:"Berdasarkan Talk 1: What have governments done to encourage solar energy use?",
-  opsi:["Banned fossil fuels","Offered incentives","Increased taxes on solar panels","Required permits"], kunci:1 },
-{ id:42, type:"pg", kategori:"Listening", teks:"Berdasarkan Talk 1: What is predicted for the next twenty years?",
-  opsi:["Solar power will disappear","Solar power may become a primary energy source","Fossil fuels will be banned","Prices will rise sharply"], kunci:1 },
-
-{ id:"c2", type:"bacaan", judul:"Talk 2: Campus Announcement",
-  teks:"Attention students, the university library will be extending its operating hours during final exam week. Starting next Monday, the library will remain open until 2 a.m. instead of the usual 10 p.m. closing time. Additionally, extra study rooms have been set up on the third floor to accommodate the increased number of students. Free coffee and tea will also be available in the lounge area throughout the week. Students are reminded to bring their ID cards, as they will be required for entry after 10 p.m." },
-{ id:43, type:"pg", kategori:"Listening", teks:"Berdasarkan Talk 2: Why is the announcement being made?",
-  opsi:["To announce a new library building","To inform students about extended library hours","To cancel final exams","To close the library early"], kunci:1 },
-{ id:44, type:"pg", kategori:"Listening", teks:"Berdasarkan Talk 2: What time will the library close during exam week?",
-  opsi:["10 p.m.","Midnight","2 a.m.","It will stay open 24 hours"], kunci:2 },
-{ id:45, type:"pg", kategori:"Listening", teks:"Berdasarkan Talk 2: What is provided in the lounge area?",
-  opsi:["Free meals","Free coffee and tea","Free printing","Free tutoring"], kunci:1 },
-{ id:46, type:"pg", kategori:"Listening", teks:"Berdasarkan Talk 2: What do students need after 10 p.m.?",
-  opsi:["A reservation","Their ID cards","A parking pass","Permission from a professor"], kunci:1 },
-
-{ id:"c3", type:"bacaan", judul:"Talk 3: The Printing Press",
-  teks:"The invention of the printing press by Johannes Gutenberg in the fifteenth century revolutionized the way information was shared across Europe. Before this invention, books were copied by hand, a process that was slow and expensive, limiting access to knowledge to only the wealthy or religious institutions. With the printing press, books could be produced much faster and at a lower cost, allowing literacy rates to rise across the continent. This technological advancement is often credited with contributing to major historical movements, including the Renaissance and the Reformation." },
-{ id:47, type:"pg", kategori:"Listening", teks:"Berdasarkan Talk 3: What is the main topic of the talk?",
-  opsi:["The history of literacy tests","The impact of the printing press","Religious institutions in Europe","Modern printing technology"], kunci:1 },
-{ id:48, type:"pg", kategori:"Listening", teks:"Berdasarkan Talk 3: How were books produced before the printing press?",
-  opsi:["By machines","By hand","By computers","They were not produced"], kunci:1 },
-{ id:49, type:"pg", kategori:"Listening", teks:"Berdasarkan Talk 3: What effect did the printing press have on literacy?",
-  opsi:["It decreased literacy","It had no effect","It increased literacy rates","It only affected the wealthy"], kunci:2 },
-{ id:50, type:"pg", kategori:"Listening", teks:"Berdasarkan Talk 3: What historical movements are linked to the printing press?",
-  opsi:["The Industrial Revolution","The Renaissance and Reformation","World War I","The Cold War"], kunci:1 },
-
-/* ================= SECTION 2: STRUCTURE (id 51-65) ================= */
-{ id:51, type:"pg", kategori:"Structure", teks:"________ the heavy rain, the outdoor event continued as planned.",
-  opsi:["Despite","Although","Because","Since"], kunci:0 },
-{ id:52, type:"pg", kategori:"Structure", teks:"By the time the guests arrived, she ________ the entire dinner.",
-  opsi:["prepares","had prepared","preparing","will prepare"], kunci:1 },
-{ id:53, type:"pg", kategori:"Structure", teks:"________ works hard is likely to succeed.",
-  opsi:["Whoever","Whom","Who","Whose"], kunci:0 },
-{ id:54, type:"pg", kategori:"Structure", teks:"The committee ________ meeting is scheduled for Monday has not yet reviewed the proposal.",
-  opsi:["which","whose","that","who"], kunci:1 },
-{ id:55, type:"pg", kategori:"Structure", teks:"Not only ________ the exam, but she also received the highest score in class.",
-  opsi:["she passed","did she pass","she did pass","passed she"], kunci:1 },
-{ id:56, type:"pg", kategori:"Structure", teks:"The number of students enrolled in the program ________ increased significantly this year.",
-  opsi:["have","has","having","had being"], kunci:1 },
-{ id:57, type:"pg", kategori:"Structure", teks:"________ the instructions carefully, the technician was able to fix the machine quickly.",
-  opsi:["Follow","Following","Followed","To follow"], kunci:1 },
-{ id:58, type:"pg", kategori:"Structure", teks:"If the manager ________ the report earlier, the meeting would not have been delayed.",
-  opsi:["submits","submitted","had submitted","submit"], kunci:2 },
-{ id:59, type:"pg", kategori:"Structure", teks:"It is essential that every employee ________ the new safety regulations.",
-  opsi:["follows","follow","followed","following"], kunci:1 },
-{ id:60, type:"pg", kategori:"Structure", teks:"The research, ________ was funded by the government, took three years to complete.",
-  opsi:["that","which","who","whose"], kunci:1 },
-{ id:61, type:"pg", kategori:"Structure", teks:"Hardly ________ the presentation when the fire alarm went off.",
-  opsi:["he had started","had he started","he started","did he started"], kunci:1 },
-{ id:62, type:"pg", kategori:"Structure", teks:"The more you practice speaking English, ________ you will become.",
-  opsi:["fluent","the more fluent","fluently","most fluent"], kunci:1 },
-{ id:63, type:"pg", kategori:"Structure", teks:"________ from the survey results, most employees prefer flexible working hours.",
-  opsi:["Judge","Judging","Judged","To judge"], kunci:1 },
-{ id:64, type:"pg", kategori:"Structure", teks:"She would have attended the seminar ________ she had known about it in advance.",
-  opsi:["unless","if","because","although"], kunci:1 },
-{ id:65, type:"pg", kategori:"Structure", teks:"The novel, ________ author remains anonymous, has become a bestseller.",
-  opsi:["which","whose","that","who"], kunci:1 },
-
-/* ================= SECTION 2: WRITTEN EXPRESSION (id 66-90) ================= */
-/* Format: teks berisi kalimat dengan 4 bagian bergaris bawah [A][B][C][D].
-   opsi menampilkan ulang teks tiap bagian; kunci = bagian yang SALAH secara gramatikal. */
-{ id:66, type:"pg", kategori:"Structure", teks:"Each of the students [A]are required to submit [B]their assignments [C]no later than [D]Friday afternoon.\n\nManakah bagian yang salah secara gramatikal?",
-  opsi:["are required to submit","their assignments","no later than","Friday afternoon"], kunci:0 },
-{ id:67, type:"pg", kategori:"Structure", teks:"The committee has decided to [A]postpone the meeting because [B]the majority of members [C]was unable to [D]attend.\n\nManakah bagian yang salah secara gramatikal?",
-  opsi:["postpone the meeting because","the majority of members","was unable to","attend"], kunci:2 },
-{ id:68, type:"pg", kategori:"Structure", teks:"She is one of the [A]most talented musician [B]in the orchestra, [C]known for her [D]exceptional violin skills.\n\nManakah bagian yang salah secara gramatikal?",
-  opsi:["most talented musician","in the orchestra","known for her","exceptional violin skills"], kunci:0 },
-{ id:69, type:"pg", kategori:"Structure", teks:"By the time he [A]arrives at the station, the train [B]will already [C]leave, [D]so he'll have to wait for the next one.\n\nManakah bagian yang salah secara gramatikal?",
-  opsi:["arrives at the station","will already","leave","so he'll have to wait for the next one"], kunci:2 },
-{ id:70, type:"pg", kategori:"Structure", teks:"Neither the manager nor the employees [A]was aware [B]of the changes [C]until the announcement [D]was made.\n\nManakah bagian yang salah secara gramatikal?",
-  opsi:["was aware","of the changes","until the announcement","was made"], kunci:0 },
-{ id:71, type:"pg", kategori:"Structure", teks:"The professor asked the students to [A]hand in their essays, [B]revise their bibliography, and [C]checking [D]for grammatical errors before submission.\n\nManakah bagian yang salah secara gramatikal?",
-  opsi:["hand in their essays,","revise their bibliography, and","checking","for grammatical errors before submission"], kunci:2 },
-{ id:72, type:"pg", kategori:"Structure", teks:"[A]Despite of [B]the heavy traffic, [C]we managed to [D]arrive at the airport on time.\n\nManakah bagian yang salah secara gramatikal?",
-  opsi:["Despite of","the heavy traffic,","we managed to","arrive at the airport on time"], kunci:0 },
-{ id:73, type:"pg", kategori:"Structure", teks:"The data [A]collected from the experiment [B]shows that the new method is [C]more effective than [D]the old one.\n\nManakah bagian yang salah secara gramatikal?",
-  opsi:["collected from the experiment","shows that the new method is","more effective than","the old one"], kunci:1 },
-{ id:74, type:"pg", kategori:"Structure", teks:"He is [A]more taller than [B]any other student [C]in the class, [D]especially in basketball.\n\nManakah bagian yang salah secara gramatikal?",
-  opsi:["more taller than","any other student","in the class,","especially in basketball"], kunci:0 },
-{ id:75, type:"pg", kategori:"Structure", teks:"The teacher, [A]along with her students, [B]are planning [C]to visit the museum [D]next week.\n\nManakah bagian yang salah secara gramatikal?",
-  opsi:["along with her students,","are planning","to visit the museum","next week"], kunci:1 },
-{ id:76, type:"pg", kategori:"Structure", teks:"Scientists have discovered a new species of frog [A]that [B]can survive [C]in extremely cold temperature [D]without freezing.\n\nManakah bagian yang salah secara gramatikal?",
-  opsi:["that","can survive","in extremely cold temperature","without freezing"], kunci:2 },
-{ id:77, type:"pg", kategori:"Structure", teks:"The report [A]indicate that [B]sales have increased [C]by nearly [D]twenty percent this quarter.\n\nManakah bagian yang salah secara gramatikal?",
-  opsi:["indicate that","sales have increased","by nearly","twenty percent this quarter"], kunci:0 },
-{ id:78, type:"pg", kategori:"Structure", teks:"Although she was tired, [A]but she [B]continued working [C]until the project [D]was finished.\n\nManakah bagian yang salah secara gramatikal?",
-  opsi:["but she","continued working","until the project","was finished"], kunci:0 },
-{ id:79, type:"pg", kategori:"Structure", teks:"The children [A]was playing [B]in the park [C]when it [D]began to rain.\n\nManakah bagian yang salah secara gramatikal?",
-  opsi:["was playing","in the park","when it","began to rain"], kunci:0 },
-{ id:80, type:"pg", kategori:"Structure", teks:"One of the main [A]reason [B]for the delay [C]was the shortage [D]of raw materials.\n\nManakah bagian yang salah secara gramatikal?",
-  opsi:["reason","for the delay","was the shortage","of raw materials"], kunci:0 },
-{ id:81, type:"pg", kategori:"Structure", teks:"The airline announced that [A]all flight [B]to the northern region [C]would be canceled [D]due to the storm.\n\nManakah bagian yang salah secara gramatikal?",
-  opsi:["all flight","to the northern region","would be canceled","due to the storm"], kunci:0 },
-{ id:82, type:"pg", kategori:"Structure", teks:"It is important for every citizen [A]to voting [B]in the upcoming election [C]in order to [D]support democracy.\n\nManakah bagian yang salah secara gramatikal?",
-  opsi:["to voting","in the upcoming election","in order to","support democracy"], kunci:0 },
-{ id:83, type:"pg", kategori:"Structure", teks:"The two companies [A]has agreed [B]to merge [C]their operations [D]by the end of the year.\n\nManakah bagian yang salah secara gramatikal?",
-  opsi:["has agreed","to merge","their operations","by the end of the year"], kunci:0 },
-{ id:84, type:"pg", kategori:"Structure", teks:"She enjoys [A]reading novels, [B]to write poetry, and [C]painting landscapes [D]in her free time.\n\nManakah bagian yang salah secara gramatikal?",
-  opsi:["reading novels,","to write poetry, and","painting landscapes","in her free time"], kunci:1 },
-{ id:85, type:"pg", kategori:"Structure", teks:"The board members [A]discussed several proposal [B]before finally [C]choosing the one [D]that seemed most cost-effective.\n\nManakah bagian yang salah secara gramatikal?",
-  opsi:["discussed several proposal","before finally","choosing the one","that seemed most cost-effective"], kunci:0 },
-{ id:86, type:"pg", kategori:"Structure", teks:"Since the factory [A]opened last year, [B]it have produced [C]thousands of units [D]for export.\n\nManakah bagian yang salah secara gramatikal?",
-  opsi:["opened last year,","it have produced","thousands of units","for export"], kunci:1 },
-{ id:87, type:"pg", kategori:"Structure", teks:"The scientist explained [A]how does [B]the vaccine [C]work in [D]the human body.\n\nManakah bagian yang salah secara gramatikal?",
-  opsi:["how does","the vaccine","work in","the human body"], kunci:0 },
-{ id:88, type:"pg", kategori:"Structure", teks:"Most of the furniture in the house [A]were made [B]by local craftsmen [C]using traditional techniques [D]passed down for generations.\n\nManakah bagian yang salah secara gramatikal?",
-  opsi:["were made","by local craftsmen","using traditional techniques","passed down for generations"], kunci:0 },
-{ id:89, type:"pg", kategori:"Structure", teks:"The manager insisted that the report [A]is submitted [B]before the deadline [C]to avoid any [D]further delays.\n\nManakah bagian yang salah secara gramatikal?",
-  opsi:["is submitted","before the deadline","to avoid any","further delays"], kunci:0 },
-{ id:90, type:"pg", kategori:"Structure", teks:"Not until the results were announced [A]the students realized [B]how well [C]they had performed [D]on the exam.\n\nManakah bagian yang salah secara gramatikal?",
-  opsi:["the students realized","how well","they had performed","on the exam"], kunci:0 },
-
-/* ================= SECTION 3: READING COMPREHENSION (id 91-140) ================= */
-{ id:"r1", type:"bacaan", judul:"Bacaan 1: The History of Coffee",
-  teks:"Coffee is believed to have originated in the highlands of Ethiopia, where legend says a goat herder named Kaldi discovered the energizing effects of coffee berries after noticing his goats became unusually lively after eating them. From Ethiopia, coffee cultivation spread to the Arabian Peninsula, where it was first cultivated and traded on a large scale around the fifteenth century. Coffee houses, known as qahveh khaneh, became popular gathering places in cities such as Mecca and Cairo, where people would meet to socialize, listen to music, and discuss current events. By the seventeenth century, coffee had reached Europe, where it quickly gained popularity despite initial resistance from some religious leaders who viewed it with suspicion. European coffee houses soon became centers of intellectual exchange, frequented by writers, philosophers, and merchants. Today, coffee is one of the most widely consumed beverages in the world, with millions of people relying on it daily for its stimulating effects, driven primarily by its caffeine content." },
-{ id:91, type:"pg", kategori:"Reading", teks:"Berdasarkan Bacaan 1: What is the main idea of the passage?",
-  opsi:["The chemical composition of coffee","The historical spread and cultural significance of coffee","The health benefits of caffeine","Modern methods of coffee production"], kunci:1 },
-{ id:92, type:"pg", kategori:"Reading", teks:"Berdasarkan Bacaan 1: Who is said to have discovered coffee's effects?",
-  opsi:["A trader","A goat herder","A religious leader","A scientist"], kunci:1 },
-{ id:93, type:"pg", kategori:"Reading", teks:"Berdasarkan Bacaan 1: Where did coffee cultivation begin on a large scale?",
-  opsi:["Ethiopia","The Arabian Peninsula","Europe","Cairo"], kunci:1 },
-{ id:94, type:"pg", kategori:"Reading", teks:"Berdasarkan Bacaan 1: The word \"qahveh khaneh\" in the passage refers to",
-  opsi:["coffee beans","coffee houses","coffee farmers","coffee cups"], kunci:1 },
-{ id:95, type:"pg", kategori:"Reading", teks:"Berdasarkan Bacaan 1: What did people do in early coffee houses?",
-  opsi:["Only drink coffee silently","Socialize and discuss events","Sell goats","Practice religion"], kunci:1 },
-{ id:96, type:"pg", kategori:"Reading", teks:"Berdasarkan Bacaan 1: How did some religious leaders in Europe initially view coffee?",
-  opsi:["With enthusiasm","With suspicion","With indifference","With celebration"], kunci:1 },
-{ id:97, type:"pg", kategori:"Reading", teks:"Berdasarkan Bacaan 1: What kind of people frequented European coffee houses?",
-  opsi:["Only farmers","Writers, philosophers, and merchants","Only royalty","Only children"], kunci:1 },
-{ id:98, type:"pg", kategori:"Reading", teks:"Berdasarkan Bacaan 1: Why do many people drink coffee today, according to the passage?",
-  opsi:["For its taste only","For its stimulating effects from caffeine","For religious reasons","Because it is inexpensive"], kunci:1 },
-{ id:99, type:"pg", kategori:"Reading", teks:"Berdasarkan Bacaan 1: The word \"resistance\" in the passage is closest in meaning to",
-  opsi:["support","opposition","curiosity","celebration"], kunci:1 },
-{ id:100, type:"pg", kategori:"Reading", teks:"Berdasarkan Bacaan 1: It can be inferred that coffee houses played a role in",
-  opsi:["military strategy","the exchange of ideas","agricultural technology","religious ceremonies"], kunci:1 },
-
-{ id:"r2", type:"bacaan", judul:"Bacaan 2: Coral Reefs and Climate Change",
-  teks:"Coral reefs, often referred to as the rainforests of the sea, are among the most biologically diverse ecosystems on Earth. These underwater structures are built by tiny organisms called coral polyps, which secrete calcium carbonate to form hard skeletons. Over thousands of years, these skeletons accumulate to create the vast reef structures seen today. Coral reefs provide habitat for an estimated twenty-five percent of all marine species, despite covering less than one percent of the ocean floor. However, rising ocean temperatures caused by climate change pose a serious threat to these ecosystems. When water becomes too warm, corals expel the symbiotic algae living in their tissues, a process known as coral bleaching, which leaves the coral white and vulnerable to disease. If temperatures remain elevated for extended periods, bleached corals can die, leading to the collapse of the entire reef ecosystem. Scientists warn that without significant reductions in global carbon emissions, many of the world's coral reefs could disappear within the next few decades." },
-{ id:101, type:"pg", kategori:"Reading", teks:"Berdasarkan Bacaan 2: What is the main topic of the passage?",
-  opsi:["The formation of ocean currents","The threat of climate change to coral reefs","Marine species classification","The chemical composition of seawater"], kunci:1 },
-{ id:102, type:"pg", kategori:"Reading", teks:"Berdasarkan Bacaan 2: What builds coral reefs?",
-  opsi:["Fish","Coral polyps","Seaweed","Ocean currents"], kunci:1 },
-{ id:103, type:"pg", kategori:"Reading", teks:"Berdasarkan Bacaan 2: What percentage of marine species do coral reefs support?",
-  opsi:["1%","10%","25%","50%"], kunci:2 },
-{ id:104, type:"pg", kategori:"Reading", teks:"Berdasarkan Bacaan 2: What is coral bleaching?",
-  opsi:["The natural color of coral","The process of corals expelling algae due to heat","A method of coral reproduction","A type of coral disease unrelated to temperature"], kunci:1 },
-{ id:105, type:"pg", kategori:"Reading", teks:"Berdasarkan Bacaan 2: What happens to coral after bleaching if warm temperatures persist?",
-  opsi:["It becomes more colorful","It can die","It grows faster","It becomes immune to disease"], kunci:1 },
-{ id:106, type:"pg", kategori:"Reading", teks:"Berdasarkan Bacaan 2: The word \"vulnerable\" in the passage is closest in meaning to",
-  opsi:["resistant","susceptible","invisible","permanent"], kunci:1 },
-{ id:107, type:"pg", kategori:"Reading", teks:"Berdasarkan Bacaan 2: What covers less than one percent of the ocean floor?",
-  opsi:["Fish populations","Coral reefs","Algae","Sand"], kunci:1 },
-{ id:108, type:"pg", kategori:"Reading", teks:"Berdasarkan Bacaan 2: What do scientists warn about?",
-  opsi:["Overfishing","Possible disappearance of coral reefs","Ocean acidification only","New coral species"], kunci:1 },
-{ id:109, type:"pg", kategori:"Reading", teks:"Berdasarkan Bacaan 2: What is needed to prevent coral reef loss, according to the passage?",
-  opsi:["More tourism","Reduced carbon emissions","More fishing regulations","Building artificial reefs"], kunci:1 },
-{ id:110, type:"pg", kategori:"Reading", teks:"Berdasarkan Bacaan 2: It can be inferred that coral reefs are important because",
-  opsi:["they are the largest ocean structures","they support significant marine biodiversity","they produce oxygen for the atmosphere","they prevent all ocean storms"], kunci:1 },
-
-{ id:"r3", type:"bacaan", judul:"Bacaan 3: The Rise of Remote Work",
-  teks:"In recent years, remote work has transformed from a rare arrangement into a mainstream practice adopted by companies worldwide. This shift was accelerated significantly by advances in digital communication technology, which made it possible for employees to collaborate effectively without being physically present in an office. Video conferencing tools, cloud-based document sharing, and instant messaging platforms have all contributed to making remote work more feasible than ever before. Proponents of remote work argue that it offers numerous benefits, including increased flexibility, reduced commuting time, and improved work-life balance for employees. Companies also benefit from reduced overhead costs associated with maintaining large office spaces. However, remote work is not without its challenges. Some employees report feelings of isolation due to reduced face-to-face interaction with colleagues, while others struggle to separate their professional and personal lives when working from home. Additionally, managers have expressed concerns about maintaining team cohesion and monitoring productivity in a remote environment. As a result, many organizations have adopted hybrid models, combining remote and in-office work to balance these competing needs." },
-{ id:111, type:"pg", kategori:"Reading", teks:"Berdasarkan Bacaan 3: What is the passage mainly about?",
-  opsi:["The history of office buildings","The growth and challenges of remote work","Digital communication inventions","Employee salary trends"], kunci:1 },
-{ id:112, type:"pg", kategori:"Reading", teks:"Berdasarkan Bacaan 3: What accelerated the shift to remote work?",
-  opsi:["Government regulations","Advances in digital communication technology","Rising office rent","Employee strikes"], kunci:1 },
-{ id:113, type:"pg", kategori:"Reading", teks:"Berdasarkan Bacaan 3: What is one benefit of remote work for employees?",
-  opsi:["Higher salaries","Improved work-life balance","Guaranteed promotions","Free housing"], kunci:1 },
-{ id:114, type:"pg", kategori:"Reading", teks:"Berdasarkan Bacaan 3: What benefit do companies gain from remote work?",
-  opsi:["Increased office space","Reduced overhead costs","More employees","Higher taxes"], kunci:1 },
-{ id:115, type:"pg", kategori:"Reading", teks:"Berdasarkan Bacaan 3: What challenge do some employees face while working remotely?",
-  opsi:["Too much social interaction","Feelings of isolation","Lower pay","Lack of internet access"], kunci:1 },
-{ id:116, type:"pg", kategori:"Reading", teks:"Berdasarkan Bacaan 3: The word \"cohesion\" in the passage is closest in meaning to",
-  opsi:["division","unity","confusion","competition"], kunci:1 },
-{ id:117, type:"pg", kategori:"Reading", teks:"Berdasarkan Bacaan 3: What concern do managers have about remote work?",
-  opsi:["Employees traveling too much","Maintaining team unity and monitoring productivity","Office space shortages","Employee dress code"], kunci:1 },
-{ id:118, type:"pg", kategori:"Reading", teks:"Berdasarkan Bacaan 3: What is a hybrid work model, according to the passage?",
-  opsi:["Working only from home","Working only in the office","A combination of remote and in-office work","Working part-time only"], kunci:2 },
-{ id:119, type:"pg", kategori:"Reading", teks:"Berdasarkan Bacaan 3: Why have many organizations adopted hybrid models?",
-  opsi:["To eliminate remote work completely","To balance the benefits and challenges of remote work","To reduce employee salaries","To increase commuting time"], kunci:1 },
-{ id:120, type:"pg", kategori:"Reading", teks:"Berdasarkan Bacaan 3: It can be inferred that remote work success depends largely on",
-  opsi:["the availability of reliable digital tools","government subsidies","the size of the company","the location of employees"], kunci:0 },
-
-{ id:"r4", type:"bacaan", judul:"Bacaan 4: Ancient Trade Routes - The Silk Road",
-  teks:"The Silk Road was an extensive network of trade routes that connected the East and West for over a thousand years, facilitating the exchange of goods, ideas, and culture between civilizations. Stretching from China through Central Asia to the Mediterranean, the route derived its name from the lucrative silk trade that originated in China, a product highly prized in Europe and the Middle East. Beyond silk, merchants traded a variety of goods including spices, precious metals, textiles, and ceramics. The Silk Road was not a single path but rather a complex web of routes traveled by caravans, which had to cross deserts, mountains, and hostile territories, making the journey both profitable and dangerous. In addition to material goods, the Silk Road served as a conduit for the spread of religions such as Buddhism and Islam, as well as scientific knowledge and technological innovations like papermaking and gunpowder. The decline of the Silk Road began in the fifteenth century, largely due to the rise of maritime trade routes, which offered faster and safer alternatives for transporting goods between continents." },
-{ id:121, type:"pg", kategori:"Reading", teks:"Berdasarkan Bacaan 4: What is the main purpose of the passage?",
-  opsi:["To describe modern trade agreements","To explain the history and significance of the Silk Road","To analyze Chinese silk production techniques","To compare ancient and modern transportation"], kunci:1 },
-{ id:122, type:"pg", kategori:"Reading", teks:"Berdasarkan Bacaan 4: Why is the route called the \"Silk Road\"?",
-  opsi:["Because silk was the only good traded","Because of the significant silk trade originating in China","Because it was built from silk fibers","Because silk merchants named it"], kunci:1 },
-{ id:123, type:"pg", kategori:"Reading", teks:"Berdasarkan Bacaan 4: Besides silk, what other goods were traded along the route?",
-  opsi:["Only spices","Spices, precious metals, textiles, and ceramics","Only precious metals","Only textiles"], kunci:1 },
-{ id:124, type:"pg", kategori:"Reading", teks:"Berdasarkan Bacaan 4: What made the journey along the Silk Road dangerous?",
-  opsi:["Political conflicts only","Crossing deserts, mountains, and hostile territories","Bad weather only","Lack of merchants"], kunci:1 },
-{ id:125, type:"pg", kategori:"Reading", teks:"Berdasarkan Bacaan 4: What religions spread along the Silk Road, according to the passage?",
-  opsi:["Christianity and Judaism","Buddhism and Islam","Hinduism only","No religions spread"], kunci:1 },
-{ id:126, type:"pg", kategori:"Reading", teks:"Berdasarkan Bacaan 4: What technological innovations spread via the Silk Road?",
-  opsi:["Steam engines","Papermaking and gunpowder","Electricity","The printing press"], kunci:1 },
-{ id:127, type:"pg", kategori:"Reading", teks:"Berdasarkan Bacaan 4: Why did the Silk Road decline?",
-  opsi:["Wars destroyed the route","The rise of maritime trade routes","Silk became worthless","All merchants retired"], kunci:1 },
-{ id:128, type:"pg", kategori:"Reading", teks:"Berdasarkan Bacaan 4: The word \"conduit\" in the passage is closest in meaning to",
-  opsi:["barrier","channel","destination","obstacle"], kunci:1 },
-{ id:129, type:"pg", kategori:"Reading", teks:"Berdasarkan Bacaan 4: When did the decline of the Silk Road begin?",
-  opsi:["The tenth century","The fifteenth century","The twentieth century","It never declined"], kunci:1 },
-{ id:130, type:"pg", kategori:"Reading", teks:"Berdasarkan Bacaan 4: It can be inferred that maritime trade routes were preferred because they were",
-  opsi:["more expensive","faster and safer","less profitable","illegal"], kunci:1 },
-
-{ id:"r5", type:"bacaan", judul:"Bacaan 5: The Science of Sleep",
-  teks:"Sleep is a fundamental biological process that plays a crucial role in maintaining physical health, cognitive function, and emotional well-being. During sleep, the human body cycles through several stages, including light sleep, deep sleep, and rapid eye movement, or REM, sleep, each serving distinct physiological purposes. Deep sleep is particularly important for physical restoration, as it is during this stage that the body repairs tissues and strengthens the immune system. REM sleep, on the other hand, is closely associated with memory consolidation and emotional processing, as the brain organizes and stores information gathered throughout the day. Chronic sleep deprivation has been linked to a range of negative health outcomes, including impaired concentration, weakened immune response, and an increased risk of chronic conditions such as obesity and cardiovascular disease. Despite growing awareness of the importance of sleep, many people continue to prioritize work and social activities over adequate rest, often as a result of demanding schedules and the pervasive use of electronic devices before bedtime, which can interfere with the body's natural sleep-wake cycle." },
-{ id:131, type:"pg", kategori:"Reading", teks:"Berdasarkan Bacaan 5: What is the main idea of the passage?",
-  opsi:["The history of sleep research","The biological importance and stages of sleep","Treatments for insomnia","The invention of sleep-tracking devices"], kunci:1 },
-{ id:132, type:"pg", kategori:"Reading", teks:"Berdasarkan Bacaan 5: What happens during deep sleep?",
-  opsi:["Memory consolidation only","Physical restoration and immune strengthening","Increased heart rate","Dreaming only"], kunci:1 },
-{ id:133, type:"pg", kategori:"Reading", teks:"Berdasarkan Bacaan 5: What is REM sleep associated with?",
-  opsi:["Physical repair only","Memory consolidation and emotional processing","Muscle growth","Digestion"], kunci:1 },
-{ id:134, type:"pg", kategori:"Reading", teks:"Berdasarkan Bacaan 5: What is one consequence of chronic sleep deprivation mentioned in the passage?",
-  opsi:["Improved concentration","Weakened immune response","Better memory","Increased energy"], kunci:1 },
-{ id:135, type:"pg", kategori:"Reading", teks:"Berdasarkan Bacaan 5: The word \"pervasive\" in the passage is closest in meaning to",
-  opsi:["rare","widespread","beneficial","temporary"], kunci:1 },
-{ id:136, type:"pg", kategori:"Reading", teks:"Berdasarkan Bacaan 5: What can interfere with the body's natural sleep-wake cycle, according to the passage?",
-  opsi:["Deep sleep","Use of electronic devices before bedtime","REM sleep","Physical exercise"], kunci:1 },
-{ id:137, type:"pg", kategori:"Reading", teks:"Berdasarkan Bacaan 5: Why do many people fail to get adequate rest, according to the passage?",
-  opsi:["They don't need sleep","Demanding schedules and device use","They sleep too much already","Sleep is not important to them"], kunci:1 },
-{ id:138, type:"pg", kategori:"Reading", teks:"Berdasarkan Bacaan 5: What health conditions are linked to sleep deprivation?",
-  opsi:["Only mental health issues","Obesity and cardiovascular disease","Only vision problems","No health conditions"], kunci:1 },
-{ id:139, type:"pg", kategori:"Reading", teks:"Berdasarkan Bacaan 5: It can be inferred that adequate sleep is important for",
-  opsi:["overall physical and mental health","academic degrees only","financial success only","social status"], kunci:0 },
-{ id:140, type:"pg", kategori:"Reading", teks:"Berdasarkan Bacaan 5: What does the passage suggest about people's awareness of sleep's importance?",
-  opsi:["No one is aware of it","Despite awareness, many still don't prioritize sleep","Everyone prioritizes sleep","Sleep awareness has decreased over time"], kunci:1 }
-
+/* =========================================================
+   DAFTAR PROGRAM STUDI (PILIHAN)
+========================================================= */
+const daftarProdi = [
+  "S1 Kedokteran",
+  "S1 Kedokteran Gigi",
+  "S1 Farmasi",
+  "S1 Sejarah Militer",
+  "S1 Matematika",
+  "S1 Biologi",
+  "S1 Kimia",
+  "S1 Fisika",
+  "S1 Informatika",
+  "S1 Teknik Elektro",
+  "S1 Teknik Mesin",
+  "S1 Teknik Sipil",
+  "S1 Rekayasa Sumber Daya Air"
 ];
 
-/* =========================================================================
-   ========================  LOGIC APLIKASI  ================================
-   ========================================================================= */
-let nama = "";
-let answers = {};        // { soalId: jawaban }
-let sisaDetik = CONFIG.WAKTU_MENIT * 60;
-let timerInterval = null;
-let sudahSelesai = false;
+/* =========================================================
+   DATA AWAL (SEED DATA)
+   Format: { cohort, ortu, domisili, hp, kadet, prodi }
+========================================================= */
+const dataAwal = [
+  // ---- COHORT 2 ----
+  {cohort:2, ortu:"P. Arena J. Hartawan", domisili:"Smg & Jakarta", hp:"0812-8040-6349", kadet:"Renaldo/Aldo", prodi:"S1 Kedokteran"},
+  {cohort:2, ortu:"P. Agus Sugiyanto", domisili:"Pati", hp:"081390892990", kadet:"Dinda Rahma Dewi", prodi:"S1 Fisika"},
+  {cohort:2, ortu:"P. Sus Hartono", domisili:"Semarang", hp:"08164256649", kadet:"Anjali Mahiswari", prodi:"S1 Biologi"},
+  {cohort:2, ortu:"Bu R. Adawiyah", domisili:"Pekalongan", hp:"-", kadet:"Balqis M.", prodi:"S1 Kedokteran"},
+  {cohort:2, ortu:"Bu Ruminah", domisili:"Pekalongan", hp:"085848896900", kadet:"Diva Hardiestya F.", prodi:"S1 Matematika"},
+  {cohort:2, ortu:"Bu Ayu Putri", domisili:"Solo", hp:"-", kadet:"R. Haryo Tidar K.Y.", prodi:"S1 Teknik Elektro"},
+  {cohort:2, ortu:"P. Naszam Ashar", domisili:"Kendal", hp:"082134080161", kadet:"Dwiko Pamungkas A.", prodi:"S1 Teknik Sipil"},
+  {cohort:2, ortu:"Bp Eri Sutarto", domisili:"Karanganyar", hp:"+62 812-8505-1365", kadet:"Elsa Qonita A.", prodi:"S1 Biologi"},
+  {cohort:2, ortu:"P. Hartadi", domisili:"Semarang", hp:"085100919185", kadet:"Yasmin Arifia", prodi:"S1 Biologi"},
+  {cohort:2, ortu:"P. Rudy Utomo", domisili:"Semarang + Salatiga", hp:"081542525027", kadet:"Mahardika Vira M.U.", prodi:"S1 Kedokteran"},
+  {cohort:2, ortu:"P. Heri", domisili:"Purbalingga", hp:"-", kadet:"M. Raihan Ariffandi", prodi:"S1 Kedokteran"},
+  {cohort:2, ortu:"Bu Mukti Rahayu", domisili:"Purbalingga", hp:"-", kadet:"Fuad Ardian N.", prodi:"S1 Teknik Sipil"},
+  {cohort:2, ortu:"Bu Dyah Rary", domisili:"Boyolali", hp:"-", kadet:"Wylan Abdurrachman", prodi:"S1 Teknik Sipil"},
+  {cohort:2, ortu:"P. Ahmad Soleh", domisili:"Demak", hp:"082314515534", kadet:"Putry Wanda A.", prodi:"S1 Kimia"},
+  {cohort:2, ortu:"P. Andycha", domisili:"Kab. Semarang", hp:"081325748000", kadet:"Vania A.N.", prodi:"S1 Kimia"},
+  {cohort:2, ortu:"Bu Khoiriyah", domisili:"Kota Semarang", hp:"081536270901", kadet:"Mu'adz AR. Harits", prodi:"S1 Teknik Sipil"},
+  {cohort:2, ortu:"Bu Mindya", domisili:"Batang", hp:"08156518796", kadet:"Muhammad Haidar Syarif", prodi:"S1 Teknik Mesin"},
+  {cohort:2, ortu:"Bunda Eni Juwedi", domisili:"Salatiga", hp:"081215692377", kadet:"Nisma", prodi:"S1 Kimia"},
 
-// isi halaman awal
-document.getElementById("judulUjian").textContent = CONFIG.JUDUL_LENGKAP_UJIAN;
-document.getElementById("infoUjian").textContent =
-  "Waktu: " + CONFIG.WAKTU_MENIT + " Menit | Jumlah Soal: " + DATA_SOAL.length;
+  // ---- COHORT 3 ----
+  {cohort:3, ortu:"Bu Ani Nugrahani", domisili:"Ngaliyan Smg", hp:"0882005080303", kadet:"M. Abdul Latief K.", prodi:"S1 Kedokteran"},
+  {cohort:3, ortu:"Bu Mey Rusdianto", domisili:"Slawi Tegal", hp:"082367051418", kadet:"Andi Muhammad Fajri Rusdianto", prodi:"S1 Kedokteran"},
+  {cohort:3, ortu:"Tyas Harfin", domisili:"Boyolali", hp:"082135497306", kadet:"Elrey Naufal Hidayat", prodi:"S1 Farmasi"},
+  {cohort:3, ortu:"ibu Murni Susilowati", domisili:"Semarang", hp:"081218320877", kadet:"Joseph Bagasjati P", prodi:"S1 Kedokteran"},
+  {cohort:3, ortu:"Ely Zubaidah", domisili:"Boyolali", hp:"085728506710", kadet:"Eliana Maharani", prodi:"S1 Teknik Elektro"},
 
-function formatWaktu(detik) {
-  const m = Math.floor(detik / 60).toString().padStart(2, "0");
-  const s = (detik % 60).toString().padStart(2, "0");
-  return m + ":" + s;
+  // ---- COHORT 4 ----
+  {cohort:4, ortu:"P. Januri", domisili:"Kendal", hp:"081212215768", kadet:"Yeridayana", prodi:"S1 Biologi"},
+  {cohort:4, ortu:"Bu Lina Sulaiman", domisili:"-", hp:"085727898101", kadet:"M. Azka", prodi:"S1 Kedokteran"},
+  {cohort:4, ortu:"Bu Tina Wahyudi", domisili:"-", hp:"085878149708", kadet:"Gamaliel Twoista P", prodi:"S1 Farmasi"},
+  {cohort:4, ortu:"HERNI", domisili:"KUDUS", hp:"081325717798", kadet:"IHSAN FAUZIAN ALDORA", prodi:"S1 Teknik Sipil"},
+  {cohort:4, ortu:"Bu Sri Mulyani", domisili:"Surakarta", hp:"087862670555", kadet:"Dinda Shafa Lamila", prodi:"S1 Kedokteran"},
+  {cohort:4, ortu:"dr. Dyah, SpM, MM", domisili:"Purwokerto", hp:"081548808462", kadet:"Nasywa Nabila", prodi:"S1 Kedokteran"},
+  {cohort:4, ortu:"Nani Kusumawati", domisili:"Banjarnegara", hp:"082136922248", kadet:"Rafi' Rizqi Nurdian", prodi:"S1 Kimia"},
+  {cohort:4, ortu:"Wahyu Pratiwi", domisili:"Purbalingga", hp:"081391590057", kadet:"Syeva Arsya Wahyu Alifqi", prodi:"S1 Fisika"},
+  {cohort:4, ortu:"B. Ambar", domisili:"Gombong - Kebumen", hp:"082226334955", kadet:"Nadift", prodi:"S1 Biologi"},
+
+  // ---- COHORT 5 ----
+  {cohort:5, ortu:"Fidiastuti", domisili:"Batang", hp:"082326026262", kadet:"Abid Ezrawitha aufafawwaz", prodi:"S1 Kedokteran"},
+  {cohort:5, ortu:"ibu wiwin antok", domisili:"solo", hp:"082342392810", kadet:"Gamma Aulya Ptatiwi", prodi:"S1 Rekayasa Sumber Daya Air"},
+  {cohort:5, ortu:"Dinurichwan", domisili:"Cilacap", hp:"081357676452", kadet:"Ihsan Fauzi Nurfakhriy", prodi:"S1 Kedokteran"},
+  {cohort:5, ortu:"Agus Mulyadi", domisili:"Boyolali", hp:"081548729117", kadet:"Naura Firda Nafisa", prodi:"S1 Kedokteran"},
+  {cohort:5, ortu:"Astri Nur hayati", domisili:"Magelang", hp:"081328224156", kadet:"Farhan Azzam", prodi:"S1 Teknik Sipil"},
+  {cohort:5, ortu:"Wito", domisili:"Banyumas", hp:"085842737127", kadet:"Ali Fathul Saputra", prodi:"S1 Teknik Elektro"},
+  {cohort:5, ortu:"Ginting", domisili:"Purbalingga", hp:"08122776366", kadet:"Adin Arkananta Cahyo", prodi:"S1 Informatika"},
+  {cohort:5, ortu:"TUSY H NURJANTO", domisili:"Banyumas", hp:"0838 9878 7644", kadet:"DAMAR FADHIL W", prodi:"S1 Informatika"},
+  {cohort:5, ortu:"Lukman", domisili:"Blora", hp:"081344563522", kadet:"M. Zidan HENH", prodi:"S1 Informatika"},
+  {cohort:5, ortu:"Rachma diani", domisili:"Banyumas", hp:"081914941888", kadet:"Agatha Aflaf kafi anwar", prodi:"S1 Matematika"},
+  {cohort:5, ortu:"Setyo Dk", domisili:"Salatiga", hp:"082324728871", kadet:"M. Yuflih Nurhafiyan", prodi:"S1 Rekayasa Sumber Daya Air"},
+  {cohort:5, ortu:"Tri Harjani", domisili:"Semarang", hp:"0895328597739", kadet:"Azzahra Putri Andani", prodi:"S1 Rekayasa Sumber Daya Air"},
+  {cohort:5, ortu:"Ragil Pambudi", domisili:"Boyolali", hp:"083866299191", kadet:"Danadyaksa R P", prodi:"S1 Farmasi"},
+  {cohort:5, ortu:"Desy", domisili:"Kebumen", hp:"085643422149", kadet:"Baantares", prodi:"S1 Biologi"},
+  {cohort:5, ortu:"B. Nunuk", domisili:"Semarang", hp:"082325322910", kadet:"Zulfa Maulana", prodi:"S1 Rekayasa Sumber Daya Air"},
+  {cohort:5, ortu:"Agus Utomo", domisili:"Ungaran", hp:"081329843789", kadet:"Reviola Sherly S.U", prodi:"S1 Biologi"},
+
+  // ---- COHORT 6 ----
+  {cohort:6, ortu:"Bp Patah Bintoro", domisili:"Semarang", hp:"0823-2505-0531", kadet:"Najihan Abiyu", prodi:"S1 Teknik Mesin"},
+  {cohort:6, ortu:"Bunda Indri", domisili:"Semarang", hp:"0812-2881-303", kadet:"Nayla Zahra", prodi:"S1 Kimia"},
+  {cohort:6, ortu:"Mama Anik Indrawati", domisili:"Pati", hp:"082325531240", kadet:"Faiz Hadyananta", prodi:"S1 Kedokteran"},
+  {cohort:6, ortu:"Evi Mustika Rini", domisili:"Banjarnegara", hp:"082138039021", kadet:"Farsya Ikmal Ra'uf", prodi:"S1 Fisika"},
+  {cohort:6, ortu:"Tantry Dwi Marliany", domisili:"Semarang", hp:"081229561972", kadet:"M. Rafi Ramadhan", prodi:"S1 Matematika"},
+  {cohort:6, ortu:"Bunda Eko Supriyati", domisili:"Purwokerto", hp:"085161882636", kadet:"Kaila Leilani Abdul Qodri", prodi:"S1 Kedokteran"},
+  {cohort:6, ortu:"Fitri Bahriyah", domisili:"Perum Griya Satria Bantarsoka", hp:"085729042807", kadet:"Mahavira Bintang Sakti Ramadhan", prodi:"S1 Farmasi"},
+  {cohort:6, ortu:"Ari Wahyu Prabowo", domisili:"Boyolali", hp:"081393382428", kadet:"Anindya Wahyu Syazarisa", prodi:"S1 Kedokteran"},
+  {cohort:6, ortu:"Sugiharto", domisili:"Kendal-Semarang", hp:"081326514865", kadet:"Claudia Rizky An,nisa", prodi:"S1 Kedokteran"},
+  {cohort:6, ortu:"karnila", domisili:"Pati", hp:"081325765638", kadet:"syahna khairani wibowo", prodi:"S1 Kimia"},
+  {cohort:6, ortu:"Yanni Setyaningrum", domisili:"Klaten", hp:"081225216468", kadet:"Nakula Fauzan Ramadhana", prodi:"S1 Kedokteran"},
+  {cohort:6, ortu:"Lina Dwi Yoga Pramana", domisili:"Demak", hp:"081225151807", kadet:"Aulia Yasina Wijaya", prodi:"S1 Kedokteran"},
+  {cohort:6, ortu:"Dyah Budi Peranita/M.Hudayya Umar", domisili:"Demak", hp:"08157622410", kadet:"Alfaura Salsabila", prodi:"S1 Kedokteran"},
+  {cohort:6, ortu:"Maria Rina", domisili:"Purworejo", hp:"082132944510", kadet:"Nabila Yufna", prodi:"S1 Kimia"},
+  {cohort:6, ortu:"Ida Dwi Riyanti", domisili:"Karanganyar", hp:"08122588185", kadet:"Sevanya Aufa Anggono Putri", prodi:"S1 Farmasi"},
+  {cohort:6, ortu:"Evi Muhammad Rosyid", domisili:"Solo", hp:"08122603463", kadet:"Zafira Khairunisa", prodi:"S1 Sejarah Militer"},
+
+  // ---- COHORT 7 ----
+  {cohort:7, ortu:"Dhyana Ari", domisili:"Banjarnegara", hp:"085291744775", kadet:"Danish Fatihin Rafie", prodi:"S1 Kedokteran"},
+  {cohort:7, ortu:"Susanti", domisili:"Salatiga", hp:"085727006433", kadet:"Azra Falihanun Ulayya", prodi:"S1 Farmasi"},
+  {cohort:7, ortu:"Fera", domisili:"Wonosobo", hp:"081329057360", kadet:"Gemmael Alvito Yusuf", prodi:"S1 Kedokteran"},
+  {cohort:7, ortu:"Siti Tariyah", domisili:"Tegal", hp:"085742935724", kadet:"De Restu", prodi:"S1 Sejarah Militer"},
+  {cohort:7, ortu:"Juli Medianto", domisili:"Purworejo", hp:"085810795223", kadet:"Maura Najma Kaheesha", prodi:"S1 Kedokteran"},
+  {cohort:7, ortu:"Wahyu Riswati", domisili:"Batang", hp:"081215133986", kadet:"Faiq Abyan Akbar", prodi:"S1 Kedokteran Gigi"},
+  {cohort:7, ortu:"Sri Hastutik", domisili:"Batang", hp:"085801587354", kadet:"Rakha Pambudya Pratama", prodi:"S1 Sejarah Militer"},
+  {cohort:7, ortu:"Andrianto Soeristyo S / Endah Harieyaningsih", domisili:"Jogja", hp:"087839183797", kadet:"Adam Adinata Nayottama", prodi:"S1 Teknik Elektro"},
+  {cohort:7, ortu:"Ningsih", domisili:"Magelang", hp:"085868801241", kadet:"Kevin Rifqiansyah", prodi:"S1 Kedokteran"},
+  {cohort:7, ortu:"Siti Zulaikah", domisili:"Pati", hp:"082326262988", kadet:"Puspo Adji Pamungkas", prodi:"S1 Sejarah Militer"},
+  {cohort:7, ortu:"Erna Tusli", domisili:"Kota Magelang", hp:"085868588110", kadet:"Aufa Faza El Ramadhan", prodi:"S1 Sejarah Militer"},
+  {cohort:7, ortu:"Yuli Verawati", domisili:"solo", hp:"081391257883", kadet:"NATALITA JOY BUTAR2", prodi:"S1 Matematika"},
+  {cohort:7, ortu:"Heri", domisili:"Pati", hp:"088232583153", kadet:"Fathin Averyane R", prodi:"S1 Sejarah Militer"},
+  {cohort:7, ortu:"Dian Purwati", domisili:"Solo", hp:"0895422594863", kadet:"Kezia Az-zahra Dianggi", prodi:"S1 Informatika"},
+  {cohort:7, ortu:"Nanang Joni Antono", domisili:"Temanggung", hp:"085878937537", kadet:"Eoniko Pradana Antana", prodi:"S1 Farmasi"},
+  {cohort:7, ortu:"Fitri Bahriyah", domisili:"Purwokerto, Banyumas", hp:"085729042807", kadet:"Galih Ndaru Raina Djati", prodi:"S1 Farmasi"},
+  {cohort:7, ortu:"Minarni Pujiastuti", domisili:"Yogyakarta", hp:"081226631798", kadet:"Bramurti Fajar Sutrisno", prodi:"S1 Matematika"},
+  {cohort:7, ortu:"Tri Utami Murniati", domisili:"Solo", hp:"085727127606", kadet:"Afif Alauddin Azhar", prodi:"S1 Farmasi"},
+  {cohort:7, ortu:"Arin wiji susanto", domisili:"Temanggung", hp:"087826787628", kadet:"Refian D Muna", prodi:"S1 Informatika"},
+  {cohort:7, ortu:"Hesti Andriani", domisili:"Purwokerto", hp:"081219130914", kadet:"Bintang Azka", prodi:"S1 Informatika"},
+  {cohort:7, ortu:"Nur Rohmah Prasetyo Utami", domisili:"solo", hp:"082136199988", kadet:"Fahri Hamka Santosa", prodi:"S1 Fisika"},
+  {cohort:7, ortu:"Samini", domisili:"Klaten", hp:"085868093167", kadet:"Dzaky Pramana", prodi:"S1 Kedokteran"},
+  {cohort:7, ortu:"Dr. Maria", domisili:"Semarang", hp:"081370771998", kadet:"Muhammad Farrel Atthalah", prodi:"S1 Kedokteran"},
+  {cohort:7, ortu:"Victoria Ika Puspitarini", domisili:"Semarang", hp:"085712116488", kadet:"Alexandra Keysha Darma Saputri", prodi:"S1 Fisika"},
+  {cohort:7, ortu:"Candra Meiningrum", domisili:"Pedurungan Kota Semarang", hp:"082227584279", kadet:"Ariandra Azalia Husna", prodi:"S1 Kedokteran Gigi"},
+  {cohort:7, ortu:"Tri Purwati", domisili:"Cilacap", hp:"08822475221", kadet:"Heidi Cahya Salsabila", prodi:"S1 Farmasi"}
+];
+
+/* =========================================================
+   KONEKSI KE GOOGLE APPS SCRIPT & SPREADSHEET
+   ---------------------------------------------------------
+   1. Deploy Code.gs sebagai Web App (Execute as: Me, Who has
+      access: Anyone), lalu copy URL-nya.
+   2. Tempel URL tersebut di bawah ini menggantikan tanda "GANTI_...".
+   ---------------------------------------------------------
+   Jika GAS_URL belum diisi atau koneksi gagal (mis. offline),
+   aplikasi otomatis memakai data awal (dataAwal) sebagai cadangan
+   supaya tetap bisa dipakai tanpa internet.
+========================================================= */
+const GAS_URL = "https://script.google.com/macros/s/AKfycbyk74uCRm_e4bS11QLq4HexTjgBMimWARPJscWaOQGVtQDyJiZMN3st_jp4qsKryIChcQ/exec";
+
+let records = [];
+
+function urlGasSudahDiisi(){
+  return GAS_URL && GAS_URL.indexOf("GANTI_DENGAN") === -1;
 }
 
-// soal dengan type "bacaan" adalah teks passage/skrip (tanpa jawaban),
-// tidak dihitung sebagai nomor soal dan tidak masuk nav grid / scoring.
-function daftarSoalBernomor() {
-  return DATA_SOAL.filter(s => s.type !== "bacaan");
+function setStatus(jenis, teks){
+  const el = document.getElementById("statusKoneksi");
+  el.className = "status-koneksi " + jenis;
+  el.textContent = teks;
 }
 
-function buatNavGrid() {
-  const grid = document.getElementById("navGrid");
-  grid.innerHTML = "";
-  daftarSoalBernomor().forEach((soal, idx) => {
-    const btn = document.createElement("button");
-    btn.className = "nav-btn";
-    btn.id = "nav-" + soal.id;
-    btn.textContent = idx + 1;
-    btn.onclick = () => {
-      document.getElementById("soal-" + soal.id).scrollIntoView({ behavior: "smooth", block: "start" });
-    };
-    grid.appendChild(btn);
-  });
-}
-
-function buatSoalArea() {
-  const area = document.getElementById("examArea");
-  area.innerHTML = "";
-  let nomorSoal = 0;
-
-  DATA_SOAL.forEach((soal) => {
-    const card = document.createElement("div");
-    card.className = "soal-card";
-    card.id = "soal-" + soal.id;
-
-    if (soal.type === "bacaan") {
-      // kartu passage/skrip: judul + teks, tanpa pilihan jawaban
-      const judul = document.createElement("div");
-      judul.className = "soal-nomor";
-      judul.textContent = soal.judul || "Bacaan";
-      card.appendChild(judul);
-
-      const teks = document.createElement("div");
-      teks.className = "soal-teks";
-      teks.style.whiteSpace = "pre-line";
-      teks.textContent = soal.teks;
-      card.appendChild(teks);
-
-      area.appendChild(card);
-      return;
-    }
-
-    nomorSoal++;
-    const nomor = document.createElement("div");
-    nomor.className = "soal-nomor";
-    nomor.textContent = "Soal " + nomorSoal + (soal.kategori ? " (" + soal.kategori + ")" : "");
-    card.appendChild(nomor);
-
-    const teks = document.createElement("div");
-    teks.className = "soal-teks";
-    teks.style.whiteSpace = "pre-line";
-    teks.textContent = soal.teks;
-    card.appendChild(teks);
-
-    const opsiWrap = document.createElement("div");
-    opsiWrap.className = "opsi-list";
-
-    if (soal.type === "yatidak") {
-      ["YA", "TIDAK"].forEach(val => {
-        const label = document.createElement("label");
-        const radio = document.createElement("input");
-        radio.type = "radio";
-        radio.name = "soal-" + soal.id;
-        radio.value = val;
-        radio.onchange = () => pilihJawaban(soal.id, val);
-        label.appendChild(radio);
-        label.appendChild(document.createTextNode(val));
-        opsiWrap.appendChild(label);
-      });
-    } else {
-      const huruf = ["A", "B", "C", "D", "E"];
-      soal.opsi.forEach((opsiTeks, i) => {
-        const label = document.createElement("label");
-        const radio = document.createElement("input");
-        radio.type = "radio";
-        radio.name = "soal-" + soal.id;
-        radio.value = i;
-        radio.onchange = () => pilihJawaban(soal.id, i);
-        label.appendChild(radio);
-        label.appendChild(document.createTextNode(huruf[i] + ". " + opsiTeks));
-        opsiWrap.appendChild(label);
-      });
-    }
-
-    card.appendChild(opsiWrap);
-    area.appendChild(card);
-  });
-}
-
-function pilihJawaban(soalId, val) {
-  answers[soalId] = val;
-  const navBtn = document.getElementById("nav-" + soalId);
-  if (navBtn) navBtn.classList.add("answered");
-}
-
-// highlight soal aktif berdasarkan scroll
-function setupActiveObserver() {
-  const observer = new IntersectionObserver((entries) => {
-    entries.forEach(entry => {
-      const id = entry.target.id.replace("soal-", "");
-      const navBtn = document.getElementById("nav-" + id);
-      if (!navBtn) return;
-      if (entry.isIntersecting) {
-        document.querySelectorAll(".nav-btn.active").forEach(b => b.classList.remove("active"));
-        navBtn.classList.add("active");
-      }
-    });
-  }, { root: null, threshold: 0.5, rootMargin: "-140px 0px -60% 0px" });
-
-  DATA_SOAL.forEach(soal => {
-    const el = document.getElementById("soal-" + soal.id);
-    if (el) observer.observe(el);
-  });
-}
-
-function mulaiUjian() {
-  const inputNama = document.getElementById("inputNama");
-  if (!inputNama.value.trim()) {
-    inputNama.focus();
+async function muatData(dariTombol){
+  if(!urlGasSudahDiisi()){
+    records = dataAwal.slice();
+    setStatus("offline", "⚠️ Belum terhubung ke Spreadsheet (GAS_URL belum diisi) — memakai data awal");
+    renderDashboard();
     return;
   }
-  nama = inputNama.value.trim();
 
-  document.getElementById("startScreen").style.display = "none";
-  document.getElementById("examArea").style.display = "block";
+  setStatus("loading", "⏳ Memuat data dari Spreadsheet...");
 
-  buatNavGrid();
-  buatSoalArea();
-  setupActiveObserver();
-
-  document.getElementById("timer").textContent = formatWaktu(sisaDetik);
-  timerInterval = setInterval(() => {
-    sisaDetik--;
-    document.getElementById("timer").textContent = formatWaktu(sisaDetik);
-    if (sisaDetik <= 0) {
-      clearInterval(timerInterval);
-      selesai(true); // auto selesai, tanpa konfirmasi
+  try{
+    const res = await fetch(GAS_URL + "?action=getData");
+    const hasil = await res.json();
+    if(hasil.success && Array.isArray(hasil.data)){
+      records = hasil.data;
+      setStatus("online", "✅ Terhubung ke Spreadsheet — " + records.length + " data dimuat");
+    }else{
+      throw new Error("Format data tidak sesuai");
     }
-  }, 1000);
-}
+  }catch(e){
+    records = dataAwal.slice();
+    setStatus("offline", "⚠️ Gagal terhubung ke Spreadsheet — memakai data awal (offline)");
+  }
 
-function konfirmasiSelesai() {
-  if (confirm("Yakin ingin menyelesaikan ujian sekarang?")) {
-    selesai(false);
+  renderDashboard();
+  if(dariTombol){
+    document.getElementById("hasilCari").innerHTML = "";
+    document.getElementById("keyword").value = "";
   }
 }
 
-function hitungSkor() {
-  let total = 0;
-  const perKategori = {};
+async function kirimDataKeServer(dataBaru){
+  // --- BAGIAN KONEKSI KE GAS ---
+  if(!urlGasSudahDiisi()){
+    // Belum tersambung ke GAS: data hanya disimpan sementara di memori halaman ini
+    records.push(dataBaru);
+    return { success:true, offline:true };
+  }
 
-  DATA_SOAL.forEach(soal => {
-    if (soal.type === "bacaan") return; // passage bukan soal, dilewati
-
-    const poin = soal.poin || CONFIG.POIN_DEFAULT;
-    const jawabanUser = answers[soal.id];
-    let benar = false;
-
-    if (soal.type === "pg") {
-      benar = jawabanUser === soal.kunci;
-    } else if (soal.type === "yatidak") {
-      benar = jawabanUser === soal.kunci;
+  try{
+    const res = await fetch(GAS_URL, {
+      method: "POST",
+      headers: { "Content-Type": "text/plain;charset=utf-8" }, // hindari preflight CORS
+      body: JSON.stringify(dataBaru)
+    });
+    const hasil = await res.json();
+    if(hasil.success){
+      records.push(dataBaru);
     }
+    return hasil;
+  }catch(e){
+    return { success:false, error: e.message };
+  }
+  // --- AKHIR BAGIAN KONEKSI KE GAS ---
+}
 
-    const nilai = benar ? poin : 0;
-    total += nilai;
+/* =========================================================
+   NAVIGASI HALAMAN
+========================================================= */
+function gantiHalaman(nama){
+  document.querySelectorAll(".page").forEach(el => el.classList.remove("active"));
+  document.querySelectorAll("nav.menu button").forEach(btn => btn.classList.remove("active"));
 
-    if (soal.kategori) {
-      perKategori[soal.kategori] = (perKategori[soal.kategori] || 0) + nilai;
-    }
+  document.getElementById("page-" + nama).classList.add("active");
+
+  const petaTombol = {
+    dashboard: "btnDashboard",
+    input: "btnInput",
+    cari: "btnCari",
+    profil: "btnProfil"
+  };
+  document.getElementById(petaTombol[nama]).classList.add("active");
+
+  if(nama === "dashboard"){
+    renderDashboard();
+  }
+}
+
+/* =========================================================
+   RENDER DASHBOARD
+========================================================= */
+function renderDashboard(){
+  document.getElementById("totalData").textContent = records.length;
+
+  const cohortSet = new Set(records.map(r => r.cohort));
+  document.getElementById("totalCohort").textContent = cohortSet.size;
+
+  // ---- Grafik Batang Per Cohort (1-7) ----
+  const cohortChart = document.getElementById("cohortChart");
+  cohortChart.innerHTML = "";
+  const hitungCohort = {};
+  for(let i = 1; i <= 7; i++){ hitungCohort[i] = 0; }
+  records.forEach(r => {
+    hitungCohort[r.cohort] = (hitungCohort[r.cohort] || 0) + 1;
   });
+  const maxCohort = Math.max(1, ...Object.values(hitungCohort));
 
-  // ==== ESTIMASI SKOR TOEFL ITP (APROKSIMASI, BUKAN TABEL RESMI) ====
-  // Konversi linear dari skor mentah per section ke rentang scaled score
-  // resmi TOEFL ITP (Listening & Structure 31-68, Reading 31-67), lalu
-  // total = rata-rata ketiga scaled score x 10 (rentang 310-677).
-  // Ini HANYA aproksimasi untuk keperluan latihan; skor TOEFL ITP asli
-  // menggunakan tabel konversi non-linear resmi dari lembaga penyelenggara.
-  const maxRaw = { Listening: 50, Structure: 40, Reading: 50 };
-  const scaledRange = {
-    Listening: [31, 68],
-    Structure: [31, 68],
-    Reading: [31, 67]
+  for(let i = 1; i <= 7; i++){
+    const jumlah = hitungCohort[i] || 0;
+    const persen = Math.round((jumlah / maxCohort) * 100);
+    const row = document.createElement("div");
+    row.className = "bar-row";
+    row.innerHTML = `
+      <div class="bar-label">Cohort ${i}</div>
+      <div class="bar-track"><div class="bar-fill" style="width:${persen}%"></div></div>
+      <div class="bar-value">${jumlah}</div>
+    `;
+    cohortChart.appendChild(row);
+  }
+
+  // ---- 5 Program Studi Terbanyak ----
+  const hitungProdi = {};
+  records.forEach(r => {
+    hitungProdi[r.prodi] = (hitungProdi[r.prodi] || 0) + 1;
+  });
+  const topProdi = Object.entries(hitungProdi).sort((a,b) => b[1]-a[1]).slice(0,5);
+  renderMiniChart("prodiChart", topProdi);
+
+  // ---- 5 Domisili Terbanyak ----
+  const hitungDomisili = {};
+  records.forEach(r => {
+    const kota = (r.domisili || "-").trim();
+    hitungDomisili[kota] = (hitungDomisili[kota] || 0) + 1;
+  });
+  const topDomisili = Object.entries(hitungDomisili).sort((a,b) => b[1]-a[1]).slice(0,5);
+  renderMiniChart("domisiliChart", topDomisili);
+}
+
+function renderMiniChart(idElemen, daftar){
+  const wadah = document.getElementById(idElemen);
+  wadah.innerHTML = "";
+  if(daftar.length === 0){
+    wadah.innerHTML = '<div class="no-data">Belum ada data</div>';
+    return;
+  }
+  const maxNilai = Math.max(...daftar.map(d => d[1]));
+  daftar.forEach(([label, jumlah]) => {
+    const persen = Math.round((jumlah / maxNilai) * 100);
+    const blok = document.createElement("div");
+    blok.innerHTML = `
+      <div class="small-bar-label"><span>${label}</span><span><strong>${jumlah}</strong></span></div>
+      <div class="small-bar-track"><div class="small-bar-fill" style="width:${persen}%"></div></div>
+    `;
+    wadah.appendChild(blok);
+  });
+}
+
+/* =========================================================
+   HALAMAN INPUT DATA
+========================================================= */
+function isiPilihanProdi(){
+  const selectProdi = document.getElementById("prodi");
+  daftarProdi.forEach(p => {
+    const opt = document.createElement("option");
+    opt.value = p;
+    opt.textContent = p;
+    selectProdi.appendChild(opt);
+  });
+}
+
+const selectCohort = document.getElementById("cohort");
+const boxLainnya = document.getElementById("cohortLainnyaBox");
+const inputCohortLainnya = document.getElementById("cohortLainnya");
+
+selectCohort.addEventListener("change", function(){
+  if(this.value === "Lainnya"){
+    boxLainnya.style.display = "block";
+    inputCohortLainnya.required = true;
+  }else{
+    boxLainnya.style.display = "none";
+    inputCohortLainnya.required = false;
+    inputCohortLainnya.value = "";
+  }
+});
+
+document.getElementById("formInput").addEventListener("submit", async function(e){
+  e.preventDefault();
+
+  let nilaiCohort;
+  if(selectCohort.value === "Lainnya"){
+    nilaiCohort = parseInt(inputCohortLainnya.value, 10);
+    if(!nilaiCohort || nilaiCohort < 1){
+      alert("Masukkan nomor cohort baru yang valid.");
+      return;
+    }
+  }else{
+    nilaiCohort = parseInt(selectCohort.value, 10);
+    if(!nilaiCohort){
+      alert("Silakan pilih cohort terlebih dahulu.");
+      return;
+    }
+  }
+
+  const dataBaru = {
+    cohort: nilaiCohort,
+    ortu: document.getElementById("namaOrtu").value.trim(),
+    domisili: document.getElementById("domisili").value.trim(),
+    hp: document.getElementById("hp").value.trim() || "-",
+    kadet: document.getElementById("namaKadet").value.trim(),
+    prodi: document.getElementById("prodi").value
   };
 
-  const scaled = {};
-  Object.keys(maxRaw).forEach(kat => {
-    const raw = perKategori[kat] || 0;
-    const [min, max] = scaledRange[kat];
-    scaled[kat] = Math.round(min + (raw / maxRaw[kat]) * (max - min));
+  const tombolKirim = document.querySelector("#formInput .btn-submit");
+  tombolKirim.disabled = true;
+  tombolKirim.textContent = "Mengirim...";
+
+  const hasil = await kirimDataKeServer(dataBaru);
+
+  tombolKirim.disabled = false;
+  tombolKirim.textContent = "Kirim Data";
+
+  const pesan = document.getElementById("pesanSukses");
+
+  if(hasil.success){
+    pesan.textContent = hasil.offline
+      ? "✅ Data Berhasil Disimpan (sementara di perangkat ini — GAS_URL belum diisi)"
+      : "✅ Data Berhasil Disimpan";
+    pesan.style.background = "#e6f6ea";
+    pesan.style.color = "#1e7e34";
+    pesan.style.borderColor = "#b6e6c2";
+    pesan.style.display = "block";
+    setTimeout(() => { pesan.style.display = "none"; }, 3000);
+
+    document.getElementById("formInput").reset();
+    boxLainnya.style.display = "none";
+  }else{
+    pesan.textContent = "❌ Gagal menyimpan data: " + (hasil.error || "periksa koneksi internet");
+    pesan.style.background = "#fdeaea";
+    pesan.style.color = "#c0392b";
+    pesan.style.borderColor = "#f5c2c2";
+    pesan.style.display = "block";
+  }
+});
+
+/* =========================================================
+   HALAMAN CARI DATA
+========================================================= */
+function cariData(){
+  const kataKunci = document.getElementById("keyword").value.trim().toLowerCase();
+  const tbody = document.getElementById("hasilCari");
+  tbody.innerHTML = "";
+
+  if(kataKunci === ""){
+    tbody.innerHTML = '<tr><td colspan="5" class="no-data">Masukkan kata kunci pencarian</td></tr>';
+    return;
+  }
+
+  // Jika kata kunci berupa ANGKA MURNI (contoh: "2"), anggap itu pencarian
+  // Nomor Cohort secara PERSIS -- supaya tidak nyasar ke angka yang
+  // kebetulan ada di dalam nama (misalnya "BUTAR2") atau nomor HP.
+  const isAngkaMurni = /^\d+$/.test(kataKunci);
+
+  const hasil = records.filter(r => {
+    if(isAngkaMurni){
+      return String(r.cohort) === kataKunci;
+    }
+    return (
+      (r.kadet || "").toLowerCase().includes(kataKunci) ||
+      (r.ortu || "").toLowerCase().includes(kataKunci) ||
+      (r.domisili || "").toLowerCase().includes(kataKunci)
+    );
   });
 
-  const skorTOEFL = Math.round(
-    ((scaled.Listening + scaled.Structure + scaled.Reading) / 3) * 10
-  );
+  if(hasil.length === 0){
+    tbody.innerHTML = '<tr><td colspan="5" class="no-data">Data tidak ditemukan</td></tr>';
+    return;
+  }
 
-  return { total, perKategori, scaled, skorTOEFL };
-}
-
-function selesai(otomatis) {
-  if (sudahSelesai) return;
-  sudahSelesai = true;
-  clearInterval(timerInterval);
-
-  const skor = hitungSkor();
-  const { lulus, teksStatus } = CONFIG.cekKelulusan(skor);
-
-  // susun teks detail skor: jawaban benar per section + estimasi skor TOEFL
-  let detailSkorText = "Jawaban Benar:";
-  const kategoriKeys = Object.keys(skor.perKategori);
-  kategoriKeys.forEach(k => {
-    detailSkorText += "\n" + k + ": " + skor.perKategori[k] + " benar (estimasi scaled score: " + skor.scaled[k] + ")";
+  hasil.forEach(r => {
+    const tr = document.createElement("tr");
+    tr.innerHTML = `
+      <td>${r.cohort}</td>
+      <td>${r.ortu}</td>
+      <td>${r.kadet}</td>
+      <td>${r.domisili}</td>
+      <td>${r.prodi}</td>
+    `;
+    tbody.appendChild(tr);
   });
-  detailSkorText += "\nEstimasi Skor TOEFL ITP: " + skor.skorTOEFL;
-
-  const waktuTerpakaiMenit = Math.ceil((CONFIG.WAKTU_MENIT * 60 - Math.max(sisaDetik, 0)) / 60);
-
-  // kirim ke telegram (tetap terkirim walau tab ditutup)
-  const data = new FormData();
-  data.append("chat_id", CONFIG.TELEGRAM_CHAT_ID);
-  data.append("text",
-    "Nama: " + nama +
-    "\nUjian: " + CONFIG.NAMA_UJIAN +
-    "\nStatus: " + teksStatus +
-    "\nSkor: " + detailSkorText.replace(/\n/g, ", ") +
-    "\nWaktu: " + waktuTerpakaiMenit + " menit"
-  );
-  navigator.sendBeacon(
-    "https://api.telegram.org/bot" + CONFIG.TELEGRAM_TOKEN + "/sendMessage",
-    data
-  );
-
-  // tampilkan halaman hasil, sembunyikan header & area soal
-  document.querySelector("header").style.display = "none";
-  document.getElementById("examArea").style.display = "none";
-  document.getElementById("resultScreen").style.display = "block";
-
-  document.getElementById("hasilNama").textContent = "Nama: " + nama;
-  document.getElementById("hasilSkor").textContent = detailSkorText;
-
-  const statusEl = document.getElementById("hasilStatus");
-  statusEl.innerHTML = "";
-  const statusDiv = document.createElement("div");
-  statusDiv.className = lulus ? "status-lulus" : "status-gagal";
-  statusDiv.textContent = teksStatus;
-  statusEl.appendChild(statusDiv);
 }
+
+document.getElementById("keyword").addEventListener("keyup", function(e){
+  if(e.key === "Enter"){ cariData(); }
+});
+
+/* =========================================================
+   PENGATURAN LOGO & JUDUL HEADER
+   (disimpan di localStorage perangkat ini, terpisah dari
+   data kadet yang tersimpan di Spreadsheet)
+========================================================= */
+const JUDUL_DEFAULT = "KELUARGA BESAR KADET UNHAN RI|KORDA JAWA TENGAH";
+
+function tampilkanJudul(teksMentah){
+  const aman = document.createElement("div");
+  aman.textContent = teksMentah;
+  const teksAman = aman.innerHTML; // escape HTML dasar
+  const denganBaris = teksAman.split("|").join("<br>");
+  document.getElementById("headerTitle").innerHTML = denganBaris;
+  document.querySelector(".dash-title").innerHTML = denganBaris;
+}
+
+function tampilkanLogo(dataUrl){
+  const logoHeader = document.getElementById("headerLogo");
+  const previewLogo = document.getElementById("previewLogo");
+  if(dataUrl){
+    logoHeader.src = dataUrl;
+    logoHeader.style.display = "block";
+    previewLogo.src = dataUrl;
+    previewLogo.style.display = "block";
+  }else{
+    logoHeader.style.display = "none";
+    previewLogo.removeAttribute("src");
+  }
+}
+
+function muatPengaturanTampilan(){
+  let judulTersimpan = JUDUL_DEFAULT;
+  let logoTersimpan = "";
+  try{
+    judulTersimpan = localStorage.getItem("kbkJudulHeader") || JUDUL_DEFAULT;
+    logoTersimpan = localStorage.getItem("kbkLogoHeader") || "";
+  }catch(e){ /* localStorage tidak tersedia, pakai default */ }
+
+  tampilkanJudul(judulTersimpan);
+  tampilkanLogo(logoTersimpan);
+
+  document.getElementById("inputJudul").value = judulTersimpan.split("|").join(" | ");
+}
+
+function tampilkanPesanPengaturan(teks){
+  const el = document.getElementById("pesanPengaturan");
+  el.textContent = teks;
+  el.style.display = "block";
+  setTimeout(() => { el.style.display = "none"; }, 2500);
+}
+
+function simpanJudul(){
+  const nilai = document.getElementById("inputJudul").value.trim();
+  if(!nilai){
+    alert("Judul tidak boleh kosong.");
+    return;
+  }
+  const nilaiRapi = nilai.split("|").map(s => s.trim()).join("|");
+  try{ localStorage.setItem("kbkJudulHeader", nilaiRapi); }catch(e){}
+  tampilkanJudul(nilaiRapi);
+  tampilkanPesanPengaturan("✅ Judul header tersimpan");
+}
+
+function resetJudul(){
+  try{ localStorage.removeItem("kbkJudulHeader"); }catch(e){}
+  tampilkanJudul(JUDUL_DEFAULT);
+  document.getElementById("inputJudul").value = JUDUL_DEFAULT.split("|").join(" | ");
+  tampilkanPesanPengaturan("✅ Judul dikembalikan ke default");
+}
+
+function simpanLogo(){
+  const fileInput = document.getElementById("inputLogo");
+  const file = fileInput.files[0];
+  if(!file){
+    alert("Pilih file gambar logo terlebih dahulu.");
+    return;
+  }
+  if(file.size > 1024 * 1024){
+    alert("Ukuran logo terlalu besar. Gunakan gambar di bawah 1 MB.");
+    return;
+  }
+  const reader = new FileReader();
+  reader.onload = function(e){
+    const dataUrl = e.target.result;
+    try{ localStorage.setItem("kbkLogoHeader", dataUrl); }catch(err){
+      alert("Gagal menyimpan logo (kemungkinan ukuran terlalu besar untuk penyimpanan perangkat).");
+      return;
+    }
+    tampilkanLogo(dataUrl);
+    tampilkanPesanPengaturan("✅ Logo tersimpan");
+  };
+  reader.readAsDataURL(file);
+}
+
+function hapusLogo(){
+  try{ localStorage.removeItem("kbkLogoHeader"); }catch(e){}
+  document.getElementById("inputLogo").value = "";
+  tampilkanLogo("");
+  tampilkanPesanPengaturan("✅ Logo dihapus");
+}
+
+/* =========================================================
+   INISIALISASI
+========================================================= */
+isiPilihanProdi();
+muatPengaturanTampilan();
+muatData();
 </script>
 </body>
 </html>
