@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
-<title>Keluarga Besar Kadet UNHAN RI - Korda JATENG-DIY</title>
+<title>Keluarga Besar Kadet UNHAN RI - Korda Jawa Tengah</title>
 <style>
   :root{
     --biru-tua:#0d2b6b;
@@ -535,7 +535,7 @@
 
 <header class="topbar">
   <img id="headerLogo" class="header-logo" alt="Logo" style="display:none;">
-  <h1 id="headerTitle">KELUARGA BESAR KADET UNHAN RI<br>KORDA JAWA TENGAH</h1>
+  <h1 id="headerTitle">KELUARGA BESAR KADET UNHAN RI<br>KORDA JATENG-DIY</h1>
   <nav class="menu">
     <button id="btnDashboard" class="active" onclick="gantiHalaman('dashboard')">Dashboard</button>
     <button id="btnInput" onclick="gantiHalaman('input')">Input Data</button>
@@ -548,7 +548,7 @@
 
   <!-- ===================== HALAMAN DASHBOARD ===================== -->
   <section id="page-dashboard" class="page active">
-    <div class="dash-title">KELUARGA BESAR KADET UNHAN RI<br>KORDA JAWA TENGAH</div>
+    <div class="dash-title">KELUARGA BESAR KADET UNHAN RI<br>KORDA JATENG-DIY</div>
 
     <div id="statusKoneksi" class="status-koneksi"></div>
     <button type="button" class="btn-refresh" onclick="muatData(true)">🔄 Muat Ulang Data</button>
@@ -639,6 +639,7 @@
         <table>
           <thead>
             <tr>
+              <th>No</th>
               <th>Cohort</th>
               <th>Nama Orang Tua</th>
               <th>Nama Kadet</th>
@@ -658,7 +659,7 @@
     <div class="card admin-info">
       <span class="badge-kuning">INFO PENGELOLA</span>
       <h2 style="border:none; padding:0; margin-bottom:6px;">👤 Profil Admin</h2>
-      <p><strong>Pengelola:</strong> Keluarga Besar Kadet UNHAN RI - Korda Jawa Tengah</p>
+      <p><strong>Pengelola:</strong> Keluarga Besar Kadet UNHAN RI - Korda JATENG-DIY</p>
       <p><strong>Kontak:</strong> Hubungi perwakilan daerah masing-masing</p>
       <p><strong>Catatan:</strong> Data terintegrasi dan terupdate</p>
     </div>
@@ -745,7 +746,7 @@
 
         <label for="inputJudul" style="display:block; font-weight:700; font-size:13.5px; color:var(--biru-tua); margin:18px 0 6px 0;">Judul Header</label>
         <div class="pengaturan-row" style="margin-bottom:4px;">
-          <input type="text" id="inputJudul" placeholder="Contoh: KELUARGA BESAR KADET UNHAN RI | KORDA JAWA TENGAH">
+          <input type="text" id="inputJudul" placeholder="Contoh: KELUARGA BESAR KADET UNHAN RI | KORDA JATENG-DIY">
         </div>
         <div class="keterangan-kecil">Gunakan tanda | (garis tegak) di tempat judul ingin ganti baris.</div>
         <div class="baris-tombol">
@@ -754,7 +755,7 @@
         </div>
 
         <div class="pesan-pengaturan" id="pesanPengaturan">✅ Pengaturan tersimpan</div>
-        <div class="keterangan-kecil" style="margin-top:12px;">Catatan: pengaturan logo &amp; judul ini tersimpan di perangkat/browser ini saja (bukan di Spreadsheet), jadi perlu diatur ulang jika dibuka dari HP/browser lain.</div>
+        <div class="keterangan-kecil" style="margin-top:12px;">Catatan: pengaturan logo &amp; judul ini tersimpan di perangkat/browser ini saja (bukan di Data pusat), jadi perlu diatur ulang jika dibuka dari HP/browser lain.</div>
       </div>
     </div>
   </section>
@@ -789,7 +790,9 @@ const daftarProdi = [
   "S1 Teknik Elektro",
   "S1 Teknik Mesin",
   "S1 Teknik Sipil",
-  "S1 Rekayasa Sumber Daya Air"
+  "S1 Rekayasa Sumber Daya Air",
+  "S1 Teknik Nuklir",
+  "S1 Ilmu Keolahragaan"
 ];
 
 /* =========================================================
@@ -928,25 +931,25 @@ function setStatus(jenis, teks){
 async function muatData(dariTombol){
   if(!urlGasSudahDiisi()){
     records = dataAwal.slice();
-    setStatus("offline", "⚠️ Belum terhubung ke Spreadsheet (GAS_URL belum diisi) — memakai data awal");
+    setStatus("offline", "⚠️ Belum terhubung ke Data (GAS_URL belum diisi) — memakai data awal");
     renderDashboard();
     return;
   }
 
-  setStatus("loading", "⏳ Memuat data dari Spreadsheet...");
+  setStatus("loading", "⏳ Memuat Data...");
 
   try{
     const res = await fetch(GAS_URL + "?action=getData");
     const hasil = await res.json();
     if(hasil.success && Array.isArray(hasil.data)){
       records = hasil.data;
-      setStatus("online", "✅ Terhubung ke Spreadsheet — " + records.length + " data dimuat");
+      setStatus("online", "✅ Terhubung ke Data — " + records.length + " data dimuat");
     }else{
       throw new Error("Format data tidak sesuai");
     }
   }catch(e){
     records = dataAwal.slice();
-    setStatus("offline", "⚠️ Gagal terhubung ke Spreadsheet — memakai data awal (offline)");
+    setStatus("offline", "⚠️ Gagal terhubung ke Data — memakai data awal (offline)");
   }
 
   renderDashboard();
@@ -1127,6 +1130,16 @@ selectCohort.addEventListener("change", function(){
 
 let dataMenungguKonfirmasi = null; // {dataBaru, dataAsli}
 
+// Menyamakan format nomor HP supaya "0812...", "+62812...", dan "62812..."
+// dianggap nomor yang sama saat dibandingkan (hanya sisakan digit penting).
+function normalisasiHp(hp){
+  if(!hp) return "";
+  let angka = String(hp).replace(/\D/g, ""); // buang semua yang bukan angka
+  if(angka.startsWith("62")) angka = angka.slice(2);
+  if(angka.startsWith("0")) angka = angka.slice(1);
+  return angka;
+}
+
 document.getElementById("formInput").addEventListener("submit", async function(e){
   e.preventDefault();
 
@@ -1154,8 +1167,19 @@ document.getElementById("formInput").addEventListener("submit", async function(e
     prodi: document.getElementById("prodi").value
   };
 
-  // Cek apakah Nama Kadet ini sudah pernah tercatat sebelumnya
-  const dataSama = records.find(r => (r.kadet || "").trim().toLowerCase() === dataBaru.kadet.toLowerCase());
+  // Cek apakah data ini sudah pernah tercatat sebelumnya:
+  // - Nama Kadet sama persis (tanpa peduli huruf besar/kecil), ATAU
+  // - Nomor HP sama (setelah dinormalisasi, supaya 0812.../+62812.../62812... dianggap sama)
+  //   -> berguna kalau nama kadet ditulis beda-beda (mis. "M Raihan" vs "M Raihan Ariffandi")
+  //      tapi nomor HP-nya sama, tetap terdeteksi sebagai kemungkinan data yang sama
+  const kadetBaruLower = dataBaru.kadet.toLowerCase();
+  const hpBaruNorm = normalisasiHp(dataBaru.hp);
+
+  const dataSama = records.find(r => {
+    const kadetSama = (r.kadet || "").trim().toLowerCase() === kadetBaruLower;
+    const hpSama = hpBaruNorm.length >= 8 && normalisasiHp(r.hp) === hpBaruNorm;
+    return kadetSama || hpSama;
+  });
 
   if(dataSama){
     dataMenungguKonfirmasi = {
@@ -1163,8 +1187,11 @@ document.getElementById("formInput").addEventListener("submit", async function(e
       dataAsli: { cohort: dataSama.cohort, kadet: dataSama.kadet },
       sumberForm: "input"
     };
+    const alasan = (dataSama.kadet || "").trim().toLowerCase() === kadetBaruLower
+      ? `Data dengan Nama Kadet "${dataSama.kadet}" sudah tercatat (Cohort ${dataSama.cohort}).`
+      : `Nomor HP ini sudah tercatat atas nama Kadet "${dataSama.kadet}" (Cohort ${dataSama.cohort}).`;
     document.getElementById("pesanModalKonfirmasi").textContent =
-      "Data ini sudah tercatat. Apakah Anda ingin mengganti/memperbarui data tersebut?";
+      alasan + " Apakah Anda ingin mengganti/memperbarui data tersebut?";
     document.getElementById("modalKonfirmasi").classList.add("tampil");
     return;
   }
@@ -1235,7 +1262,7 @@ function cariData(){
   tbody.innerHTML = "";
 
   if(kataKunci === ""){
-    tbody.innerHTML = '<tr><td colspan="6" class="no-data">Masukkan kata kunci pencarian</td></tr>';
+    tbody.innerHTML = '<tr><td colspan="7" class="no-data">Masukkan kata kunci pencarian</td></tr>';
     return;
   }
 
@@ -1256,13 +1283,14 @@ function cariData(){
   });
 
   if(hasil.length === 0){
-    tbody.innerHTML = '<tr><td colspan="6" class="no-data">Data tidak ditemukan</td></tr>';
+    tbody.innerHTML = '<tr><td colspan="7" class="no-data">Data tidak ditemukan</td></tr>';
     return;
   }
 
-  hasil.forEach(r => {
+  hasil.forEach((r, idx) => {
     const tr = document.createElement("tr");
     tr.innerHTML = `
+      <td>${idx + 1}</td>
       <td>${r.cohort}</td>
       <td>${r.ortu}</td>
       <td>${r.kadet}</td>
