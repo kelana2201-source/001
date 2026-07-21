@@ -58,14 +58,16 @@
   }
   header.topbar h1{
     margin:0;
-    font-size:clamp(18px, 4.8vw, 25.5px);
+    font-size:clamp(17px, 4.5vw, 25px);
     font-weight:800;
-    line-height:1.35;
+    line-height:1.28;
     letter-spacing:0.3px;
     max-width:100%;
     word-break:break-word;
     color:#ffd700;
     text-shadow:0 1.5px 4px rgba(0,0,0,0.38);
+    text-align:center;
+    flex:1;
   }
   nav.menu{
     display:flex;
@@ -746,7 +748,7 @@
   }
 
   @media (max-width:400px){
-    header.topbar h1{font-size:16.8px;}
+    header.topbar h1{font-size:15.5px;}
     .header-logo{width:67px; height:67px; border-radius:14px; padding:4px;}
     .header-judul-row{gap:16px;}
     nav.menu button{font-size:10.5px; padding:8px 2px;}
@@ -775,7 +777,7 @@
   <div class="header-container">
     <div class="header-judul-row">
       <img id="headerLogo" class="header-logo" alt="Logo" style="display:none;">
-      <h1 id="headerTitle">KELUARGA BESAR KADET UNHAN RI<br>KORDA JATENG-DIY</h1>
+      <h1 id="headerTitle">KELUARGA BESAR KADET<br>UNHAN RI<br>KORDA JATENG-DIY</h1>
     </div>
     <nav class="menu">
       <button id="btnDashboard" class="active" onclick="gantiHalaman('dashboard')"><span class="ikon-menu">🏠</span>Dashboard</button>
@@ -862,6 +864,11 @@
           <input type="number" id="cohortLainnya" min="1" placeholder="Contoh: 8">
         </div>
 
+        <label for="prodi">Program Studi</label>
+        <select id="prodi">
+          <option value="">-- Pilih Program Studi --</option>
+        </select>
+
         <label for="namaOrtu">Nama Lengkap Orang Tua</label>
         <input type="text" id="namaOrtu" required placeholder="Contoh: Bapak/Ibu ...">
 
@@ -873,11 +880,6 @@
 
         <label for="namaKadet">Nama Kadet</label>
         <input type="text" id="namaKadet" required placeholder="Nama lengkap kadet">
-
-        <label for="prodi">Program Studi</label>
-        <select id="prodi">
-          <option value="">-- Pilih Program Studi --</option>
-        </select>
 
         <button type="submit" class="btn-submit">Kirim Data</button>
         <div class="pesan-sukses" id="pesanSukses">✅ Data Berhasil Disimpan</div>
@@ -965,6 +967,9 @@
             <input type="number" id="editCohortLainnya" min="1">
           </div>
 
+          <label>Program Studi</label>
+          <select id="editProdi"></select>
+
           <label>Nama Lengkap Orang Tua</label>
           <input type="text" id="editOrtu">
 
@@ -976,9 +981,6 @@
 
           <label>Nama Kadet</label>
           <input type="text" id="editKadet">
-
-          <label>Program Studi</label>
-          <select id="editProdi"></select>
 
           <div class="baris-tombol" style="margin-top:16px;">
             <button type="button" class="btn-kecil" onclick="simpanEditData()">💾 Simpan Perubahan</button>
@@ -1870,7 +1872,7 @@ async function prosesSimpanEdit(dataBaru, dataAsli){
    (disimpan di localStorage perangkat ini, terpisah dari
    data kadet yang tersimpan di Spreadsheet)
 ========================================================= */
-const JUDUL_DEFAULT = "KELUARGA BESAR KADET UNHAN RI|KORDA JATENG-DIY";
+const JUDUL_DEFAULT = "KELUARGA BESAR KADET|UNHAN RI|KORDA JATENG-DIY";
 
 function tampilkanJudul(teksMentah){
   const aman = document.createElement("div");
@@ -1902,7 +1904,9 @@ function muatPengaturanTampilan(){
   let logoTersimpan = "";
   try{
     judulTersimpan = localStorage.getItem("kbkJudulHeader") || JUDUL_DEFAULT;
-    if(judulTersimpan === "KELUARGA BESAR KADET UNHAN RI|KORDA JAWA TENGAH"){
+    if(judulTersimpan === "KELUARGA BESAR KADET UNHAN RI|KORDA JAWA TENGAH" ||
+       judulTersimpan === "KELUARGA BESAR KADET UNHAN RI|KORDA JATENG-DIY" ||
+       judulTersimpan === "KELUARGA BESAR KADET UNHAN RI | KORDA JATENG-DIY"){
       judulTersimpan = JUDUL_DEFAULT;
       localStorage.setItem("kbkJudulHeader", JUDUL_DEFAULT);
     }
