@@ -24,12 +24,13 @@
   header.topbar{
     background:#991b1b;
     color:var(--putih);
-    padding:16px 18px 12px 18px;
+    padding:16px 18px 16px 18px;
     text-align:center;
     position:sticky;
     top:0;
-    z-index:50;
+    z-index:100;
     box-shadow:0 3px 12px rgba(0,0,0,0.25);
+    overflow:visible;
   }
   .header-container{
     max-width:1140px;
@@ -67,7 +68,7 @@
     color:#ffd700;
     text-shadow:0 1.5px 4px rgba(0,0,0,0.38);
     text-align:center;
-    flex:1;
+    flex:0 1 auto;
   }
   nav.menu{
     display:flex;
@@ -75,6 +76,9 @@
     justify-content:center;
     flex-wrap:nowrap;
     width:100%;
+    position:relative;
+    z-index:10;
+    pointer-events:auto;
   }
   nav.menu button{
     flex:1 1 0;
@@ -769,6 +773,293 @@
     main{padding:24px 20px;}
     .card{padding:24px;}
   }
+  /* =========================================================
+     DESAIN HALAMAN PROFIL & ADMIN SERAGAM (BIRU TUA & RAPI)
+  ========================================================= */
+  .profile-org-card{
+    background:var(--putih);
+    border-radius:16px;
+    padding:28px 20px;
+    box-shadow:0 4px 18px rgba(13,43,107,0.08);
+    border:1.5px solid #cfd8e6;
+    text-align:center;
+    margin-bottom:18px;
+  }
+  .profile-logo-display{
+    width:84px;
+    height:84px;
+    object-fit:contain;
+    border-radius:18px;
+    background:var(--putih);
+    padding:4px;
+    box-shadow:0 4px 14px rgba(13,43,107,0.15);
+    margin:0 auto 16px auto;
+    border:1.5px solid #dfe6f0;
+    display:block;
+  }
+  .profile-org-title{
+    font-size:clamp(16.5px, 4.2vw, 20px);
+    font-weight:800;
+    color:var(--biru-tua);
+    line-height:1.35;
+    margin:0 0 14px 0;
+    letter-spacing:0.3px;
+  }
+  .profile-org-desc{
+    font-size:clamp(13.5px, 3.5vw, 15px);
+    color:var(--teks);
+    line-height:1.7;
+    margin:0 auto 24px auto;
+    max-width:760px;
+    background:#f4f7fc;
+    padding:18px 20px;
+    border-radius:14px;
+    border-left:4px solid var(--biru-tua);
+    text-align:left;
+  }
+  .btn-masuk-admin{
+    background:var(--biru-tua);
+    color:var(--putih);
+    border:none;
+    padding:13px 30px;
+    border-radius:11px;
+    font-size:15px;
+    font-weight:700;
+    cursor:pointer;
+    display:inline-flex;
+    align-items:center;
+    gap:8px;
+    box-shadow:0 3px 10px rgba(13,43,107,0.2);
+    transition:all 0.15s ease;
+  }
+  .btn-masuk-admin:hover{
+    background:var(--biru-sedang);
+    transform:translateY(-1px);
+  }
+
+  /* --- HALAMAN VERIFIKASI MASUK ADMIN --- */
+  .login-verify-card{
+    background:var(--putih);
+    border-radius:16px;
+    padding:24px 20px;
+    box-shadow:0 4px 18px rgba(13,43,107,0.1);
+    border:1.5px solid #cfd8e6;
+    max-width:440px;
+    margin:0 auto;
+  }
+  .login-verify-header{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    margin-bottom:18px;
+    border-bottom:2px solid var(--abu);
+    padding-bottom:12px;
+  }
+  .login-verify-header h2{
+    margin:0;
+    font-size:17px;
+    color:var(--biru-tua);
+  }
+  .btn-kembali-profil{
+    background:var(--abu);
+    color:var(--biru-tua);
+    border:1px solid #cfd8e6;
+    padding:6px 14px;
+    border-radius:9px;
+    font-size:12.5px;
+    font-weight:700;
+    cursor:pointer;
+  }
+  .login-verify-card label{
+    display:block;
+    font-weight:600;
+    font-size:13.5px;
+    color:var(--biru-tua);
+    margin-bottom:6px;
+  }
+  .login-verify-card input[type="text"], .login-verify-card input[type="password"], .login-verify-card input[type="email"]{
+    width:100%;
+    padding:12px 14px;
+    border-radius:11px;
+    border:1.5px solid #cfd8e6;
+    font-size:14.5px;
+    margin-bottom:14px;
+    background:var(--putih);
+    color:var(--teks);
+  }
+  .password-input-wrap{
+    position:relative;
+    margin-bottom:8px;
+  }
+  .password-input-wrap input{
+    width:100%;
+    padding:12px 46px 12px 14px;
+    margin-bottom:0 !important;
+  }
+  .btn-eye-toggle{
+    position:absolute;
+    right:10px;
+    top:50%;
+    transform:translateY(-50%);
+    background:transparent;
+    border:none;
+    font-size:18px;
+    cursor:pointer;
+    padding:4px 8px;
+    color:#6b7688;
+  }
+  .pesan-peringatan-email{
+    background:#fdeaea;
+    color:#c0392b;
+    border:1.5px solid #f5c2c2;
+    padding:10px 12px;
+    border-radius:9px;
+    font-size:13px;
+    font-weight:700;
+    margin-top:10px;
+    display:none;
+  }
+  .pesan-sukses-email{
+    background:#e6f6ea;
+    color:#1e7e34;
+    border:1.5px solid #b6e6c2;
+    padding:10px 12px;
+    border-radius:9px;
+    font-size:13px;
+    font-weight:700;
+    margin-top:10px;
+    display:none;
+  }
+
+  /* --- MENU SETELAH BERHASIL MASUK (PANEL ADMIN) --- */
+  .admin-header-bar{
+    background:linear-gradient(135deg, var(--biru-tua), var(--biru-sedang));
+    color:var(--putih);
+    border-radius:16px;
+    padding:18px 20px;
+    margin-bottom:18px;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    flex-wrap:wrap;
+    gap:12px;
+    box-shadow:0 4px 14px rgba(13,43,107,0.22);
+  }
+  .admin-header-bar h2{ margin:0; font-size:17.5px; }
+  .badge-sesi-aktif{
+    background:#e3f8ea;
+    color:#15803d;
+    padding:4px 12px;
+    border-radius:20px;
+    font-size:12px;
+    font-weight:800;
+  }
+  .btn-keluar-admin{
+    background:#dc2626;
+    color:var(--putih);
+    border:none;
+    padding:9px 18px;
+    border-radius:10px;
+    font-size:13px;
+    font-weight:700;
+    cursor:pointer;
+    transition:all 0.15s ease;
+  }
+  .btn-keluar-admin:hover{ background:#b91c1c; }
+
+  .admin-section-card{
+    background:var(--putih);
+    border-radius:16px;
+    padding:22px;
+    margin-bottom:18px;
+    box-shadow:0 3px 14px rgba(13,43,107,0.07);
+    border:1px solid #cfd8e6;
+  }
+  .admin-section-title{
+    margin:0 0 16px 0;
+    font-size:16px;
+    font-weight:800;
+    color:var(--biru-tua);
+    border-bottom:2px solid var(--abu);
+    padding-bottom:10px;
+    display:flex;
+    align-items:center;
+    gap:8px;
+  }
+  .judul-3baris-wrap{
+    display:grid;
+    grid-template-columns:1fr;
+    gap:10px;
+    margin-bottom:14px;
+  }
+  @media(min-width:640px){
+    .judul-3baris-wrap{ grid-template-columns:repeat(3, 1fr); }
+  }
+  .judul-3baris-wrap label{
+    font-size:12px;
+    font-weight:700;
+    color:var(--biru-tua);
+    margin-bottom:4px;
+    display:block;
+  }
+  .judul-3baris-wrap input{
+    width:100%;
+    padding:10px 12px;
+    border-radius:9px;
+    border:1.5px solid #cfd8e6;
+    font-size:13.5px;
+  }
+  .btn-action-green{
+    background:#15803d;
+    color:var(--putih);
+    border:none;
+    padding:10px 18px;
+    border-radius:10px;
+    font-size:13.5px;
+    font-weight:700;
+    cursor:pointer;
+    display:inline-flex;
+    align-items:center;
+    gap:6px;
+  }
+  .btn-action-green:hover{ background:#166534; }
+  .btn-hapus-kecil{
+    background:#fdeaea;
+    color:#dc2626;
+    border:1.5px solid #f5c2c2;
+    padding:7px 14px;
+    border-radius:8px;
+    font-size:12.5px;
+    font-weight:700;
+    cursor:pointer;
+  }
+  .btn-hapus-kecil:hover{ background:#dc2626; color:var(--putih); }
+
+  /* Modal Konfirmasi Hapus Data Kadet */
+  .modal-confirm-overlay{
+    display:none;
+    position:fixed;
+    inset:0;
+    background:rgba(13,43,107,0.65);
+    z-index:350;
+    align-items:center;
+    justify-content:center;
+    padding:20px;
+  }
+  .modal-confirm-overlay.tampil{ display:flex; animation:fadeIn 0.2s ease; }
+  .modal-confirm-box{
+    background:var(--putih);
+    border-radius:16px;
+    padding:24px 20px;
+    max-width:400px;
+    width:100%;
+    box-shadow:0 10px 30px rgba(0,0,0,0.3);
+    text-align:center;
+    border-top:5px solid #dc2626;
+  }
+  .modal-confirm-box h3{ margin:0 0 10px 0; color:#dc2626; font-size:17.5px; }
+  .modal-confirm-box p{ font-size:13.5px; line-height:1.6; color:var(--teks); margin:0 0 20px 0; }
+  .btn-confirm-row{ display:flex; gap:12px; }
 </style>
 </head>
 <body>
@@ -917,40 +1208,148 @@
 
   <!-- ===================== HALAMAN PROFIL ADMIN ===================== -->
   <section id="page-profil" class="page">
-    <div class="card admin-info">
-      <span class="badge-kuning">INFO PENGELOLA</span>
-      <h2 style="border:none; padding:0; margin-bottom:6px;">👤 Profil Admin</h2>
-      <p><strong>Pengelola:</strong> Keluarga Besar Kadet UNHAN RI - Korda Jateng-DIY</p>
-      <p><strong>Kontak:</strong> Hubungi perwakilan daerah masing-masing</p>
-      <p><strong>Catatan:</strong> Data terintegrasi dan terupdate</p>
+    
+    <!-- 1. HALAMAN PROFIL UMUM -->
+    <div class="profile-org-card" id="cardProfilPublic">
+      <img id="profileDisplayLogo" class="profile-logo-display" alt="Logo Resmi">
+      <h2 class="profile-org-title">PERKUMPULAN ORANG TUA KADET UNHAN RI • KORDA JATENG - DIY</h2>
+      <div class="profile-org-desc" id="profileDisplayDesc">
+        Wadah silaturahmi dan koordinasi antar orang tua kadet se-Jawa Tengah dan Daerah Istimewa Yogyakarta, untuk saling berbagi informasi perkembangan perkuliahan, kegiatan akademik, serta hal-hal yang berkaitan dengan putra-putri kita.
+      </div>
+      <button type="button" class="btn-masuk-admin" onclick="bukaFormLoginAdmin()">
+        <span>🔑 Masuk Admin</span>
+      </button>
     </div>
 
-    <div class="card login-admin-box" id="kartuLoginAdmin">
-      <span class="badge-terkunci">🔒 KHUSUS ADMIN</span>
-      <h2>Login Admin</h2>
-      <p style="font-size:13px; color:#5a6579; margin-top:-4px;">Login untuk mengubah/memperbaiki data yang sudah tersimpan, dan mengatur logo &amp; judul header.</p>
-      <label for="inputUsernameAdmin" style="display:block; font-weight:600; font-size:13px; color:var(--biru-tua); margin-bottom:6px;">Nama Pengguna</label>
-      <input type="text" id="inputUsernameAdmin" autocomplete="off">
-      <label for="inputPasswordAdmin" style="display:block; font-weight:600; font-size:13px; color:var(--biru-tua); margin-bottom:6px;">Kata Sandi</label>
-      <input type="password" id="inputPasswordAdmin" autocomplete="off">
+    <!-- 2. HALAMAN VERIFIKASI MASUK ADMIN -->
+    <div class="login-verify-card" id="kartuLoginAdmin" style="display:none;">
+      <div class="login-verify-header">
+        <h2>🔐 Verifikasi Kepemilikan Akses Admin</h2>
+        <button type="button" class="btn-kembali-profil" onclick="batalLoginAdmin()">✕ Kembali</button>
+      </div>
+
+      <label for="inputUsernameAdmin">Nama Pengguna</label>
+      <input type="text" id="inputUsernameAdmin" autocomplete="off" placeholder="Masukkan nama pengguna">
+
+      <label for="inputPasswordAdmin">Kata Sandi</label>
+      <div class="password-input-wrap">
+        <input type="password" id="inputPasswordAdmin" autocomplete="off" placeholder="Masukkan kata sandi">
+        <button type="button" class="btn-eye-toggle" onclick="toggleEyeLoginAdmin()" title="Lihat / Sembunyikan Sandi">👁️</button>
+      </div>
+
       <div class="pesan-login-gagal" id="pesanLoginGagal">❌ Nama pengguna atau kata sandi salah</div>
-      <button type="button" class="btn-kecil" style="width:100%;" onclick="loginAdmin()">Login</button>
+      <button type="button" class="btn-submit" style="margin-top:8px;" onclick="loginAdmin()">Masuk</button>
     </div>
 
-    <div id="adminArea">
-      <div class="card">
-        <div style="display:flex; justify-content:space-between; align-items:center;">
-          <h2 style="border:none; padding:0; margin:0;">✏️ Kelola / Perbaiki Data</h2>
-          <button type="button" class="btn-kecil secondary" onclick="logoutAdmin()">Logout</button>
+    <!-- 3. MENU SETELAH BERHASIL MASUK (AREA ADMIN) -->
+    <div id="adminArea" style="display:none;">
+      
+      <div class="admin-header-bar">
+        <div>
+          <h2>👋 Selamat Datang, Admin Korda Jateng-DIY</h2>
+          <div style="font-size:12.5px; opacity:0.9; margin-top:3px;">Sesi Pengelola Aktif — Hak Akses Penuh</div>
         </div>
-        <div class="search-row" style="margin-top:12px;">
-          <input type="text" id="keywordKelola" placeholder="Cari data yang mau diperbaiki...">
-          <button onclick="cariDataKelola()">Cari</button>
+        <div style="display:flex; align-items:center; gap:10px;">
+          <span class="badge-sesi-aktif">🟢 Aktif</span>
+          <button type="button" class="btn-keluar-admin" onclick="logoutAdmin()">🚪 Keluar Mode Admin</button>
         </div>
-        <div id="hasilKelola" style="margin-top:14px;"></div>
+      </div>
 
+      <!-- KARTU A: PENGATURAN TAMPILAN -->
+      <div class="admin-section-card">
+        <h3 class="admin-section-title">🎨 Pengaturan Tampilan &amp; Organisasi</h3>
+        
+        <div class="pengaturan-row">
+          <img id="previewLogo" class="preview-logo" alt="Preview Logo">
+          <div style="flex:1; min-width:160px;">
+            <label style="display:block; font-weight:700; font-size:13px; color:var(--biru-tua); margin-bottom:4px;">Ganti Logo Resmi Header &amp; Profil</label>
+            <input type="file" id="inputLogo" accept="image/*">
+            <div class="keterangan-kecil">Format gambar (PNG/JPG), disarankan persegi &amp; ukuran di bawah 1 MB.</div>
+          </div>
+        </div>
+        <div class="baris-tombol">
+          <button type="button" class="btn-kecil" onclick="simpanLogo()">Simpan Logo</button>
+          <button type="button" class="btn-kecil secondary" onclick="hapusLogo()">Hapus Logo</button>
+        </div>
+
+        <label style="display:block; font-weight:700; font-size:13.5px; color:var(--biru-tua); margin:20px 0 8px 0;">Ubah Judul Header (3 Baris Terpisah)</label>
+        <div class="judul-3baris-wrap">
+          <div>
+            <label>Baris Pertama (Atas)</label>
+            <input type="text" id="inputJudulBaris1" placeholder="KELUARGA BESAR KADET">
+          </div>
+          <div>
+            <label>Baris Kedua (Tengah)</label>
+            <input type="text" id="inputJudulBaris2" placeholder="UNHAN RI">
+          </div>
+          <div>
+            <label>Baris Ketiga (Bawah)</label>
+            <input type="text" id="inputJudulBaris3" placeholder="KORDA JATENG-DIY">
+          </div>
+        </div>
+
+        <label for="inputKeteranganOrg" style="display:block; font-weight:700; font-size:13.5px; color:var(--biru-tua); margin:16px 0 6px 0;">Ubah Keterangan Singkat Organisasi</label>
+        <textarea id="inputKeteranganOrg" rows="3" style="width:100%; padding:10px 12px; border-radius:10px; border:1.5px solid #cfd8e6; font-size:13.5px; font-family:inherit; color:var(--teks);"></textarea>
+
+        <div class="baris-tombol" style="margin-top:12px;">
+          <button type="button" class="btn-kecil" onclick="simpanPengaturanTampilanAdmin()">💾 Simpan Judul &amp; Keterangan</button>
+          <button type="button" class="btn-kecil secondary" onclick="resetPengaturanTampilanAdmin()">🔄 Kembalikan Default</button>
+        </div>
+        <div class="pesan-pengaturan" id="pesanPengaturan">✅ Pengaturan berhasil disimpan</div>
+      </div>
+
+      <!-- KARTU B: PENGELOLAAN DATA KADET -->
+      <div class="admin-section-card">
+        <h3 class="admin-section-title">📋 Pengelolaan Data (Anggota, Cohort, Prodi, Domisili)</h3>
+        
+        <!-- Filter Pengunduhan -->
+        <div style="display:flex; gap:12px; flex-wrap:wrap; margin-bottom:16px; align-items:end;">
+          <div style="flex:1; min-width:200px;">
+            <label style="display:block; font-weight:700; font-size:12.5px; color:var(--biru-tua); margin-bottom:5px;">📂 Pilih Lingkup Data</label>
+            <select id="filterLingkupUnduh" onchange="perbaruiPilihanNilaiFilter()" style="width:100%; padding:11px 14px; border-radius:11px; border:1.5px solid #cfd8e6; font-size:14px; background:var(--putih); color:var(--teks);">
+              <option value="semua">• Seluruh Anggota</option>
+              <option value="cohort">• Per Cohort</option>
+              <option value="prodi">• Per Program Studi</option>
+              <option value="domisili">• Per Domisili / Kota</option>
+            </select>
+          </div>
+          <div style="flex:1; min-width:200px; display:none;" id="wrapFilterLingkupNilai">
+            <label style="display:block; font-weight:700; font-size:12.5px; color:var(--biru-tua); margin-bottom:5px;">🎯 Pilih Nilai Spesifik</label>
+            <select id="filterLingkupNilai" style="width:100%; padding:11px 14px; border-radius:11px; border:1.5px solid #cfd8e6; font-size:14px; background:var(--putih); color:var(--teks);"></select>
+          </div>
+        </div>
+
+        <!-- Pilihan Format Unduh -->
+        <div style="display:flex; gap:10px; flex-wrap:wrap; margin-bottom:16px;">
+          <button type="button" class="btn-action-green" onclick="unduhLaporanPDF()" style="flex:1; min-width:180px;">
+            <span>📄</span> Unduh Laporan PDF<br><small style="font-weight:500; opacity:0.9;">Laporan resmi siap cetak</small>
+          </button>
+          <button type="button" class="btn-action-green" onclick="unduhDataExcelCSV()" style="flex:1; min-width:180px; background:#ea580c;">
+            <span>📊</span> Unduh Data Excel / CSV<br><small style="font-weight:500; opacity:0.9;">Untuk pengolahan data</small>
+          </button>
+        </div>
+
+        <!-- Tombol-tombol pengelolaan -->
+        <div style="display:flex; gap:10px; flex-wrap:wrap; margin-bottom:16px;">
+          <button type="button" class="btn-kecil secondary" onclick="tampilkanSemuaDataKelola()">
+            📋 Tampilkan Semua Anggota
+          </button>
+          <button type="button" class="btn-kecil secondary" onclick="resetPengaturanKelola()">
+            🔄 Kembalikan Pengaturan Awal
+          </button>
+        </div>
+
+        <div class="search-row">
+          <input type="text" id="keywordKelola" placeholder="Cari nama kadet, orang tua, kota, atau cohort yang mau dikelola...">
+          <button onclick="cariDataKelola()">🔍 Cari</button>
+        </div>
+
+        <div id="hasilKelola" style="margin-top:16px;"></div>
+
+        <!-- PANEL EDIT DATA -->
         <div id="panelEditData">
-          <h2 style="border:none; padding:0;">Edit Data</h2>
+          <h2 style="border:none; padding:0; font-size:16px; color:var(--biru-tua);">✏️ Edit Data Anggota</h2>
+          
           <label>Cohort / Angkatan</label>
           <select id="editCohort">
             <option value="1">1</option>
@@ -990,36 +1389,83 @@
         </div>
       </div>
 
-      <div class="card">
-        <h2>🖼️ Pengaturan Logo &amp; Judul Header</h2>
+      <!-- KARTU C: KEAMANAN & PENGATURAN AKSES ADMIN -->
+      <div class="admin-section-card">
+        <h3 class="admin-section-title">🔒 Keamanan &amp; Pengaturan Akses Admin</h3>
+        
+        <!-- Menu Keamanan -->
+        <div style="display:flex; flex-direction:column; gap:10px; margin-bottom:16px;">
+          <!-- Ubah Kata Sandi Admin -->
+          <div style="display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:12px; background:#f8fafc; border:1.5px solid #e2e8f0; padding:16px; border-radius:14px;">
+            <div>
+              <div style="font-weight:700; font-size:14px; color:var(--biru-tua); margin-bottom:4px;">🔑 Ubah Kata Sandi Admin</div>
+              <div style="font-size:12.5px; color:#5a6579; line-height:1.4;">Perbarui kata sandi akses admin. Wajib memasukkan kata sandi lama untuk verifikasi.</div>
+            </div>
+            <button type="button" class="btn-kecil" id="btnToggleFormSandi" style="background:var(--biru-sedang); white-space:nowrap;" onclick="toggleFormGantiPassword()">
+              🔑 Ubah Kata Sandi
+            </button>
+          </div>
 
-        <div class="pengaturan-row">
-          <img id="previewLogo" class="preview-logo" alt="Preview Logo">
-          <div style="flex:1; min-width:160px;">
-            <input type="file" id="inputLogo" accept="image/*">
-            <div class="keterangan-kecil">Format gambar (PNG/JPG), disarankan persegi &amp; ukuran kecil.</div>
+          <!-- Riwayat Aktivitas -->
+          <div style="display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:12px; background:#f8fafc; border:1.5px solid #e2e8f0; padding:16px; border-radius:14px;">
+            <div>
+              <div style="font-weight:700; font-size:14px; color:var(--biru-tua); margin-bottom:4px;">📜 Riwayat Aktivitas Admin</div>
+              <div style="font-size:12.5px; color:#5a6579; line-height:1.4;">Lihat log aktivitas login, perubahan data, dan aksi administratif lainnya.</div>
+            </div>
+            <button type="button" class="btn-kecil" style="background:#6d28d9; white-space:nowrap;" onclick="tampilkanRiwayatAktivitas()">
+              📜 Lihat Riwayat
+            </button>
+          </div>
+
+          <!-- Keluar Mode Admin (sudah ada di header, tapi bisa ditampilkan juga di sini sebagai info) -->
+          <div style="display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:12px; background:#fdeaea; border:1.5px solid #f5c2c2; padding:16px; border-radius:14px;">
+            <div>
+              <div style="font-weight:700; font-size:14px; color:#dc2626; margin-bottom:4px;">🚪 Keluar Mode Admin</div>
+              <div style="font-size:12.5px; color:#5a6579; line-height:1.4;">Akhiri sesi pengelola dan kembali ke halaman profil publik.</div>
+            </div>
+            <button type="button" class="btn-kecil" style="background:#dc2626; white-space:nowrap;" onclick="logoutAdmin()">
+              🚪 Keluar Sekarang
+            </button>
           </div>
         </div>
-        <div class="baris-tombol">
-          <button type="button" class="btn-kecil" onclick="simpanLogo()">Simpan Logo</button>
-          <button type="button" class="btn-kecil secondary" onclick="hapusLogo()">Hapus Logo</button>
-        </div>
 
-        <label for="inputJudul" style="display:block; font-weight:700; font-size:13.5px; color:var(--biru-tua); margin:18px 0 6px 0;">Judul Header</label>
-        <div class="pengaturan-row" style="margin-bottom:4px;">
-          <input type="text" id="inputJudul" placeholder="Contoh: KELUARGA BESAR KADET UNHAN RI | KORDA JATENG-DIY">
-        </div>
-        <div class="keterangan-kecil">Gunakan tanda | (garis tegak) di tempat judul ingin ganti baris.</div>
-        <div class="baris-tombol">
-          <button type="button" class="btn-kecil" onclick="simpanJudul()">Simpan Judul</button>
-          <button type="button" class="btn-kecil secondary" onclick="resetJudul()">Kembalikan Default</button>
-        </div>
+        <!-- Form Ubah Kata Sandi (Tersembunyi) -->
+        <div id="formGantiPasswordWrap" style="display:none; max-width:440px; background:#f1f5fa; border:1.5px dashed var(--biru-sedang); padding:18px; border-radius:14px; margin-top:14px; animation:fadeIn 0.2s ease;">
+          <div style="font-weight:700; color:var(--biru-tua); font-size:14px; margin-bottom:14px; border-bottom:1.5px solid #d1e0f3; padding-bottom:8px;">
+            ✏️ Formulir Perbaruan Kata Sandi
+          </div>
 
-        <div class="pesan-pengaturan" id="pesanPengaturan">✅ Pengaturan tersimpan</div>
-        <div class="keterangan-kecil" style="margin-top:12px;">Catatan: pengaturan logo &amp; judul ini tersimpan di perangkat/browser ini saja (bukan di Data pusat), jadi perlu diatur ulang jika dibuka dari HP/browser lain.</div>
+          <label style="display:block; font-weight:600; font-size:13px; color:var(--biru-tua); margin-bottom:5px;">Kata Sandi Lama (Wajib Diisi)</label>
+          <input type="password" id="inputPasswordLama" placeholder="Masukkan kata sandi lama Anda" style="width:100%; padding:11px 13px; border-radius:10px; border:1.5px solid #cfd8e6; font-size:14px; margin-bottom:12px; background:var(--putih);">
+
+          <label style="display:block; font-weight:600; font-size:13px; color:var(--biru-tua); margin-bottom:5px;">Kata Sandi Baru</label>
+          <input type="password" id="inputPasswordBaru" placeholder="Masukkan kata sandi baru (min. 5 karakter)" style="width:100%; padding:11px 13px; border-radius:10px; border:1.5px solid #cfd8e6; font-size:14px; margin-bottom:12px; background:var(--putih);">
+
+          <label style="display:block; font-weight:600; font-size:13px; color:var(--biru-tua); margin-bottom:5px;">Konfirmasi Kata Sandi Baru</label>
+          <input type="password" id="inputPasswordKonfirmasi" placeholder="Ketik ulang kata sandi baru" style="width:100%; padding:11px 13px; border-radius:10px; border:1.5px solid #cfd8e6; font-size:14px; margin-bottom:16px; background:var(--putih);">
+
+          <div style="display:flex; gap:8px; flex-wrap:wrap;">
+            <button type="button" class="btn-kecil" style="flex:1;" onclick="simpanPasswordBaru()">💾 Simpan Kata Sandi Baru</button>
+            <button type="button" class="btn-kecil secondary" onclick="toggleFormGantiPassword(false)">Batal</button>
+          </div>
+          <div id="pesanGantiPassword"></div>
+        </div>
       </div>
+
     </div>
   </section>
+
+  <!-- MODAL KONFIRMASI HAPUS DATA KADET -->
+  <div class="modal-confirm-overlay" id="modalKonfirmasiHapus">
+    <div class="modal-confirm-box">
+      <h3>⚠️ Konfirmasi Hapus Data Kadet</h3>
+      <p id="pesanModalHapus">Apakah Anda yakin ingin menghapus data Kadet ini secara permanen dari sistem?</p>
+      <div class="btn-confirm-row">
+        <button type="button" class="btn-kecil secondary" style="flex:1;" onclick="batalHapusData()">Batal</button>
+        <button type="button" class="btn-hapus-kecil" style="flex:1; padding:11px;" onclick="eksekusiHapusData()">Ya, Hapus Data</button>
+      </div>
+    </div>
+  </div>
 
 </main>
 
@@ -1262,6 +1708,28 @@ async function kirimDataKeServer(dataBaru, aksi, dataAsli){
     return { success:false, error: e.message };
   }
   // --- AKHIR BAGIAN KONEKSI KE GAS ---
+}
+
+async function hapusDataDariServer(dataAsli){
+  // dataAsli: {cohort, kadet} milik baris yang mau dihapus permanen dari Spreadsheet
+  const payload = { action: "delete", match: dataAsli };
+
+  if(!urlGasSudahDiisi()){
+    // Belum tersambung ke GAS: hapus hanya berlaku sementara di memori halaman ini
+    return { success:true, offline:true };
+  }
+
+  try{
+    const res = await fetch(GAS_URL, {
+      method: "POST",
+      headers: { "Content-Type": "text/plain;charset=utf-8" },
+      body: JSON.stringify(payload)
+    });
+    const hasil = await res.json();
+    return hasil;
+  }catch(e){
+    return { success:false, error: e.message };
+  }
 }
 
 /* =========================================================
@@ -1668,15 +2136,64 @@ document.getElementById("keyword").addEventListener("keyup", function(e){
    LOGIN ADMIN & KELOLA/EDIT DATA
 ========================================================= */
 const ADMIN_USERNAME = "admin";
-const ADMIN_PASSWORD = "unhan123"; // GANTI kata sandi ini sebelum dipakai!
+let ADMIN_PASSWORD = "unhan123"; // GANTI kata sandi ini sebelum dipakai!
+try{
+  if(localStorage.getItem("kbkAdminPassword")){
+    ADMIN_PASSWORD = localStorage.getItem("kbkAdminPassword");
+  }
+}catch(e){}
+
+const JUDUL_DEFAULT = "KELUARGA BESAR KADET|UNHAN RI|KORDA JATENG-DIY";
+const KETERANGAN_DEFAULT = "Wadah silaturahmi dan koordinasi antar orang tua kadet se-Jawa Tengah dan Daerah Istimewa Yogyakarta, untuk saling berbagi informasi perkembangan perkuliahan, kegiatan akademik, serta hal-hal yang berkaitan dengan putra-putri kita.";
 
 function tampilkanAreaAdmin(login){
-  document.getElementById("adminArea").style.display = login ? "block" : "none";
-  document.getElementById("kartuLoginAdmin").style.display = login ? "none" : "block";
+  const publicCard = document.getElementById("cardProfilPublic");
+  const loginCard = document.getElementById("kartuLoginAdmin");
+  const adminArea = document.getElementById("adminArea");
+
   if(login){
+    if(publicCard) publicCard.style.display = "none";
+    if(loginCard) loginCard.style.display = "none";
+    if(adminArea) adminArea.style.display = "block";
     isiPilihanProdiEdit();
     initCustomSelect("editCohort");
     initCustomSelect("editProdi");
+    muatFormPengaturanAdmin();
+    toggleFormGantiPassword(false);
+    const totEl = document.getElementById("totalAdminMembers");
+    if(totEl) totEl.textContent = records.length;
+  }else{
+    if(publicCard) publicCard.style.display = "block";
+    if(loginCard) loginCard.style.display = "none";
+    if(adminArea) adminArea.style.display = "none";
+  }
+}
+
+function bukaFormLoginAdmin(){
+  document.getElementById("cardProfilPublic").style.display = "none";
+  document.getElementById("kartuLoginAdmin").style.display = "block";
+  document.getElementById("adminArea").style.display = "none";
+  const uInput = document.getElementById("inputUsernameAdmin");
+  if(uInput) uInput.focus();
+}
+
+function batalLoginAdmin(){
+  document.getElementById("cardProfilPublic").style.display = "block";
+  document.getElementById("kartuLoginAdmin").style.display = "none";
+  document.getElementById("adminArea").style.display = "none";
+}
+
+function toggleEyeLoginAdmin(){
+  const input = document.getElementById("inputPasswordAdmin");
+  const btn = document.querySelector("#kartuLoginAdmin .btn-eye-toggle");
+  if(input && btn){
+    if(input.type === "password"){
+      input.type = "text";
+      btn.textContent = "🙈";
+    }else{
+      input.type = "password";
+      btn.textContent = "👁️";
+    }
   }
 }
 
@@ -1692,27 +2209,42 @@ function loginAdmin(){
   const pesanGagal = document.getElementById("pesanLoginGagal");
 
   if(u === ADMIN_USERNAME && p === ADMIN_PASSWORD){
-    pesanGagal.style.display = "none";
+    if(pesanGagal) pesanGagal.style.display = "none";
     try{ sessionStorage.setItem("kbkAdminLogin", "1"); }catch(e){}
-    document.getElementById("inputUsernameAdmin").value = "";
     document.getElementById("inputPasswordAdmin").value = "";
     tampilkanAreaAdmin(true);
+    // Catat aktivitas login
+    catatAktivitasAdmin("Login Admin", "Admin berhasil masuk ke mode pengelola");
   }else{
-    pesanGagal.style.display = "block";
+    if(pesanGagal) pesanGagal.style.display = "block";
+    // Catat aktivitas gagal login
+    catatAktivitasAdmin("Gagal Login", "Upaya login gagal - username: " + u);
   }
 }
+
+// Tambahkan dukungan tombol Enter pada form login
+setTimeout(() => {
+  const pInput = document.getElementById("inputPasswordAdmin");
+  const uInput = document.getElementById("inputUsernameAdmin");
+  if(pInput) pInput.addEventListener("keyup", (e) => { if(e.key === "Enter") loginAdmin(); });
+  if(uInput) uInput.addEventListener("keyup", (e) => { if(e.key === "Enter") loginAdmin(); });
+}, 500);
 
 function logoutAdmin(){
   try{ sessionStorage.removeItem("kbkAdminLogin"); }catch(e){}
   tampilkanAreaAdmin(false);
   batalEditData();
-  document.getElementById("hasilKelola").innerHTML = "";
-  document.getElementById("keywordKelola").value = "";
+  const wadah = document.getElementById("hasilKelola");
+  if(wadah) wadah.innerHTML = "";
+  const kw = document.getElementById("keywordKelola");
+  if(kw) kw.value = "";
+  // Catat aktivitas logout
+  catatAktivitasAdmin("Logout Admin", "Admin keluar dari mode pengelola");
 }
 
 function isiPilihanProdiEdit(){
   const sel = document.getElementById("editProdi");
-  if(sel.options.length > 0) return; // sudah pernah diisi
+  if(!sel || sel.options.length > 0) return;
   daftarProdi.forEach(p => {
     const opt = document.createElement("option");
     opt.value = p;
@@ -1722,8 +2254,8 @@ function isiPilihanProdiEdit(){
 }
 
 document.getElementById("editCohort").addEventListener("change", function(){
-  document.getElementById("editCohortLainnyaBox").style.display =
-    (this.value === "lainnya") ? "block" : "none";
+  const box = document.getElementById("editCohortLainnyaBox");
+  if(box) box.style.display = (this.value === "lainnya") ? "block" : "none";
 });
 
 let hasilKelolaSaatIni = [];
@@ -1734,7 +2266,7 @@ function cariDataKelola(){
   wadah.innerHTML = "";
 
   if(kk === ""){
-    wadah.innerHTML = '<div class="no-data">Masukkan kata kunci pencarian</div>';
+    wadah.innerHTML = '<div class="no-data">Masukkan kata kunci pencarian atau klik Tampilkan Semua Anggota</div>';
     return;
   }
 
@@ -1753,13 +2285,36 @@ function cariDataKelola(){
     return;
   }
 
+  renderHasilKelolaList();
+}
+
+function tampilkanSemuaDataKelola(){
+  hasilKelolaSaatIni = records.slice();
+  renderHasilKelolaList();
+}
+
+function renderHasilKelolaList(){
+  const wadah = document.getElementById("hasilKelola");
+  if(!wadah) return;
+  wadah.innerHTML = "";
+  if(hasilKelolaSaatIni.length === 0){
+    wadah.innerHTML = '<div class="no-data">Belum ada data kadet tersimpan</div>';
+    return;
+  }
+
   hasilKelolaSaatIni.forEach((r, idx) => {
     const div = document.createElement("div");
     div.className = "baris-hasil-kelola";
     div.innerHTML = `
       <div class="baris-atas">
-        <div><strong>${r.kadet}</strong> — Cohort ${r.cohort}<br>${r.ortu} · ${r.domisili}</div>
-        <button type="button" class="btn-edit-kecil" onclick="bukaEditData(${idx})">✏️ Edit</button>
+        <div>
+          <strong>${r.kadet}</strong> — Cohort ${r.cohort}<br>
+          <span style="font-size:12.5px; color:#5a6579;">Ortu: ${r.ortu} · Domisili: ${r.domisili} · Prodi: ${r.prodi} · HP: ${r.hp||"-"}</span>
+        </div>
+        <div style="display:flex; gap:6px; flex-shrink:0;">
+          <button type="button" class="btn-edit-kecil" onclick="bukaEditData(${idx})">✏️ Edit</button>
+          <button type="button" class="btn-hapus-kecil" onclick="konfirmasiHapusData(${idx})">🗑️ Hapus</button>
+        </div>
       </div>
     `;
     wadah.appendChild(div);
@@ -1790,14 +2345,15 @@ function bukaEditData(idx){
     document.getElementById("editCohortLainnya").value = cohortStr;
   }
 
-  document.getElementById("editOrtu").value = r.ortu || "";
-  document.getElementById("editDomisili").value = r.domisili || "";
-  document.getElementById("editHp").value = (r.hp && r.hp !== "-") ? r.hp : "";
   document.getElementById("editKadet").value = r.kadet || "";
   document.getElementById("editProdi").value = r.prodi || "";
 
   initCustomSelect("editCohort");
   initCustomSelect("editProdi");
+
+  document.getElementById("editOrtu").value = r.ortu || "";
+  document.getElementById("editDomisili").value = r.domisili || "";
+  document.getElementById("editHp").value = (r.hp && r.hp !== "-") ? r.hp : "";
 
   const panel = document.getElementById("panelEditData");
   panel.style.display = "block";
@@ -1805,7 +2361,8 @@ function bukaEditData(idx){
 }
 
 function batalEditData(){
-  document.getElementById("panelEditData").style.display = "none";
+  const panel = document.getElementById("panelEditData");
+  if(panel) panel.style.display = "none";
   editDataAsli = null;
 }
 
@@ -1853,7 +2410,9 @@ async function prosesSimpanEdit(dataBaru, dataAsli){
     pesan.style.borderColor = "#b6e6c2";
     pesan.style.display = "block";
     renderDashboard();
-    cariDataKelola();
+    renderHasilKelolaList();
+    // Catat aktivitas edit data
+    catatAktivitasAdmin("Edit Data Anggota", "Memperbarui data Kadet: " + dataBaru.kadet + " (Cohort " + dataBaru.cohort + ")");
     setTimeout(() => {
       document.getElementById("panelEditData").style.display = "none";
       pesan.style.display = "none";
@@ -1867,84 +2426,223 @@ async function prosesSimpanEdit(dataBaru, dataAsli){
   }
 }
 
-/* =========================================================
-   PENGATURAN LOGO & JUDUL HEADER
-   (disimpan di localStorage perangkat ini, terpisah dari
-   data kadet yang tersimpan di Spreadsheet)
-========================================================= */
-const JUDUL_DEFAULT = "KELUARGA BESAR KADET|UNHAN RI|KORDA JATENG-DIY";
+/* --- Hapus Data Kadet --- */
+let targetHapusIdx = -1;
+function konfirmasiHapusData(idx){
+  const r = hasilKelolaSaatIni[idx];
+  if(!r) return;
+  targetHapusIdx = records.findIndex(item => String(item.cohort) === String(r.cohort) && (item.kadet||"").trim().toLowerCase() === (r.kadet||"").trim().toLowerCase());
+  
+  if(targetHapusIdx > -1){
+    document.getElementById("pesanModalHapus").textContent = `Apakah Anda yakin ingin menghapus data Kadet "${r.kadet}" (Cohort ${r.cohort}) secara permanen dari sistem? Data yang sudah dihapus tidak dapat dikembalikan.`;
+    document.getElementById("modalKonfirmasiHapus").classList.add("tampil");
+  }
+}
 
+async function eksekusiHapusData(){
+  document.getElementById("modalKonfirmasiHapus").classList.remove("tampil");
+  if(targetHapusIdx > -1 && targetHapusIdx < records.length){
+    const dataAsli = { cohort: records[targetHapusIdx].cohort, kadet: records[targetHapusIdx].kadet };
+    const nama = dataAsli.kadet;
+    const cohort = dataAsli.cohort;
+
+    const hasil = await hapusDataDariServer(dataAsli);
+
+    if(hasil.success){
+      const idxSekarang = records.findIndex(item => String(item.cohort) === String(dataAsli.cohort) && (item.kadet||"").trim().toLowerCase() === dataAsli.kadet.trim().toLowerCase());
+      if(idxSekarang > -1) records.splice(idxSekarang, 1);
+      targetHapusIdx = -1;
+      renderDashboard();
+      tampilkanSemuaDataKelola();
+      const totEl = document.getElementById("totalAdminMembers");
+      if(totEl) totEl.textContent = records.length;
+      catatAktivitasAdmin("Hapus Data Anggota", "Menghapus data Kadet: " + nama + " (Cohort " + cohort + ")");
+      alert(`✅ Data Kadet "${nama}" berhasil dihapus dari sistem!`);
+    }else{
+      targetHapusIdx = -1;
+      alert(`❌ Gagal menghapus data Kadet "${nama}": ${hasil.error || "periksa koneksi internet"}`);
+    }
+  }
+}
+
+function batalHapusData(){
+  document.getElementById("modalKonfirmasiHapus").classList.remove("tampil");
+  targetHapusIdx = -1;
+}
+
+/* --- Download Rekap CSV --- */
+/* --- Ganti Kata Sandi Admin --- */
+function toggleFormGantiPassword(tampilPaksa){
+  const wrap = document.getElementById("formGantiPasswordWrap");
+  const btn = document.getElementById("btnToggleFormSandi");
+  if(!wrap || !btn) return;
+
+  const mauTampil = (typeof tampilPaksa === "boolean") ? tampilPaksa : (wrap.style.display === "none" || !wrap.style.display);
+  if(mauTampil){
+    wrap.style.display = "block";
+    btn.textContent = "✕ Tutup Formulir Sandi";
+    btn.style.background = "#6b7688";
+    const el = document.getElementById("inputPasswordLama");
+    if(el) el.focus();
+  }else{
+    wrap.style.display = "none";
+    btn.textContent = "🔑 Ganti Kata Sandi";
+    btn.style.background = "var(--biru-sedang)";
+    const p = document.getElementById("pesanGantiPassword");
+    if(p) p.style.display = "none";
+  }
+}
+
+function simpanPasswordBaru(){
+  const lama = document.getElementById("inputPasswordLama").value;
+  const baru = document.getElementById("inputPasswordBaru").value;
+  const konf = document.getElementById("inputPasswordKonfirmasi").value;
+  const pesan = document.getElementById("pesanGantiPassword");
+  pesan.style.display = "block";
+
+  if(!lama || !baru || !konf){
+    pesan.className = "pesan-peringatan-email";
+    pesan.textContent = "❌ Mohon lengkapi semua kolom kata sandi!";
+    return;
+  }
+  if(lama !== ADMIN_PASSWORD){
+    pesan.className = "pesan-peringatan-email";
+    pesan.textContent = "❌ Kata sandi lama salah! Periksa kembali kata sandi lama Anda.";
+    return;
+  }
+  if(baru !== konf){
+    pesan.className = "pesan-peringatan-email";
+    pesan.textContent = "❌ Kata sandi baru dan konfirmasi tidak cocok!";
+    return;
+  }
+  if(baru.length < 5){
+    pesan.className = "pesan-peringatan-email";
+    pesan.textContent = "❌ Kata sandi baru minimal 5 karakter!";
+    return;
+  }
+
+  ADMIN_PASSWORD = baru;
+  try{ localStorage.setItem("kbkAdminPassword", ADMIN_PASSWORD); }catch(e){}
+
+  pesan.className = "pesan-sukses-email";
+  pesan.textContent = "✅ Kata sandi admin berhasil diperbarui! Silakan gunakan kata sandi baru Anda saat login berikutnya.";
+  
+  document.getElementById("inputPasswordLama").value = "";
+  document.getElementById("inputPasswordBaru").value = "";
+  document.getElementById("inputPasswordKonfirmasi").value = "";
+}
+
+/* =========================================================
+   PENGATURAN LOGO, JUDUL & KETERANGAN ORGANISASI
+========================================================= */
 function tampilkanJudul(teksMentah){
   const aman = document.createElement("div");
   aman.textContent = teksMentah;
-  const teksAman = aman.innerHTML; // escape HTML dasar
+  const teksAman = aman.innerHTML;
   const denganBaris = teksAman.split("|").join("<br>");
-  document.getElementById("headerTitle").innerHTML = denganBaris;
-  // Catatan: dash-title di halaman Dashboard sengaja TIDAK ikut diubah di sini
-  // -- itu sekarang subjudul tetap ("Ringkasan Data & Statistik"), bukan
-  // pengulangan nama organisasi, supaya tidak dobel dengan judul di header.
+  const headerEl = document.getElementById("headerTitle");
+  if(headerEl) headerEl.innerHTML = denganBaris;
 }
 
 function tampilkanLogo(dataUrl){
   const logoHeader = document.getElementById("headerLogo");
   const previewLogo = document.getElementById("previewLogo");
+  const profileDisplayLogo = document.getElementById("profileDisplayLogo");
+
   if(dataUrl){
-    logoHeader.src = dataUrl;
-    logoHeader.style.display = "block";
-    previewLogo.src = dataUrl;
-    previewLogo.style.display = "block";
+    if(logoHeader){ logoHeader.src = dataUrl; logoHeader.style.display = "block"; }
+    if(previewLogo){ previewLogo.src = dataUrl; previewLogo.style.display = "block"; }
+    if(profileDisplayLogo){ profileDisplayLogo.src = dataUrl; profileDisplayLogo.style.display = "block"; }
   }else{
-    logoHeader.style.display = "none";
-    previewLogo.removeAttribute("src");
+    if(logoHeader) logoHeader.style.display = "none";
+    if(previewLogo) previewLogo.removeAttribute("src");
+    if(profileDisplayLogo) profileDisplayLogo.style.display = "none";
   }
 }
 
 function muatPengaturanTampilan(){
   let judulTersimpan = JUDUL_DEFAULT;
+  let keteranganTersimpan = KETERANGAN_DEFAULT;
   let logoTersimpan = "";
   try{
     judulTersimpan = localStorage.getItem("kbkJudulHeader") || JUDUL_DEFAULT;
     if(judulTersimpan !== JUDUL_DEFAULT && (
-       judulTersimpan.includes("KELUARGA BESAR KADET") ||
-       judulTersimpan.includes("UNHAN RI") ||
-       judulTersimpan.includes("KORDA")
+       judulTersimpan.includes("KELUARGA BESAR KADET UNHAN RI") ||
+       judulTersimpan.includes("KORDA JAWA TENGAH") ||
+       judulTersimpan.includes("KORDA JATENG - DIY") ||
+       judulTersimpan.includes("KORDA JATENG-DIY")
     )){
       judulTersimpan = JUDUL_DEFAULT;
       localStorage.setItem("kbkJudulHeader", JUDUL_DEFAULT);
     }
+    keteranganTersimpan = localStorage.getItem("kbkKeteranganOrg") || KETERANGAN_DEFAULT;
     logoTersimpan = localStorage.getItem("kbkLogoHeader") || "";
-  }catch(e){ /* localStorage tidak tersedia, pakai default */ }
+  }catch(e){}
 
   tampilkanJudul(judulTersimpan);
   tampilkanLogo(logoTersimpan);
 
-  document.getElementById("inputJudul").value = judulTersimpan.split("|").join(" | ");
+  const descEl = document.getElementById("profileDisplayDesc");
+  if(descEl) descEl.textContent = keteranganTersimpan;
+}
+
+function muatFormPengaturanAdmin(){
+  let judulTersimpan = JUDUL_DEFAULT;
+  let keteranganTersimpan = KETERANGAN_DEFAULT;
+  try{
+    judulTersimpan = localStorage.getItem("kbkJudulHeader") || JUDUL_DEFAULT;
+    keteranganTersimpan = localStorage.getItem("kbkKeteranganOrg") || KETERANGAN_DEFAULT;
+  }catch(e){}
+
+  const parts = judulTersimpan.split("|");
+  const b1 = document.getElementById("inputJudulBaris1");
+  const b2 = document.getElementById("inputJudulBaris2");
+  const b3 = document.getElementById("inputJudulBaris3");
+  const ket = document.getElementById("inputKeteranganOrg");
+
+  if(b1) b1.value = parts[0] || "KELUARGA BESAR KADET";
+  if(b2) b2.value = parts[1] || "UNHAN RI";
+  if(b3) b3.value = parts[2] || "KORDA JATENG-DIY";
+  if(ket) ket.value = keteranganTersimpan;
 }
 
 function tampilkanPesanPengaturan(teks){
   const el = document.getElementById("pesanPengaturan");
+  if(!el) return;
   el.textContent = teks;
   el.style.display = "block";
-  setTimeout(() => { el.style.display = "none"; }, 2500);
+  setTimeout(() => { el.style.display = "none"; }, 3000);
 }
 
-function simpanJudul(){
-  const nilai = document.getElementById("inputJudul").value.trim();
-  if(!nilai){
-    alert("Judul tidak boleh kosong.");
-    return;
-  }
-  const nilaiRapi = nilai.split("|").map(s => s.trim()).join("|");
-  try{ localStorage.setItem("kbkJudulHeader", nilaiRapi); }catch(e){}
-  tampilkanJudul(nilaiRapi);
-  tampilkanPesanPengaturan("✅ Judul header tersimpan");
+function simpanPengaturanTampilanAdmin(){
+  const b1 = document.getElementById("inputJudulBaris1").value.trim() || "KELUARGA BESAR KADET";
+  const b2 = document.getElementById("inputJudulBaris2").value.trim() || "UNHAN RI";
+  const b3 = document.getElementById("inputJudulBaris3").value.trim() || "KORDA JATENG-DIY";
+  const ket = document.getElementById("inputKeteranganOrg").value.trim() || KETERANGAN_DEFAULT;
+
+  const judulBaru = `${b1}|${b2}|${b3}`;
+  try{
+    localStorage.setItem("kbkJudulHeader", judulBaru);
+    localStorage.setItem("kbkKeteranganOrg", ket);
+  }catch(e){}
+
+  tampilkanJudul(judulBaru);
+  const descEl = document.getElementById("profileDisplayDesc");
+  if(descEl) descEl.textContent = ket;
+
+  tampilkanPesanPengaturan("✅ Pengaturan Judul & Keterangan berhasil disimpan");
 }
 
-function resetJudul(){
-  try{ localStorage.removeItem("kbkJudulHeader"); }catch(e){}
+function resetPengaturanTampilanAdmin(){
+  try{
+    localStorage.removeItem("kbkJudulHeader");
+    localStorage.removeItem("kbkKeteranganOrg");
+  }catch(e){}
   tampilkanJudul(JUDUL_DEFAULT);
-  document.getElementById("inputJudul").value = JUDUL_DEFAULT.split("|").join(" | ");
-  tampilkanPesanPengaturan("✅ Judul dikembalikan ke default");
+  const descEl = document.getElementById("profileDisplayDesc");
+  if(descEl) descEl.textContent = KETERANGAN_DEFAULT;
+  muatFormPengaturanAdmin();
+  tampilkanPesanPengaturan("✅ Pengaturan dikembalikan ke default");
 }
 
 function simpanLogo(){
@@ -1966,18 +2664,18 @@ function simpanLogo(){
       return;
     }
     tampilkanLogo(dataUrl);
-    tampilkanPesanPengaturan("✅ Logo tersimpan");
+    tampilkanPesanPengaturan("✅ Logo berhasil disimpan & diperbarui");
   };
   reader.readAsDataURL(file);
 }
 
 function hapusLogo(){
   try{ localStorage.removeItem("kbkLogoHeader"); }catch(e){}
-  document.getElementById("inputLogo").value = "";
+  const el = document.getElementById("inputLogo");
+  if(el) el.value = "";
   tampilkanLogo("");
   tampilkanPesanPengaturan("✅ Logo dihapus");
 }
-
 /* =========================================================
    KOMPONEN DROPDOWN CUSTOM (RINGKAS & NYAMAN DI HP)
 ========================================================= */
@@ -2051,6 +2749,340 @@ document.addEventListener("click", () => {
   document.querySelectorAll(".custom-select-dropdown.tampil").forEach(d => d.classList.remove("tampil"));
   document.querySelectorAll(".custom-select-trigger.aktif").forEach(t => t.classList.remove("aktif"));
 });
+
+/* =========================================================
+   FUNGSI TAMBAHAN: UNDUH LAPORAN PDF, EXCEL/CSV DENGAN FILTER
+========================================================= */
+
+// Fungsi helper: filter records berdasarkan lingkup unduh
+// Mengisi dropdown "Pilih Nilai Spesifik" sesuai lingkup yang dipilih
+// (daftar Cohort / Prodi / Kota diambil langsung dari data yang ada)
+function perbaruiPilihanNilaiFilter(){
+  const filter = document.getElementById("filterLingkupUnduh").value;
+  const wrap = document.getElementById("wrapFilterLingkupNilai");
+  const sel = document.getElementById("filterLingkupNilai");
+  if(!wrap || !sel) return;
+
+  if(filter === "semua"){
+    wrap.style.display = "none";
+    sel.innerHTML = "";
+    return;
+  }
+
+  wrap.style.display = "block";
+  sel.innerHTML = "";
+
+  let daftarNilai = [];
+  if(filter === "cohort"){
+    daftarNilai = [...new Set(records.map(r => r.cohort))].sort((a,b) => a - b).map(String);
+  }else if(filter === "prodi"){
+    daftarNilai = [...new Set(records.map(r => r.prodi))].sort();
+  }else if(filter === "domisili"){
+    daftarNilai = [...new Set(records.map(r => ekstrakKota(r.domisili)))].sort();
+  }
+
+  daftarNilai.forEach(v => {
+    const opt = document.createElement("option");
+    opt.value = v;
+    opt.textContent = (filter === "cohort") ? ("Cohort " + v) : v;
+    sel.appendChild(opt);
+  });
+}
+
+// Fungsi helper: filter records berdasarkan lingkup unduh + nilai spesifik yang dipilih
+function getFilteredRecordsForDownload(){
+  const filter = document.getElementById("filterLingkupUnduh") ? document.getElementById("filterLingkupUnduh").value : "semua";
+  if(filter === "semua"){
+    return records.slice();
+  }
+
+  const nilaiEl = document.getElementById("filterLingkupNilai");
+  const nilai = nilaiEl ? nilaiEl.value : "";
+  if(!nilai) return records.slice();
+
+  if(filter === "cohort"){
+    return records.filter(r => String(r.cohort) === nilai);
+  }
+  if(filter === "prodi"){
+    return records.filter(r => r.prodi === nilai);
+  }
+  if(filter === "domisili"){
+    return records.filter(r => ekstrakKota(r.domisili) === nilai);
+  }
+  return records.slice();
+}
+
+// Fungsi helper: generate CSV content
+function generateCSVContent(dataArray, includeHeader = true){
+  let csv = "";
+  if(includeHeader){
+    csv = "No,Cohort,Nama Kadet,Program Studi,Nama Orang Tua,Domisili / Kota,Nomor HP\n";
+  }
+  dataArray.forEach((r, idx) => {
+    const kadet = `"${(r.kadet||"").replace(/"/g, '""')}"`;
+    const prodi = `"${(r.prodi||"").replace(/"/g, '""')}"`;
+    const ortu = `"${(r.ortu||"").replace(/"/g, '""')}"`;
+    const dom = `"${(r.domisili||"").replace(/"/g, '""')}"`;
+    const hp = `"${(r.hp||"-").replace(/"/g, '""')}"`;
+    csv += `${idx+1},${r.cohort},${kadet},${prodi},${ortu},${dom},${hp}\n`;
+  });
+  return csv;
+}
+
+// Unduh Data Excel / CSV (dengan filter)
+function unduhDataExcelCSV(){
+  const data = getFilteredRecordsForDownload();
+  if(data.length === 0){
+    alert("Belum ada data untuk diunduh.");
+    return;
+  }
+  
+  const filter = document.getElementById("filterLingkupUnduh") ? document.getElementById("filterLingkupUnduh").value : "semua";
+  let namaFile = `Data_Kadet_`;
+  
+  switch(filter){
+    case "cohort": namaFile += `Per_Cohort_`; break;
+    case "prodi": namaFile += `Per_Prodi_`; break;
+    case "domisili": namaFile += `Per_Domisili_`; break;
+    default: namaFile += `Seluruh_Anggota_`;
+  }
+  
+  namaFile += `${new Date().toISOString().slice(0,10)}.csv`;
+  
+  const csv = generateCSVContent(data);
+  const blob = new Blob(["\uFEFF" + csv], { type: "text/csv;charset=utf-8;" });
+  const link = document.createElement("a");
+  const url = URL.createObjectURL(blob);
+  link.setAttribute("href", url);
+  link.setAttribute("download", namaFile);
+  document.body.appendChild(link);
+  link.click();
+  document.body.removeChild(link);
+}
+
+// Unduh Laporan PDF (Laporan Resmi Siap Cetak)
+function unduhLaporanPDF(){
+  const data = getFilteredRecordsForDownload();
+  if(data.length === 0){
+    alert("Belum ada data untuk dicetak.");
+    return;
+  }
+  
+  // Buat konten HTML untuk PDF
+  const filter = document.getElementById("filterLingkupUnduh") ? document.getElementById("filterLingkupUnduh").value : "semua";
+  let filterLabel = "Seluruh Anggota";
+  switch(filter){
+    case "cohort": filterLabel = "Per Cohort"; break;
+    case "prodi": filterLabel = "Per Program Studi"; break;
+    case "domisili": filterLabel = "Per Domisili / Kota"; break;
+  }
+  
+  // Hitung statistik
+  const totalAnggota = data.length;
+  const cohortSet = new Set(data.map(r => r.cohort));
+  const prodiSet = new Set(data.map(r => r.prodi));
+  const domisiliSet = new Set(data.map(r => ekstrakKota(r.domisili)));
+  
+  // Buat tabel HTML
+  let tabelHTML = "";
+  data.forEach((r, idx) => {
+    tabelHTML += `<tr style="border-bottom:1px solid #e6ebf2;">
+      <td style="padding:8px; text-align:center;">${idx + 1}</td>
+      <td style="padding:8px; text-align:center;">${r.cohort}</td>
+      <td style="padding:8px;">${r.kadet}</td>
+      <td style="padding:8px;">${r.prodi}</td>
+      <td style="padding:8px;">${r.ortu}</td>
+      <td style="padding:8px;">${r.domisili}</td>
+      <td style="padding:8px;">${r.hp || "-"}</td>
+    </tr>`;
+  });
+  
+  const judulOrganisasi = "PERKUMPULAN ORANG TUA KADET UNHAN RI • KORDA JATENG - DIY";
+  const tanggalCetak = formatWaktuUpdate(new Date());
+  
+  const htmlContent = `
+    <!DOCTYPE html>
+    <html lang="id">
+    <head>
+      <meta charset="UTF-8">
+      <title>Laporan Data Kadet - ${judulOrganisasi}</title>
+      <style>
+        @page { margin: 1.5cm; size: A4 portrait; }
+        body { font-family: 'Segoe UI', Arial, sans-serif; font-size: 11px; line-height: 1.4; color: #14213d; margin: 0; padding: 0; }
+        .header { text-align: center; margin-bottom: 20px; border-bottom: 2px solid #0d2b6b; padding-bottom: 15px; }
+        .header h1 { margin: 0 0 5px 0; font-size: 18px; color: #0d2b6b; font-weight: 800; }
+        .header .subtitle { font-size: 12px; color: #6b7688; margin: 0; }
+        .info-row { display: flex; justify-content: space-between; margin-bottom: 15px; font-size: 11px; }
+        .info-box { background: #f4f7fc; padding: 10px 15px; border-radius: 8px; border-left: 4px solid #0d2b6b; flex: 1; margin: 0 5px; }
+        .info-box:first-child { margin-left: 0; }
+        .info-box:last-child { margin-right: 0; }
+        .info-box .label { font-weight: 700; color: #0d2b6b; font-size: 10px; text-transform: uppercase; }
+        .info-box .value { font-size: 13px; font-weight: 700; color: #14213d; }
+        table { width: 100%; border-collapse: collapse; margin-top: 15px; }
+        thead { background: #0d2b6b; color: white; }
+        th { padding: 10px 6px; text-align: left; font-size: 10.5px; font-weight: 700; }
+        th:nth-child(1), th:nth-child(2) { text-align: center; }
+        td { padding: 8px 6px; font-size: 10.5px; }
+        tr:nth-child(even) td { background: #f7f9fc; }
+        .footer { margin-top: 25px; text-align: center; font-size: 10px; color: #6b7688; border-top: 1px solid #e6ebf2; padding-top: 10px; }
+        .signature { margin-top: 40px; text-align: right; }
+        .signature div { margin-bottom: 4px; }
+        .no-data { text-align: center; padding: 30px; color: #8a94a6; font-style: italic; }
+      </style>
+    </head>
+    <body>
+      <div class="header">
+        <h1>${judulOrganisasi}</h1>
+        <p class="subtitle">Laporan Data Anggota Kadet</p>
+      </div>
+      
+      <div class="info-row">
+        <div class="info-box"><div class="label">Lingkup Laporan</div><div class="value">${filterLabel}</div></div>
+        <div class="info-box"><div class="label">Total Anggota</div><div class="value">${totalAnggota}</div></div>
+        <div class="info-box"><div class="label">Jumlah Cohort</div><div class="value">${cohortSet.size}</div></div>
+        <div class="info-box"><div class="label">Jumlah Prodi</div><div class="value">${prodiSet.size}</div></div>
+        <div class="info-box"><div class="label">Jumlah Domisili</div><div class="value">${domisiliSet.size}</div></div>
+      </div>
+      
+      <table>
+        <thead>
+          <tr>
+            <th style="width:5%;">No</th>
+            <th style="width:8%;">Cohort</th>
+            <th style="width:20%;">Nama Kadet</th>
+            <th style="width:22%;">Program Studi</th>
+            <th style="width:18%;">Nama Orang Tua</th>
+            <th style="width:17%;">Domisili</th>
+            <th style="width:10%;">No HP</th>
+          </tr>
+        </thead>
+        <tbody>
+          ${tabelHTML || '<tr><td colspan="7" class="no-data">Tidak ada data untuk ditampilkan</td></tr>'}
+        </tbody>
+      </table>
+      
+      <div class="footer">
+        <div>Dicetak pada: ${tanggalCetak}</div>
+        <div>Sistem Informasi Keluarga Besar Kadet UNHAN RI - Korda Jateng-DIY</div>
+      </div>
+      
+      <div class="signature">
+        <div>Mengetahui,</div><br><br><br>
+        <div style="border-top: 1px solid #333; width: 200px; margin-left: auto; padding-top: 4px;">Ketua Korda Jateng-DIY</div>
+      </div>
+    </body>
+    </html>
+  `;
+  
+  // Buka window baru untuk print/save as PDF
+  const printWindow = window.open('', '_blank');
+  printWindow.document.write(htmlContent);
+  printWindow.document.close();
+  
+  // Tunggu sebentar lalu trigger print dialog
+  setTimeout(() => {
+    printWindow.focus();
+    printWindow.print();
+  }, 300);
+}
+
+// Reset Pengaturan Kelola (Clear search, filter, dll)
+function resetPengaturanKelola(){
+  // Reset search keyword
+  const kw = document.getElementById("keywordKelola");
+  if(kw) kw.value = "";
+  
+  // Reset filter lingkup unduh ke default
+  const filter = document.getElementById("filterLingkupUnduh");
+  if(filter) filter.value = "semua";
+  const wrapNilai = document.getElementById("wrapFilterLingkupNilai");
+  if(wrapNilai) wrapNilai.style.display = "none";
+  const nilaiSel = document.getElementById("filterLingkupNilai");
+  if(nilaiSel) nilaiSel.innerHTML = "";
+  
+  // Reset hasil tampilan
+  hasilKelolaSaatIni = [];
+  const wadah = document.getElementById("hasilKelola");
+  if(wadah) wadah.innerHTML = '<div class="no-data">Masukkan kata kunci pencarian atau klik Tampilkan Semua Anggota</div>';
+  
+  // Tutup panel edit jika terbuka
+  batalEditData();
+  
+  // Update total members display
+  const totEl = document.getElementById("totalAdminMembers");
+  if(totEl) totEl.textContent = records.length;
+  
+  // Tampilkan notifikasi
+  const pesan = document.getElementById("pesanPengaturan");
+  if(pesan){
+    pesan.textContent = "✅ Pengaturan kelola data dikembalikan ke awal";
+    pesan.style.display = "block";
+    setTimeout(() => { pesan.style.display = "none"; }, 2000);
+  }
+}
+
+// Tampilkan Riwayat Aktivitas Admin
+function tampilkanRiwayatAktivitas(){
+  // Ambil riwayat dari localStorage (simulasi)
+  let riwayat = [];
+  try{
+    riwayat = JSON.parse(localStorage.getItem("kbkAdminActivityLog") || "[]");
+  }catch(e){}
+  
+  // Buat modal untuk menampilkan riwayat
+  const modalHTML = `
+    <div class="modal-overlay" id="modalRiwayatAktivitas" style="display:flex;">
+      <div class="modal-box" style="max-width:500px; max-height:80vh; overflow-y:auto;">
+        <h3 style="margin:0 0 16px 0; color:var(--biru-tua);">📜 Riwayat Aktivitas Admin</h3>
+        <div style="max-height:400px; overflow-y:auto;">
+          ${riwayat.length === 0 
+            ? '<div style="text-align:center; padding:30px; color:#8a94a6;">Belum ada aktivitas tercatat</div>'
+            : riwayat.slice().reverse().map((log, idx) => `
+              <div style="border-bottom:1px solid #e6ebf2; padding:12px 0;">
+                <div style="font-weight:700; color:var(--biru-tua); font-size:13px;">${log.aksi}</div>
+                <div style="font-size:12px; color:#5a6579;">${log.detail}</div>
+                <div style="font-size:11px; color:#8a94a6; margin-top:4px;">${log.waktu}</div>
+              </div>
+            `).join('')}
+        </div>
+        <div style="margin-top:20px; text-align:right;">
+          <button type="button" class="btn-kecil secondary" onclick="document.getElementById('modalRiwayatAktivitas').remove()">Tutup</button>
+        </div>
+      </div>
+    </div>
+  `;
+  
+  // Hapus modal lama jika ada
+  const existing = document.getElementById("modalRiwayatAktivitas");
+  if(existing) existing.remove();
+  
+  // Tambahkan modal baru
+  document.body.insertAdjacentHTML('beforeend', modalHTML);
+}
+
+// Fungsi helper: catat aktivitas admin
+function catatAktivitasAdmin(aksi, detail){
+  let riwayat = [];
+  try{
+    riwayat = JSON.parse(localStorage.getItem("kbkAdminActivityLog") || "[]");
+  }catch(e){}
+  
+  riwayat.push({
+    aksi: aksi,
+    detail: detail,
+    waktu: formatWaktuUpdate(new Date())
+  });
+  
+  // Batasi maksimal 100 entri
+  if(riwayat.length > 100) riwayat = riwayat.slice(-100);
+  
+  try{
+    localStorage.setItem("kbkAdminActivityLog", JSON.stringify(riwayat));
+  }catch(e){}
+}
+
+// Update fungsi loginAdmin untuk mencatat aktivitas login
+// (Akan dipanggil dari fungsi loginAdmin yang sudah ada)
 
 /* =========================================================
    INISIALISASI
