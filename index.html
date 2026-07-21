@@ -1904,9 +1904,11 @@ function muatPengaturanTampilan(){
   let logoTersimpan = "";
   try{
     judulTersimpan = localStorage.getItem("kbkJudulHeader") || JUDUL_DEFAULT;
-    if(judulTersimpan === "KELUARGA BESAR KADET UNHAN RI|KORDA JAWA TENGAH" ||
-       judulTersimpan === "KELUARGA BESAR KADET UNHAN RI|KORDA JATENG-DIY" ||
-       judulTersimpan === "KELUARGA BESAR KADET UNHAN RI | KORDA JATENG-DIY"){
+    if(judulTersimpan !== JUDUL_DEFAULT && (
+       judulTersimpan.includes("KELUARGA BESAR KADET") ||
+       judulTersimpan.includes("UNHAN RI") ||
+       judulTersimpan.includes("KORDA")
+    )){
       judulTersimpan = JUDUL_DEFAULT;
       localStorage.setItem("kbkJudulHeader", JUDUL_DEFAULT);
     }
